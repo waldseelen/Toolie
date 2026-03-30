@@ -1,0 +1,2062 @@
+[
+  {
+    "category": "GENERAL",
+    "subcategories": [
+      {
+        "subcategory": "Genel AI Platformları",
+        "tools": [
+          {
+            "name": "ChatGPT",
+            "link": "https://chatgpt.com/",
+            "description": "OpenAI'nin genel amaçlı AI asistanı"
+          },
+          {
+            "name": "Claude",
+            "link": "https://claude.ai/",
+            "description": "Uzun bağlamlı yazma ve analiz asistanı"
+          },
+          {
+            "name": "Gemini",
+            "link": "https://gemini.google.com/",
+            "description": "Google'ın çok modlu AI modeli"
+          },
+          {
+            "name": "Google AI Studio",
+            "link": "https://aistudio.google.com/",
+            "description": "Model deneme ve API entegrasyon ortamı"
+          },
+          {
+            "name": "Mistral AI",
+            "link": "https://mistral.ai/",
+            "description": "Açık ve ticari model ekosistemi"
+          },
+          {
+            "name": "Qwen",
+            "link": "https://chat.qwen.ai/",
+            "description": "Alibaba'nın çok dilli model ailesi"
+          },
+          {
+            "name": "DeepSeek",
+            "link": "https://chat.deepseek.com/",
+            "description": "Kodlama ve matematik odaklı AI platformu"
+          },
+          {
+            "name": "Grok",
+            "link": "https://grok.com/",
+            "description": "Gerçek zamanlı web ve X odaklı asistan"
+          },
+          {
+            "name": "Venice AI",
+            "link": "https://venice.ai/",
+            "description": "Gizlilik ve özelleştirme odaklı AI platformu"
+          },
+          {
+            "name": "Z AI / GLM",
+            "link": "https://chat.z.ai/",
+            "description": "Zhipu'nun çok dilli model ve sohbet platformu"
+          },
+          {
+            "name": "MiniMax",
+            "link": "https://www.minimax.io/",
+            "description": "Çok modlu AI üretim platformu"
+          },
+          {
+            "name": "Microsoft Copilot",
+            "link": "https://copilot.microsoft.com/",
+            "description": "Microsoft ekosistemiyle entegre AI asistanı"
+          },
+          {
+            "name": "DuckDuckGo AI Chat",
+            "link": "https://duckduckgo.com/?q=DuckDuckGo+AI+Chat&ia=chat&duckai=1",
+            "description": "Gizlilik odaklı çoklu model sohbet aracı"
+          },
+          {
+            "name": "Perplexity AI",
+            "link": "https://www.perplexity.ai/",
+            "description": "Kaynaklı hızlı araştırma ve cevap motoru"
+          }
+        ]
+      },
+      {
+        "subcategory": "Verimlilik & İş",
+        "tools": [
+          {
+            "name": "Notion",
+            "link": "https://www.notion.com/",
+            "description": "Not, wiki ve proje yönetimini birleştiren çalışma alanı"
+          },
+          {
+            "name": "Obsidian",
+            "link": "https://obsidian.md/",
+            "description": "Yerel dosya tabanlı bilgi yönetimi uygulaması"
+          },
+          {
+            "name": "Timely",
+            "link": "https://timelyapp.com/",
+            "description": "Otomatik zaman takibi ve raporlama aracı"
+          },
+          {
+            "name": "Quickchat",
+            "link": "https://quickchat.ai/",
+            "description": "Müşteri desteği için çok dilli AI sohbet çözümü"
+          },
+          {
+            "name": "Puzzle",
+            "link": "https://puzzlelabs.ai/",
+            "description": "AI destekli bilgi tabanı ve dokümantasyon aracı"
+          },
+          {
+            "name": "Agenda Hero",
+            "link": "https://agendahero.com/magic",
+            "description": "Toplantı ve takvim planlama yardımcısı"
+          },
+          {
+            "name": "Webcal Takvimler",
+            "link": "https://www.webcal.guru/tr-TR/takvimler",
+            "description": "Webcal abonelikleri ve takvim beslemeleri dizini"
+          },
+          {
+            "name": "Sync2Cal",
+            "link": "https://www.sync2cal.com/",
+            "description": "Etkinlikleri takvime aktarma ve senkronizasyon aracı"
+          },
+          {
+            "name": "Direct WhatsApp",
+            "link": "https://nocontactapp.com/",
+            "description": "Numara kaydetmeden hızlı WhatsApp bağlantısı oluşturma aracı"
+          },
+          {
+            "name": "Markmap / Markmap REPL",
+            "link": "https://markmap.js.org/repl",
+            "description": "Markdown metinlerinden zihin haritası oluşturan araç"
+          },
+          {
+            "name": "Gamma",
+            "link": "https://gamma.app/",
+            "description": "AI ile sunum, doküman ve mini site oluşturan araç"
+          },
+          {
+            "name": "Tome",
+            "link": "https://tome.app/",
+            "description": "Hikaye tabanlı sunum ve anlatım hazırlama aracı"
+          },
+          {
+            "name": "SwissTransfer",
+            "link": "https://swisstransfer.com/",
+            "description": "Büyük dosya paylaşımı için ücretsiz aktarım aracı"
+          },
+          {
+            "name": "Todoist",
+            "link": "https://www.todoist.com/",
+            "description": "Görev ve yapılacak listesi yönetim aracı"
+          },
+          {
+            "name": "Trello",
+            "link": "https://trello.com/",
+            "description": "Kart tabanlı proje takip aracı"
+          },
+          {
+            "name": "Pomofocus",
+            "link": "https://pomofocus.io/",
+            "description": "Basit pomodoro zamanlayıcısı"
+          },
+          {
+            "name": "Clockify",
+            "link": "https://clockify.me/",
+            "description": "Zaman takibi ve raporlama aracı"
+          },
+          {
+            "name": "Cold Turkey",
+            "link": "https://getcoldturkey.com/",
+            "description": "Dikkat dağıtıcı engelleme ve odak aracı"
+          },
+          {
+            "name": "Runnr.ai",
+            "link": "https://runnr.ai/",
+            "description": "Otelcilik için müşteri iletişimi otomasyon aracı"
+          }
+        ]
+      },
+      {
+        "subcategory": "Yazı & İçerik",
+        "tools": [
+          {
+            "name": "Copy.ai",
+            "link": "https://copy.ai/",
+            "description": "Pazarlama ve satış metni üretim aracı"
+          },
+          {
+            "name": "INK",
+            "link": "https://inkforall.com/",
+            "description": "SEO odaklı içerik yazma ve optimizasyon aracı"
+          },
+          {
+            "name": "NeuralWriter",
+            "link": "https://neuralwriter.com/tr/prompt-tool/",
+            "description": "Metin yeniden yazma ve prompt üretim aracı"
+          },
+          {
+            "name": "Ocoya",
+            "link": "https://ocoya.com/",
+            "description": "Sosyal medya içerik üretimi ve planlama aracı"
+          },
+          {
+            "name": "ZeroGPT",
+            "link": "https://www.zerogpt.com/",
+            "description": "AI üretimi metin tespiti aracı"
+          },
+          {
+            "name": "Unbounce",
+            "link": "https://unbounce.com/",
+            "description": "Landing page ve dönüşüm odaklı içerik aracı"
+          },
+          {
+            "name": "CopyMonkey",
+            "link": "https://copymonkey.ai/",
+            "description": "Amazon ürün açıklaması üretim aracı"
+          },
+          {
+            "name": "Text2LaTeX",
+            "link": "https://www.text2latex.com/",
+            "description": "Düz metni LaTeX biçimine dönüştüren araç"
+          },
+          {
+            "name": "DeepL Write",
+            "link": "https://www.deepl.com/write",
+            "description": "Yazı düzenleme ve üslup iyileştirme aracı"
+          }
+        ]
+      },
+      {
+        "subcategory": "Elektrik, Elektronik & Robotik",
+        "tools": [
+          {
+            "name": "Circuit Simulator Applet",
+            "link": "https://www.falstad.com/circuit/",
+            "description": "Etkileşimli devre simülatörü"
+          },
+          {
+            "name": "All About Circuits",
+            "link": "https://www.allaboutcircuits.com/",
+            "description": "Devre tasarımı ve analiz kaynağı"
+          },
+          {
+            "name": "CircuitLab",
+            "link": "https://www.circuitlab.com/editor",
+            "description": "Tarayıcı tabanlı devre tasarım aracı"
+          },
+          {
+            "name": "Diode",
+            "link": "https://www.withdiode.com/",
+            "description": "Elektronik devre simülasyon aracı"
+          },
+          {
+            "name": "Gazebo",
+            "link": "https://app.gazebosim.org/dashboard",
+            "description": "Robotik simülasyon platformu"
+          },
+          {
+            "name": "EEVblog Forum",
+            "link": "https://www.eevblog.com/forum/index.php",
+            "description": "Elektronik topluluk forumu"
+          },
+          {
+            "name": "Build Electronic Circuits",
+            "link": "https://www.build-electronic-circuits.com/",
+            "description": "Devre yapım rehberleri"
+          },
+          {
+            "name": "Electric Circuit Concepts",
+            "link": "https://hyperphysics.phy-astr.gsu.edu/hbase/electric/ecircon.html",
+            "description": "Elektrik devre kavramları referansı"
+          },
+          {
+            "name": "Signals and Systems Tutorial",
+            "link": "https://www.tutorialspoint.com/signals_and_systems/index.htm",
+            "description": "İşaretler ve sistemler öğrenme kaynağı"
+          },
+          {
+            "name": "UTP Cable Connectors",
+            "link": "https://www3.yildiz.edu.tr/~naydin/CiT/LECTURES/PDF/CiT-05.pdf",
+            "description": "Ağ kablolama ve konnektör referansı"
+          }
+        ]
+      },
+      {
+        "subcategory": "Keşif & Karşılaştırma",
+        "tools": [
+          {
+            "name": "There's An AI For That",
+            "link": "https://theresanaiforthat.com/",
+            "description": "Göreve göre AI araç keşfi sağlayan dizin"
+          },
+          {
+            "name": "Futurepedia",
+            "link": "https://futurepedia.io/",
+            "description": "Güncel AI araç ve kategori keşif rehberi"
+          },
+          {
+            "name": "AI Creator Pack",
+            "link": "https://aicreatorpack.com/",
+            "description": "İçerik ve medya odaklı AI araç koleksiyonu"
+          },
+          {
+            "name": "AI Engineer Pack",
+            "link": "https://ai-engineer-pack.com/",
+            "description": "Geliştirici odaklı AI araç ve kaynak listesi"
+          },
+          {
+            "name": "LM Arena / LMSYS Chatbot Arena",
+            "link": "https://lmarena.ai/",
+            "description": "LLM karşılaştırma ve topluluk oylama platformu"
+          },
+          {
+            "name": "AlternativeTo",
+            "link": "https://alternativeto.net/",
+            "description": "Yazılım alternatifleri ve benzer ürün keşif sitesi"
+          },
+          {
+            "name": "ChatHub",
+            "link": "https://chathub.gg/",
+            "description": "Birden çok modeli yan yana deneme ve karşılaştırma aracı"
+          },
+          {
+            "name": "Verdent.ai",
+            "link": "https://www.verdent.ai/",
+            "description": "AI araç keşfi ve seçimi için dizin platformu"
+          }
+        ]
+      },
+      {
+        "subcategory": "Haber & Teknoloji",
+        "tools": [
+          {
+            "name": "Ars Technica",
+            "link": "https://arstechnica.com/",
+            "description": "Teknoloji haber ve analiz sitesi"
+          },
+          {
+            "name": "Pop Science TR",
+            "link": "https://popsci.com.tr/",
+            "description": "Türkçe popüler bilim haberleri"
+          },
+          {
+            "name": "MIT Technology Review",
+            "link": "https://www.technologyreview.com/",
+            "description": "Teknoloji trendleri ve analiz yayını"
+          },
+          {
+            "name": "XDA Developers",
+            "link": "https://www.xda-developers.com/",
+            "description": "Android, mobil ve cihaz haberleri"
+          },
+          {
+            "name": "TechMeme",
+            "link": "https://www.techmeme.com/m/",
+            "description": "Teknoloji haber akış derleyicisi"
+          },
+          {
+            "name": "FutureTools News",
+            "link": "https://www.futuretools.io/news",
+            "description": "AI araçları ve sektör haberleri"
+          },
+          {
+            "name": "Notebookcheck",
+            "link": "https://www.notebookcheck.net/",
+            "description": "Dizüstü inceleme, benchmark ve donanım haber kaynağı"
+          }
+        ]
+      },
+      {
+        "subcategory": "Sağlık & Wellness",
+        "tools": [
+          {
+            "name": "Insight Timer",
+            "link": "https://insighttimer.com/",
+            "description": "Rehberli meditasyon ve uyku içeriği platformu"
+          },
+          {
+            "name": "Smiling Mind",
+            "link": "https://www.smilingmind.com.au/",
+            "description": "Mindfulness ve iyi oluş odaklı uygulama"
+          },
+          {
+            "name": "MyLife",
+            "link": "https://my.life/",
+            "description": "Kişiselleştirilmiş nefes ve farkındalık uygulaması"
+          },
+          {
+            "name": "Sanvello",
+            "link": "https://www.sanvello.com/",
+            "description": "Stres ve kaygı yönetimi destek uygulaması"
+          },
+          {
+            "name": "MindShift CBT",
+            "link": "https://www.anxietycanada.com/resources/mindshift-cbt/",
+            "description": "CBT tabanlı kaygı yönetim aracı"
+          },
+          {
+            "name": "Rootd",
+            "link": "https://www.rootd.io/",
+            "description": "Panik atak ve anksiyete destek uygulaması"
+          },
+          {
+            "name": "Daylio",
+            "link": "https://daylio.net/",
+            "description": "Günlük tutma ve duygu takibi uygulaması"
+          },
+          {
+            "name": "Reflectly",
+            "link": "https://reflectlyapp.com/",
+            "description": "AI destekli günlük ve öz değerlendirme uygulaması"
+          },
+          {
+            "name": "Workout.cool",
+            "link": "https://workout.cool/",
+            "description": "Egzersiz planlama ve antrenman üretim aracı"
+          }
+        ]
+      },
+      {
+        "subcategory": "Finans & Bütçe",
+        "tools": [
+          {
+            "name": "YNAB",
+            "link": "https://www.ynab.com/",
+            "description": "Sıfır tabanlı bütçe planlama uygulaması"
+          },
+          {
+            "name": "PocketGuard",
+            "link": "https://pocketguard.com/",
+            "description": "Harcama kontrolü ve bütçe takibi aracı"
+          },
+          {
+            "name": "Goodbudget",
+            "link": "https://goodbudget.com/",
+            "description": "Zarf yöntemiyle bütçe yönetim uygulaması"
+          },
+          {
+            "name": "Wallet",
+            "link": "https://budgetbakers.com/",
+            "description": "Gelir gider ve hesap takibi aracı"
+          },
+          {
+            "name": "Fudget",
+            "link": "https://www.fudget.com/",
+            "description": "Sade bütçe planlama uygulaması"
+          },
+          {
+            "name": "Spendee",
+            "link": "https://www.spendee.com/",
+            "description": "Harcama görselleştirme ve bütçe uygulaması"
+          },
+          {
+            "name": "Money Manager",
+            "link": "https://realbyteapps.com/",
+            "description": "Mobil gelir gider takip ve bütçe aracı"
+          },
+          {
+            "name": "Splitwise",
+            "link": "https://www.splitwise.com/",
+            "description": "Ortak harcama ve borç paylaşım aracı"
+          },
+          {
+            "name": "Polymarket",
+            "link": "https://polymarket.com/",
+            "description": "Tahmin piyasaları ve olasılık takibi platformu"
+          },
+          {
+            "name": "Polysight",
+            "link": "https://polysight.app/",
+            "description": "AI destekli analiz ve içgörü finans aracı"
+          },
+          {
+            "name": "Mint",
+            "link": "https://mint.intuit.com/",
+            "description": "Ocak 2024'te kapatılan bütçe takip uygulaması"
+          }
+        ]
+      },
+      {
+        "subcategory": "Freelance & İş",
+        "tools": [
+          {
+            "name": "Upwork",
+            "link": "https://www.upwork.com/",
+            "description": "Büyük ölçekli freelance iş platformu"
+          },
+          {
+            "name": "Fiverr",
+            "link": "https://www.fiverr.com/",
+            "description": "Hizmet bazlı freelance pazaryeri"
+          },
+          {
+            "name": "Toptal",
+            "link": "https://www.toptal.com/",
+            "description": "Seçici uzman freelance ağı"
+          },
+          {
+            "name": "Contra",
+            "link": "https://contra.com/",
+            "description": "Komisyonsuz bağımsız çalışma platformu"
+          },
+          {
+            "name": "Remote OK",
+            "link": "https://remoteok.com/",
+            "description": "Uzaktan iş ilanları platformu"
+          },
+          {
+            "name": "Rezi AI",
+            "link": "https://rezi.ai/",
+            "description": "Özgeçmiş ve iş başvurusu hazırlama aracı"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "SOURCES",
+    "subcategories": [
+      {
+        "subcategory": "Akademik & Araştırma",
+        "tools": [
+          {
+            "name": "SciSpace",
+            "link": "https://scispace.com/",
+            "description": "Akademik makale okuma ve sadeleştirme aracı"
+          },
+          {
+            "name": "Consensus",
+            "link": "https://consensus.app/",
+            "description": "Bilimsel iddia doğrulama ve özetleme motoru"
+          },
+          {
+            "name": "ResearchRabbit",
+            "link": "https://www.researchrabbit.ai/",
+            "description": "Literatür keşfi ve bağlantı haritalama aracı"
+          },
+          {
+            "name": "Semantic Scholar",
+            "link": "https://www.semanticscholar.org/",
+            "description": "Bilimsel makale arama motoru"
+          },
+          {
+            "name": "Connected Papers",
+            "link": "https://www.connectedpapers.com/",
+            "description": "Makale ilişkilerini grafik olarak gösteren araç"
+          },
+          {
+            "name": "Explainpaper",
+            "link": "https://www.explainpaper.com/",
+            "description": "Akademik metinleri sadeleştirerek açıklayan araç"
+          },
+          {
+            "name": "Typeset.io",
+            "link": "https://typeset.io/",
+            "description": "Bilimsel yazım ve yayın hazırlama platformu"
+          },
+          {
+            "name": "Stanford STORM",
+            "link": "https://storm.genie.stanford.edu/",
+            "description": "Araştırma toplama ve derleme odaklı AI ajanı"
+          },
+          {
+            "name": "NotebookLM",
+            "link": "https://notebooklm.google.com/",
+            "description": "Kaynaklardan çalışan araştırma not asistanı"
+          },
+          {
+            "name": "Elicit",
+            "link": "https://elicit.com/",
+            "description": "Literatür taraması ve araştırma soru analizi aracı"
+          },
+          {
+            "name": "Litmaps",
+            "link": "https://www.litmaps.com/",
+            "description": "Atıf ağı üzerinden literatür keşif aracı"
+          },
+          {
+            "name": "Scite",
+            "link": "https://scite.ai/",
+            "description": "Atıf bağlamı ve destekleyici çelişkili referans analizi"
+          },
+          {
+            "name": "Science.org",
+            "link": "https://www.science.org/",
+            "description": "Bilim haberleri ve dergi içeriği kaynağı"
+          },
+          {
+            "name": "Nature",
+            "link": "https://www.nature.com/",
+            "description": "Bilimsel yayınlar ve araştırma haberleri kaynağı"
+          }
+        ]
+      },
+      {
+        "subcategory": "Akademik & Çalışma",
+        "tools": [
+          {
+            "name": "Anki",
+            "link": "https://apps.ankiweb.net/",
+            "description": "Aralıklı tekrar kartlarıyla çalışma aracı"
+          },
+          {
+            "name": "Quizlet",
+            "link": "https://quizlet.com/",
+            "description": "Flashcard ve quiz tabanlı çalışma platformu"
+          },
+          {
+            "name": "Forest",
+            "link": "https://www.forestapp.cc/",
+            "description": "Odaklanma ve telefon dikkat dağıtıcılarını azaltma aracı"
+          },
+          {
+            "name": "Grammarly",
+            "link": "https://www.grammarly.com/",
+            "description": "Yazım, dilbilgisi ve ton düzeltme aracı"
+          },
+          {
+            "name": "Wolfram Alpha",
+            "link": "https://www.wolframalpha.com/",
+            "description": "Hesaplamalı bilgi ve problem çözüm motoru"
+          },
+          {
+            "name": "Khan Academy",
+            "link": "https://www.khanacademy.org/",
+            "description": "Ücretsiz ders ve konu anlatım platformu"
+          },
+          {
+            "name": "Coursera",
+            "link": "https://www.coursera.org/",
+            "description": "Üniversite destekli çevrimiçi kurs platformu"
+          },
+          {
+            "name": "Open Textbook Library",
+            "link": "https://open.umn.edu/opentextbooks",
+            "description": "Ücretsiz açık ders kitabı kütüphanesi"
+          },
+          {
+            "name": "LibreCommons Catalog",
+            "link": "https://commons.libretexts.org/catalog",
+            "description": "Açık eğitim materyalleri ve ders içeriği kataloğu"
+          },
+          {
+            "name": "ZoteroBib",
+            "link": "https://zbib.org/",
+            "description": "Hızlı kaynakça oluşturma aracı"
+          },
+          {
+            "name": "MathGPT Pro",
+            "link": "https://www.mathgptpro.com/tr/app/ask",
+            "description": "Matematik sorularını açıklamalı çözen AI aracı"
+          },
+          {
+            "name": "Socratic",
+            "link": "https://www.socratic.com/",
+            "description": "Soru fotoğrafından konu anlatımı ve çözüm sunan yardımcı"
+          },
+          {
+            "name": "Google Learn About",
+            "link": "https://learning.google.com/experiments/learn-about?src=signup",
+            "description": "Konu anlatımı ve keşif için Google öğrenme aracı"
+          },
+          {
+            "name": "Breaking News English",
+            "link": "https://breakingnewsenglish.com/",
+            "description": "İngilizce okuma ve dinleme pratiği sitesi"
+          },
+          {
+            "name": "News in Levels",
+            "link": "https://www.newsinlevels.com/",
+            "description": "Seviye bazlı İngilizce haber okuma sitesi"
+          }
+        ]
+      },
+      {
+        "subcategory": "Araştırma & Dataset",
+        "tools": [
+          {
+            "name": "Kaggle",
+            "link": "https://kaggle.com/",
+            "description": "Dataset, notebook ve veri bilimi yarışma platformu"
+          },
+          {
+            "name": "Google Dataset Search",
+            "link": "https://datasetsearch.research.google.com/",
+            "description": "Web genelinde dataset arama motoru"
+          },
+          {
+            "name": "Data.gov",
+            "link": "https://data.gov/",
+            "description": "ABD kamu verileri açık veri portalı"
+          },
+          {
+            "name": "Awesome Public Datasets",
+            "link": "https://github.com/awesomedata/awesome-public-datasets",
+            "description": "Kategorilere ayrılmış büyük açık veri listesi"
+          },
+          {
+            "name": "Our World in Data",
+            "link": "https://ourworldindata.org/",
+            "description": "Görselleştirilmiş küresel veri ve araştırma kaynağı"
+          },
+          {
+            "name": "FiveThirtyEight Data",
+            "link": "https://data.fivethirtyeight.com/",
+            "description": "Gazetecilik ve analiz projeleri için açık veri arşivi"
+          }
+        ]
+      },
+      {
+        "subcategory": "Kitap & PDF Kaynakları",
+        "tools": [
+          {
+            "name": "Library Genesis",
+            "link": "https://libgen.li",
+            "description": "Akademik kitap arşivi *(mirror değişebilir)*"
+          },
+          {
+            "name": "Z-Library",
+            "link": "https://z-lib.id",
+            "description": "Geniş e-kitap arşivi *(mirror değişebilir)*"
+          },
+          {
+            "name": "Project Gutenberg",
+            "link": "https://www.gutenberg.org",
+            "description": "70.000+ ücretsiz kamu malı e-kitap"
+          },
+          {
+            "name": "OpenStax",
+            "link": "https://openstax.org",
+            "description": "Ücretsiz üniversite ders kitapları"
+          },
+          {
+            "name": "Google Books",
+            "link": "https://books.google.com",
+            "description": "Kitap önizleme ve tam metin arama"
+          },
+          {
+            "name": "PDF Drive",
+            "link": "https://www.pdfdrive.com",
+            "description": "Ücretsiz PDF indirme"
+          },
+          {
+            "name": "Internet Archive",
+            "link": "https://archive.org",
+            "description": "Dijital kitap, film ve web arşivi"
+          },
+          {
+            "name": "Sci-Hub",
+            "link": "https://sci-hub.se",
+            "description": "Akademik makale erişimi *(mirror değişebilir)*"
+          },
+          {
+            "name": "Open Library",
+            "link": "https://openlibrary.org",
+            "description": "20 milyon+ kitap kataloğu"
+          },
+          {
+            "name": "Bookboon",
+            "link": "https://bookboon.com",
+            "description": "İş ve teknik ücretsiz e-kitaplar"
+          },
+          {
+            "name": "ManyBooks",
+            "link": "https://manybooks.net",
+            "description": "Ücretsiz kurgu ve kurgu dışı e-kitaplar"
+          },
+          {
+            "name": "Free Computer Books",
+            "link": "https://freecomputerbooks.com/",
+            "description": "Bilgisayar bilimi ve programlama kitapları"
+          },
+          {
+            "name": "PDF Search Engine",
+            "link": "https://pdfsearchengine.net/",
+            "description": "PDF formatında akademik ve teknik belgeler arama motoru"
+          },
+          {
+            "name": "Ebook3000",
+            "link": "https://www.ebook3000.com/",
+            "description": "Geniş konu yelpazesinde ücretsiz e-kitaplar"
+          },
+          {
+            "name": "BookFi",
+            "link": "https://bookfi.net/",
+            "description": "Akademik ve genel kitap arşivi *(mirror değişebilir)*"
+          },
+          {
+            "name": "Textbook Revolution",
+            "link": "https://textbookrevolution.org/",
+            "description": "Ücretsiz ders kitabı ve eğitim materyali kaynağı"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "DESIGN",
+    "subcategories": [
+      {
+        "subcategory": "AI Görsel Üretimi",
+        "tools": [
+          {
+            "name": "Leonardo AI",
+            "link": "https://leonardo.ai/",
+            "description": "Oyun, konsept ve ürün görseli üretim platformu"
+          },
+          {
+            "name": "Krea AI",
+            "link": "https://krea.ai/",
+            "description": "Gerçek zamanlı görsel üretim ve stil deneme aracı"
+          },
+          {
+            "name": "BFL Edit",
+            "link": "https://playground.bfl.ai/image/edit",
+            "description": "AI destekli görsel düzenleme aracı"
+          },
+          {
+            "name": "Flair",
+            "link": "https://flair.ai/",
+            "description": "Ürün görseli ve marka içeriği üretim platformu"
+          },
+          {
+            "name": "Looka",
+            "link": "https://looka.com/",
+            "description": "AI tabanlı logo ve marka kimliği üretici"
+          },
+          {
+            "name": "Illustroke",
+            "link": "https://illustroke.com/",
+            "description": "Metinden vektör illüstrasyon üreten araç"
+          },
+          {
+            "name": "Patterned",
+            "link": "https://www.patterned.ai/",
+            "description": "Tekrarlayan desen ve doku oluşturucu"
+          },
+          {
+            "name": "Stockimg",
+            "link": "https://stockimg.ai/",
+            "description": "AI tabanlı stok görsel ve illüstrasyon üretimi"
+          },
+          {
+            "name": "Cleanup.pictures",
+            "link": "https://cleanup.pictures/",
+            "description": "Görselden nesne ve kusur temizleme aracı"
+          },
+          {
+            "name": "Hotpot.ai",
+            "link": "https://hotpot.ai/",
+            "description": "Görsel üretim, düzenleme ve tasarım araç paketi"
+          },
+          {
+            "name": "Playground AI",
+            "link": "https://playground.com/",
+            "description": "Yaratıcı görsel üretim ve düzenleme platformu"
+          },
+          {
+            "name": "Bing Image Creator",
+            "link": "https://www.bing.com/images/create",
+            "description": "Microsoft tabanlı metinden görsel üretici"
+          },
+          {
+            "name": "Img.Upscaler",
+            "link": "https://imglarger.com/",
+            "description": "AI ile görsel büyütme ve iyileştirme aracı"
+          },
+          {
+            "name": "ComfyUI",
+            "link": "https://www.comfy.org/",
+            "description": "Düğüm tabanlı görsel üretim iş akışı aracı"
+          },
+          {
+            "name": "Hunyuan3D-2",
+            "link": "https://huggingface.co/spaces/tencent/Hunyuan3D-2.1",
+            "description": "Metin ve görselden 3D model üretimi"
+          },
+          {
+            "name": "Adobe Firefly",
+            "link": "https://firefly.adobe.com/",
+            "description": "Adobe ekosistemi için generatif görsel araçları"
+          }
+        ]
+      },
+      {
+        "subcategory": "Tasarım & Medya",
+        "tools": [
+          {
+            "name": "Canva",
+            "link": "https://www.canva.com/",
+            "description": "Hızlı görsel, sunum ve sosyal medya tasarımı platformu"
+          },
+          {
+            "name": "Photopea",
+            "link": "https://www.photopea.com/",
+            "description": "Tarayıcı tabanlı Photoshop benzeri düzenleyici"
+          },
+          {
+            "name": "Remove.bg",
+            "link": "https://www.remove.bg/",
+            "description": "Tek tık arka plan kaldırma aracı"
+          },
+          {
+            "name": "Coolors",
+            "link": "https://coolors.co/",
+            "description": "Renk paleti üretme ve keşif aracı"
+          },
+          {
+            "name": "Adobe Express",
+            "link": "https://www.adobe.com/express/",
+            "description": "Hızlı afiş, post ve kısa içerik tasarım aracı"
+          },
+          {
+            "name": "Figma",
+            "link": "https://www.figma.com/",
+            "description": "Arayüz tasarımı ve prototipleme standardı"
+          },
+          {
+            "name": "Gravit Designer",
+            "link": "https://www.designer.io/",
+            "description": "Vektör tabanlı tasarım aracı"
+          },
+          {
+            "name": "Krita",
+            "link": "https://krita.org/",
+            "description": "Dijital çizim ve illüstrasyon uygulaması"
+          },
+          {
+            "name": "Inkscape",
+            "link": "https://inkscape.org/",
+            "description": "Açık kaynak vektör grafik düzenleyici"
+          },
+          {
+            "name": "GIMP",
+            "link": "https://www.gimp.org/",
+            "description": "Açık kaynak görüntü düzenleme aracı"
+          },
+          {
+            "name": "VistaCreate",
+            "link": "https://create.vista.com/",
+            "description": "Şablon tabanlı sosyal medya tasarım platformu"
+          },
+          {
+            "name": "Pixlr",
+            "link": "https://pixlr.com/",
+            "description": "Tarayıcıdan fotoğraf düzenleme aracı"
+          },
+          {
+            "name": "Sketchbook",
+            "link": "https://www.sketchbook.com/",
+            "description": "Dijital eskiz ve çizim uygulaması"
+          },
+          {
+            "name": "Unsplash",
+            "link": "https://unsplash.com/",
+            "description": "Ücretsiz yüksek kaliteli stok fotoğraf arşivi"
+          },
+          {
+            "name": "Pexels",
+            "link": "https://www.pexels.com/",
+            "description": "Ücretsiz stok fotoğraf ve video platformu"
+          },
+          {
+            "name": "Icons8",
+            "link": "https://icons8.com/",
+            "description": "İkon, illüstrasyon ve arayüz varlık kütüphanesi"
+          },
+          {
+            "name": "Flaticon",
+            "link": "https://www.flaticon.com/",
+            "description": "Vektör ikon arşivi"
+          },
+          {
+            "name": "Fontpair",
+            "link": "https://www.fontpair.co/",
+            "description": "Uyumlu font eşleştirme rehberi"
+          },
+          {
+            "name": "Clip Studio Paint",
+            "link": "https://clipstudio.net/",
+            "description": "Çizgi roman ve konsept çizim odaklı tasarım aracı"
+          },
+          {
+            "name": "TinyWow",
+            "link": "https://tinywow.com/",
+            "description": "Görsel, video ve PDF için ücretsiz online araç paketi"
+          },
+          {
+            "name": "Jitter",
+            "link": "https://jitter.video/",
+            "description": "Arayüz odaklı mikro animasyon aracı"
+          },
+          {
+            "name": "Oskar Stalberg",
+            "link": "https://oskarstalberg.com/",
+            "description": "Prosedürel görsel üretim ve ilham sitesi"
+          },
+          {
+            "name": "SpaceEngine",
+            "link": "https://spaceengine.org/",
+            "description": "Evren simülasyonu ve görsel keşif aracı"
+          },
+          {
+            "name": "Eyecandy",
+            "link": "https://eyecannndy.com/",
+            "description": "Görsel teknik ve sinematik ilham kütüphanesi"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "MEDIA",
+    "subcategories": [
+      {
+        "subcategory": "Video & Animasyon",
+        "tools": [
+          {
+            "name": "Runway ML",
+            "link": "https://runwayml.com/",
+            "description": "Metinden video ve AI video düzenleme platformu"
+          },
+          {
+            "name": "Synthesia",
+            "link": "https://www.synthesia.io/",
+            "description": "Kurumsal avatar video üretim aracı"
+          },
+          {
+            "name": "Heygen",
+            "link": "https://www.heygen.com/",
+            "description": "AI avatar ve dudak senkron video platformu"
+          },
+          {
+            "name": "Higgsfield AI",
+            "link": "https://higgsfield.ai/",
+            "description": "Sosyal medya odaklı kişiselleştirilmiş video üretimi"
+          },
+          {
+            "name": "Hailuo AI",
+            "link": "https://hailuo.ai/",
+            "description": "Metin ve görselden video üretim aracı"
+          },
+          {
+            "name": "Quso",
+            "link": "https://quso.ai/",
+            "description": "Uzun videolardan kısa sosyal medya klipleri çıkaran araç"
+          },
+          {
+            "name": "Maverick",
+            "link": "https://www.trymaverick.com/",
+            "description": "E-ticaret için kişiselleştirilmiş video üretimi"
+          },
+          {
+            "name": "StoryHero",
+            "link": "https://storyhero.gg/",
+            "description": "Hikaye tabanlı video planlama ve üretim aracı"
+          },
+          {
+            "name": "Cineby",
+            "link": "https://cineby.gd/",
+            "description": "AI odaklı video fikir ve prodüksiyon aracı"
+          },
+          {
+            "name": "Revid PDF to Brainrot",
+            "link": "https://www.revid.ai/tools/pdf-to-brainrot",
+            "description": "PDF içeriklerini kısa viral videolara dönüştüren araç"
+          }
+        ]
+      },
+      {
+        "subcategory": "Ses, Müzik & Podcast",
+        "tools": [
+          {
+            "name": "ElevenLabs",
+            "link": "https://elevenlabs.io/",
+            "description": "Doğal ses sentezi ve ses klonlama platformu"
+          },
+          {
+            "name": "Suno",
+            "link": "https://suno.com/",
+            "description": "Metinden şarkı üretme platformu"
+          },
+          {
+            "name": "Adobe Podcast",
+            "link": "https://podcast.adobe.com/",
+            "description": "AI destekli ses temizleme ve kayıt aracı"
+          },
+          {
+            "name": "Soundraw",
+            "link": "https://soundraw.io/",
+            "description": "Lisanslanabilir AI müzik üretim aracı"
+          },
+          {
+            "name": "Beatoven.ai",
+            "link": "https://www.beatoven.ai/",
+            "description": "Ruh haline göre telifsiz müzik besteleme aracı"
+          },
+          {
+            "name": "Krisp",
+            "link": "https://krisp.ai/",
+            "description": "Gerçek zamanlı gürültü engelleme aracı"
+          },
+          {
+            "name": "Otter.ai",
+            "link": "https://otter.ai/",
+            "description": "Toplantı transkripsiyon ve özetleme aracı"
+          },
+          {
+            "name": "Podcastle",
+            "link": "https://podcastle.ai/",
+            "description": "Podcast kayıt, düzenleme ve yayın aracı"
+          },
+          {
+            "name": "Cleanvoice",
+            "link": "https://cleanvoice.ai/",
+            "description": "Podcast kayıtlarından dolgu sesleri temizleyen araç"
+          },
+          {
+            "name": "Descript",
+            "link": "https://www.descript.com/",
+            "description": "Metin tabanlı ses ve video düzenleme aracı"
+          },
+          {
+            "name": "ChatJams",
+            "link": "https://www.chatjams.ai/",
+            "description": "AI ile müzik fikri ve içerik üretim aracı"
+          },
+          {
+            "name": "Riff.ai",
+            "link": "https://riff.ai/",
+            "description": "AI destekli müzik üretim platformu"
+          }
+        ]
+      },
+      {
+        "subcategory": "Medya & Playlist Araçları",
+        "tools": [
+          {
+            "name": "Tune My Music",
+            "link": "https://www.tunemymusic.com/tr/transfer/spotify-to-youtube-music",
+            "description": "Müzik servisleri arasında çalma listesi taşıma aracı"
+          },
+          {
+            "name": "Playlist Manager",
+            "link": "http://playlist-manager.com/#/login",
+            "description": "Çalma listesi düzenleme ve bakım aracı"
+          },
+          {
+            "name": "Spotify Analyzer",
+            "link": "https://www.chosic.com/spotify-playlist-analyzer/?plId=5PSuK3JSKfpqJyq96zmM8e",
+            "description": "Spotify çalma listesi istatistik analiz aracı"
+          },
+          {
+            "name": "Spotify Dedup",
+            "link": "https://spotify-dedup.com/",
+            "description": "Tekrarlanan şarkıları temizleme aracı"
+          },
+          {
+            "name": "Musicalyst",
+            "link": "https://musicalyst.com/?ref=spotifydedup",
+            "description": "Müzik ve dinleme alışkanlığı istatistik aracı"
+          },
+          {
+            "name": "YouTube Playlist Length",
+            "link": "https://ytplaylist-len.sharats.dev/",
+            "description": "YouTube oynatma listesi toplam süre hesaplayıcısı"
+          },
+          {
+            "name": "Opus",
+            "link": "https://tuberipper.cc/58/save/opus",
+            "description": "Video sesini dönüştürme ve alma aracı"
+          },
+          {
+            "name": "YTS",
+            "link": "https://yts-official.org/",
+            "description": "Film odaklı medya dizin"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "DEVELOP",
+    "subcategories": [
+      {
+        "subcategory": "Kodlama & Geliştirme",
+        "tools": [
+          {
+            "name": "BLACKBOX.AI",
+            "link": "https://blackbox.ai/",
+            "description": "Kod önerisi ve örnek keşfi aracı"
+          },
+          {
+            "name": "Ollama",
+            "link": "https://ollama.ai/",
+            "description": "Yerelde model çalıştırma ve yönetim aracı"
+          },
+          {
+            "name": "Firecrawl",
+            "link": "https://firecrawl.dev/",
+            "description": "AI uygulamaları için web verisi çıkarma aracı"
+          },
+          {
+            "name": "Chat4Data",
+            "link": "https://chat4data.ai/",
+            "description": "Doğal dille web scraping yapan tarayıcı aracı"
+          },
+          {
+            "name": "Abacus.AI",
+            "link": "https://abacus.ai/",
+            "description": "ML, LLM ve MLOps odaklı geliştirme platformu"
+          },
+          {
+            "name": "TestSprite",
+            "link": "https://www.testsprite.com/",
+            "description": "AI ajan ile otomatik yazılım testi aracı"
+          },
+          {
+            "name": "Vercept",
+            "link": "https://vercept.com/",
+            "description": "Bilgisayarlı görü tabanlı iş akışı otomasyon aracı"
+          },
+          {
+            "name": "CodeWiki",
+            "link": "https://codewiki.google/",
+            "description": "GitHub projelerini açıklayan AI dokümantasyon aracı"
+          },
+          {
+            "name": "Underwriter",
+            "link": "https://underwriter.dev/",
+            "description": "Kod ve ürün risk değerlendirme aracı"
+          },
+          {
+            "name": "Transitional Hooks",
+            "link": "https://transitionalhooks.com/",
+            "description": "React geçiş animasyonları için yardımcı kütüphane"
+          },
+          {
+            "name": "Jules by Google",
+            "link": "https://jules.google.com/session",
+            "description": "Google'ın AI coding assistant aracı"
+          },
+          {
+            "name": "Repomix",
+            "link": "https://repomix.com/",
+            "description": "Repository içeriğini prompt dostu pakete dönüştüren araç"
+          },
+          {
+            "name": "ReactBits.dev",
+            "link": "https://reactbits.dev/",
+            "description": "Hazır React bileşenleri ve pattern örnekleri"
+          },
+          {
+            "name": "Motion.dev",
+            "link": "https://motion.dev/",
+            "description": "Web için motion ve animasyon kütüphanesi"
+          },
+          {
+            "name": "shadcn/ui",
+            "link": "https://ui.shadcn.com/",
+            "description": "Kopyalanabilir React UI bileşen koleksiyonu"
+          },
+          {
+            "name": "Three.js",
+            "link": "https://threejs.org/",
+            "description": "Tarayıcı tabanlı 3D JavaScript kütüphanesi"
+          },
+          {
+            "name": "Needle.tools",
+            "link": "https://needle.tools/?room=filesize",
+            "description": "Web geliştirme için yardımcı araç koleksiyonu"
+          },
+          {
+            "name": "CodePen",
+            "link": "https://codepen.io/",
+            "description": "Tarayıcıda frontend prototipleme ve kod deneme ortamı"
+          },
+          {
+            "name": "C++ Shell",
+            "link": "https://cpp.sh/",
+            "description": "Tarayıcıda C++ çalıştırma ve deneme aracı"
+          },
+          {
+            "name": "MR7",
+            "link": "https://mr7.ai/",
+            "description": "Geliştirici iş akışlarını hızlandıran AI araç seti"
+          },
+          {
+            "name": "ngrok",
+            "link": "https://ngrok.com/",
+            "description": "Yerel servisleri güvenli tünelle dışa açan araç"
+          },
+          {
+            "name": "Render",
+            "link": "https://render.com/",
+            "description": "Uygulama yayınlama ve barındırma platformu"
+          }
+        ]
+      },
+      {
+        "subcategory": "No-Code & Builder",
+        "tools": [
+          {
+            "name": "bolt.new",
+            "link": "https://bolt.new/",
+            "description": "Prompt ile full-stack uygulama prototipi oluşturan araç"
+          },
+          {
+            "name": "Rocket.new",
+            "link": "https://www.rocket.new/",
+            "description": "Metinden uygulama taslağı üreten builder"
+          },
+          {
+            "name": "Lovable",
+            "link": "https://lovable.dev/",
+            "description": "Sohbet tabanlı web uygulaması oluşturma aracı"
+          },
+          {
+            "name": "Same.new",
+            "link": "https://same.new/",
+            "description": "Prompt ile full-stack ürün iskeleti oluşturan araç"
+          },
+          {
+            "name": "Stitch",
+            "link": "https://stitch.withgoogle.com/",
+            "description": "Google'ın AI destekli ürün tasarım builder'ı"
+          },
+          {
+            "name": "v0.app",
+            "link": "https://v0.dev/",
+            "description": "Prompt ile arayüz ve bileşen üreten Vercel aracı"
+          },
+          {
+            "name": "Figma Make",
+            "link": "https://www.figma.com/make",
+            "description": "Figma içinde AI tabanlı prototip ve uygulama üretimi"
+          },
+          {
+            "name": "Figma Dev Mode with AI",
+            "link": "https://www.figma.com/dev-mode",
+            "description": "Tasarımdan geliştirici çıktısı üretim aracı"
+          },
+          {
+            "name": "UX Pilot",
+            "link": "https://uxpilot.ai/",
+            "description": "Kullanıcı odaklı akış ve arayüz tasarım aracı"
+          },
+          {
+            "name": "Motion Copilot",
+            "link": "https://creator.lottiefiles.com/",
+            "description": "Lottie tabanlı mikro animasyon üretim aracı"
+          },
+          {
+            "name": "Framer AI",
+            "link": "https://www.framer.com/",
+            "description": "AI ile web sitesi oluşturma aracı"
+          },
+          {
+            "name": "Emergent",
+            "link": "https://emergent.sh/",
+            "description": "AI destekli uygulama geliştirme ve teslim platformu"
+          }
+        ]
+      },
+      {
+        "subcategory": "Ajan & Model Geliştirme",
+        "tools": [
+          {
+            "name": "AgentOps",
+            "link": "https://agentops.ai/",
+            "description": "AI ajan gözlemleme ve izleme platformu"
+          },
+          {
+            "name": "AG2 / AutoGen",
+            "link": "https://ag2.ai/",
+            "description": "Çok ajanlı iş akışı geliştirme çerçevesi"
+          },
+          {
+            "name": "Sola AI",
+            "link": "https://www.sola.ai/",
+            "description": "AI ajan ürünleri kurma ve çalıştırma platformu"
+          },
+          {
+            "name": "Firebase Genkit",
+            "link": "https://firebase.google.com/genkit",
+            "description": "AI uygulamaları için geliştirici çerçevesi"
+          },
+          {
+            "name": "Stedi",
+            "link": "https://www.stedi.com/",
+            "description": "EDI otomasyonu ve API orkestrasyon platformu"
+          },
+          {
+            "name": "Taskade",
+            "link": "https://www.taskade.com/",
+            "description": "AI ajan destekli proje ve görev yönetim aracı"
+          },
+          {
+            "name": "Lindy",
+            "link": "https://www.lindy.ai/",
+            "description": "AI ajan iş akışı otomasyonu platformu"
+          },
+          {
+            "name": "Humanloop",
+            "link": "https://humanloop.com/home",
+            "description": "LLM değerlendirme ve ince ayar platformu"
+          },
+          {
+            "name": "NVIDIA NeMo",
+            "link": "https://developer.nvidia.com/nemo-retriever",
+            "description": "Kurumsal model, retriever ve RAG geliştirme platformu"
+          },
+          {
+            "name": "Cohere",
+            "link": "https://cohere.com/",
+            "description": "Kurumsal NLP ve embedding model platformu"
+          },
+          {
+            "name": "MCPDB.org",
+            "link": "https://mcpdb.org/",
+            "description": "MCP sunucuları için keşif ve dizin sitesi"
+          },
+          {
+            "name": "MCP.so",
+            "link": "https://mcp.so/explore",
+            "description": "MCP araçları ve entegrasyon kataloğu"
+          },
+          {
+            "name": "Pomelli",
+            "link": "https://labs.google.com/pomelli/",
+            "description": "Prompt tasarlama ve deneme aracı"
+          },
+          {
+            "name": "Manus",
+            "link": "https://manus.im/",
+            "description": "Çok modlu ajan tabanlı görev otomasyon platformu"
+          },
+          {
+            "name": "Quiver",
+            "link": "https://app.quiver.ai/",
+            "description": "Prompt akışı ve AI çalışma alanı aracı - İkon oluşturma"
+          }
+        ]
+      },
+      {
+        "subcategory": "Kodlama Öğrenme",
+        "tools": [
+          {
+            "name": "FreeCodeCamp / Learn",
+            "link": "https://www.freecodecamp.org/learn",
+            "description": "Uygulamalı yazılım öğrenme ve sertifika platformu"
+          },
+          {
+            "name": "Codecademy",
+            "link": "https://codecademy.com/",
+            "description": "Etkileşimli kodlama dersleri sunan öğrenme platformu"
+          },
+          {
+            "name": "Codecademy Python",
+            "link": "https://www.codecademy.com/learn/learn-python-3",
+            "description": "Python 3 odaklı etkileşimli kurs"
+          },
+          {
+            "name": "W3Schools",
+            "link": "https://w3schools.com/",
+            "description": "Hızlı web teknolojileri referansı ve alıştırma sitesi"
+          },
+          {
+            "name": "GeeksforGeeks",
+            "link": "https://geeksforgeeks.org/",
+            "description": "Veri yapıları, algoritmalar ve teknik içerik kaynağı"
+          },
+          {
+            "name": "LeetCode",
+            "link": "https://leetcode.com/",
+            "description": "Mülakat odaklı algoritma ve problem çözme platformu"
+          },
+          {
+            "name": "HackerRank",
+            "link": "https://hackerrank.com/",
+            "description": "Kodlama testleri ve beceri değerlendirme platformu"
+          },
+          {
+            "name": "Codewars",
+            "link": "https://codewars.com/",
+            "description": "Kata tabanlı pratik yapma ve algoritma geliştirme sitesi"
+          },
+          {
+            "name": "Exercism",
+            "link": "https://exercism.org/",
+            "description": "Mentor destekli çok dilli kodlama alıştırma platformu"
+          },
+          {
+            "name": "GitHub Learning Lab",
+            "link": "https://skills.github.com/",
+            "description": "GitHub üzerinden proje tabanlı öğrenme modülleri"
+          },
+          {
+            "name": "Roadmap.sh",
+            "link": "https://roadmap.sh/",
+            "description": "Rol bazlı teknik öğrenme yol haritaları"
+          },
+          {
+            "name": "Frontend Mentor",
+            "link": "https://www.frontendmentor.io/",
+            "description": "Gerçekçi tasarımlarla frontend pratik platformu"
+          },
+          {
+            "name": "CodeDex",
+            "link": "https://www.codedex.io/",
+            "description": "Oyunlaştırılmış programlama öğrenme platformu"
+          },
+          {
+            "name": "Boot.dev",
+            "link": "https://www.boot.dev/",
+            "description": "Backend geliştirme ve bilgisayar bilimi odaklı kurs platformu"
+          },
+          {
+            "name": "CS50 Python",
+            "link": "https://cs50.harvard.edu/python/2022/",
+            "description": "Harvard'ın Python programlama dersi"
+          },
+          {
+            "name": "CodeDex C++",
+            "link": "https://www.codedex.io/cpp",
+            "description": "Oyunlaştırılmış C++ öğrenme parkuru"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "CYBERSEC",
+    "subcategories": [
+      {
+        "subcategory": "Genel",
+        "tools": [
+          {
+            "name": "TryHackMe",
+            "link": "https://tryhackme.com/",
+            "description": "İnteraktif siber güvenlik laboratuvarları platformu"
+          },
+          {
+            "name": "Udemy - Etik Hacker",
+            "link": "https://www.udemy.com/course/etik-hacker-olma-kursu/learn",
+            "description": "Etik hacking odaklı çevrimiçi kurs"
+          },
+          {
+            "name": "BTK Akademi",
+            "link": "https://www.btkakademi.gov.tr/portal/catalog?categoryId=1002,1003,1004,1007&cl=beginner&sf=liked",
+            "description": "Türkçe siber güvenlik ve BT eğitim platformu"
+          },
+          {
+            "name": "Corelan Exploit Writing",
+            "link": "https://www.corelan.be/index.php/articles/",
+            "description": "Exploit geliştirme ve bellek sömürüsü rehberleri"
+          },
+          {
+            "name": "CTFtime",
+            "link": "https://ctftime.org/",
+            "description": "CTF yarışma takvimi ve skor takibi"
+          },
+          {
+            "name": "Cybrary",
+            "link": "https://app.cybrary.it/",
+            "description": "Siber güvenlik kurs ve laboratuvar platformu"
+          },
+          {
+            "name": "Advanced Penetration Testing",
+            "link": "https://app.cybrary.it/browse/course/advanced-penetration-testing",
+            "description": "İleri seviye penetrasyon testi kursu"
+          },
+          {
+            "name": "Python for Security",
+            "link": "https://app.cybrary.it/browse/course/python-security-professionals-archive",
+            "description": "Güvenlik profesyonelleri için Python kursu"
+          },
+          {
+            "name": "Domain Recon PowerShell",
+            "link": "https://blog.stealthbits.com/performing-domain-reconnaissance-using-powershell",
+            "description": "PowerShell ile etki alanı keşif rehberi"
+          },
+          {
+            "name": "Hack The Box",
+            "link": "https://www.hackthebox.eu/",
+            "description": "Saldırı ve savunma pratik laboratuvarı"
+          },
+          {
+            "name": "Hackers Arise Networks",
+            "link": "https://www.hackers-arise.com/networks-basics",
+            "description": "Ağ temelleri ve siber güvenlik giriş kaynağı"
+          },
+          {
+            "name": "HacksPlaining",
+            "link": "https://www.hacksplaining.com/",
+            "description": "Web güvenliği açıklarını örnekleyen eğitim sitesi"
+          },
+          {
+            "name": "Linux Journey",
+            "link": "https://linuxjourney.com/",
+            "description": "Linux temelleri öğrenme platformu"
+          },
+          {
+            "name": "BloodHound Local Admin",
+            "link": "https://blog.stealthbits.com/local-admin-mapping-bloodhound",
+            "description": "BloodHound ile yetki haritalama rehberi"
+          },
+          {
+            "name": "MIT 6.858 Security",
+            "link": "https://ocw.mit.edu/courses/6-858-computer-systems-security-fall-2014/",
+            "description": "MIT bilgisayar sistemleri güvenliği dersi"
+          },
+          {
+            "name": "NTDS.dit Hash Çıkarma",
+            "link": "https://blog.stealthbits.com/extracting-password-hashes-from-the-ntds-dit-file",
+            "description": "NTDS.dit üzerinden hash çıkarma rehberi"
+          },
+          {
+            "name": "OverTheWire Bandit",
+            "link": "http://overthewire.org/wargames/bandit",
+            "description": "Linux ve güvenlik temelli wargame serisi"
+          },
+          {
+            "name": "OWASP Testing Guide",
+            "link": "https://owasp.org/www-project-web-security-testing-guide/assets/archive/OWASP_Testing_Guide_v4.pdf",
+            "description": "Web güvenlik test metodolojisi rehberi"
+          },
+          {
+            "name": "OWASP Top Ten",
+            "link": "https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project",
+            "description": "Yaygın web güvenlik riskleri listesi"
+          },
+          {
+            "name": "OWASP WebGoat",
+            "link": "https://owasp.org/index.php/Category:OWASP_WebGoat_Project",
+            "description": "Güvenlik açıklarını uygulamalı öğreten eğitim uygulaması"
+          },
+          {
+            "name": "Pass-the-Hash Mimikatz",
+            "link": "https://blog.stealthbits.com/passing-the-hash-with-mimikatz",
+            "description": "Pass-the-hash tekniği rehberi"
+          },
+          {
+            "name": "PicoCTF",
+            "link": "https://picoctf.org/",
+            "description": "Başlangıç seviyesi CTF platformu"
+          },
+          {
+            "name": "Practical Malware Analysis",
+            "link": "http://practicalmalwareanalysis.com/",
+            "description": "Zararlı yazılım analizi kitabı ve kaynakları"
+          },
+          {
+            "name": "Reversing.kr",
+            "link": "https://reversing.kr/",
+            "description": "Reverse engineering challenge platformu"
+          },
+          {
+            "name": "SecurityBreached Başlangıç",
+            "link": "https://whoami.securitybreached.org/2019/06/03/guide-getting-started-in-bug-bounty-hunting",
+            "description": "Bug bounty başlangıç rehberi"
+          },
+          {
+            "name": "Social-Engineer Resources",
+            "link": "https://www.social-engineer.org/framework/se-tools/",
+            "description": "Sosyal mühendislik araç ve kaynak listesi"
+          },
+          {
+            "name": "TCM Buffer Overflows",
+            "link": "https://www.youtube.com/playlist?list=PLLKT__MCUeix3O0DPbmuaRuR_4Hxo4m3G",
+            "description": "Buffer overflow eğitim video serisi"
+          },
+          {
+            "name": "Virtual Hacking Labs",
+            "link": "https://www.virtualhackinglabs.com/",
+            "description": "Sanal pentest laboratuvarları"
+          },
+          {
+            "name": "VulnHub",
+            "link": "https://www.vulnhub.com/",
+            "description": "Güvenlik pratik makineleri arşivi"
+          },
+          {
+            "name": "IPv4 Subnetting",
+            "link": "https://subnetipv4.com/",
+            "description": "Subnet hesaplama pratik aracı"
+          },
+          {
+            "name": "Netacad Courses",
+            "link": "https://www.netacad.com/catalogs/learn?category=course&language=en-us%2Ctr-tr",
+            "description": "Cisco ağ ve güvenlik kursları"
+          },
+          {
+            "name": "Netacad Dashboard",
+            "link": "https://www.netacad.com/dashboard",
+            "description": "Cisco kurs takip paneli"
+          },
+          {
+            "name": "VirusTotal",
+            "link": "https://www.virustotal.com/gui/home/upload",
+            "description": "Dosya, URL ve hash analiz platformu"
+          },
+          {
+            "name": "Breach Directory",
+            "link": "https://breachdirectory.org/",
+            "description": "Veri ihlali sorgulama aracı"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "category": "SUPERUSER",
+    "subcategories": [
+      {
+        "subcategory": "Faydalı Siteler",
+        "tools": [
+          {
+            "name": "Wayback Machine",
+            "link": "https://web.archive.org/",
+            "description": "Web sitelerinin eski sürümlerini arşivden açan araç"
+          },
+          {
+            "name": "Radio Garden",
+            "link": "https://radio.garden/",
+            "description": "Dünya çapında canlı radyo istasyonlarını keşfetme sitesi"
+          },
+          {
+            "name": "Little Alchemy 2",
+            "link": "https://littlealchemy2.com/",
+            "description": "Element birleştirmeli yaratıcı tarayıcı oyunu"
+          },
+          {
+            "name": "MapCrunch",
+            "link": "https://www.mapcrunch.com/",
+            "description": "Rastgele Street View keşfi yapan site"
+          },
+          {
+            "name": "Download Time Calculator",
+            "link": "https://downloadtimecalculator.com/",
+            "description": "İndirme süresi hesaplayıcı"
+          },
+          {
+            "name": "CarCareKiosk",
+            "link": "https://www.carcarekiosk.com/",
+            "description": "Araç bakım videoları ve rehberleri"
+          },
+          {
+            "name": "StartMyCar",
+            "link": "https://www.startmycar.com/",
+            "description": "Araç arıza ve kullanım rehberi sitesi"
+          },
+          {
+            "name": "iFixit TR",
+            "link": "https://tr.ifixit.com/",
+            "description": "Cihaz onarım rehberleri ve parça değişim kılavuzları"
+          },
+          {
+            "name": "Tahtakale Toptan Ticaret",
+            "link": "https://www.tahtakaletoptanticaret.com/",
+            "description": "Toptan alışveriş ve ürün tedarik sitesi"
+          },
+          {
+            "name": "Ulam Labs",
+            "link": "https://www.ulam.io/",
+            "description": "Yazılım ve ürün geliştirme danışmanlık sitesi"
+          },
+          {
+            "name": "Network WizKid",
+            "link": "https://www.networkwizkid.com/",
+            "description": "Ağ yönetimi ve yardımcı araçlar sitesi"
+          },
+          {
+            "name": "Geospy",
+            "link": "https://geospy.web.app/",
+            "description": "Fotoğraf konum tahmini yapan görsel analiz aracı"
+          },
+          {
+            "name": "Fake Name Generator",
+            "link": "https://www.fakenamegenerator.com/",
+            "description": "Rastgele kimlik ve profil üretim sitesi"
+          },
+          {
+            "name": "TinEye",
+            "link": "https://tineye.com/",
+            "description": "Ters görsel arama motoru"
+          },
+          {
+            "name": "iMac 4K Wallpapers",
+            "link": "https://wallpapercave.com/imac-4k-wallpapers",
+            "description": "Yüksek çözünürlüklü duvar kağıdı arşivi"
+          },
+          {
+            "name": "Wallpaperscraft",
+            "link": "https://wallpaperscraft.com/",
+            "description": "Masaüstü arka plan arşivi"
+          },
+          {
+            "name": "Japanese Emoticons",
+            "link": "https://japaneseemoticons.me/flexing-emoticons/",
+            "description": "Kaomoji ve ASCII ifade koleksiyonu"
+          },
+          {
+            "name": "Baidu",
+            "link": "https://www.baidu.com/",
+            "description": "Çin merkezli arama motoru"
+          },
+          {
+            "name": "Linus Tech Tips",
+            "link": "https://linustechtips.com/",
+            "description": "Teknoloji forumu ve topluluk platformu"
+          },
+          {
+            "name": "Bankkart Genç Akademi",
+            "link": "http://bankkart.com.tr/bankkart-genc-akademi",
+            "description": "Finansal okuryazarlık ve gençlik içerik platformu"
+          },
+          {
+            "name": "Tunç Kurt — Gayret Et",
+            "link": "https://www.youtube.com/watch?v=68vdkZgt8Dc",
+            "description": "Motivasyon videosu"
+          }
+        ]
+      },
+      {
+        "subcategory": "Sistem & Yardımcı Araçlar",
+        "tools": [
+          {
+            "name": "BleachBit",
+            "link": "https://www.bleachbit.org/",
+            "description": "Sistem temizleme ve gizlilik aracı"
+          },
+          {
+            "name": "Brave",
+            "link": "https://brave.com/",
+            "description": "Gizlilik odaklı web tarayıcısı"
+          },
+          {
+            "name": "Bulk Rename Utility",
+            "link": "https://www.bulkrenameutility.co.uk/",
+            "description": "Toplu dosya yeniden adlandırma aracı"
+          },
+          {
+            "name": "File Shredder",
+            "link": "https://www.fileshredder.org/",
+            "description": "Güvenli ve geri alınamaz dosya silme aracı"
+          },
+          {
+            "name": "PDF24 Tools",
+            "link": "https://tools.pdf24.org/en/",
+            "description": "PDF birleştirme, bölme ve dönüştürme araç paketi"
+          },
+          {
+            "name": "PDF Arranger",
+            "link": "https://github.com/pdfarranger/pdfarranger",
+            "description": "PDF sayfa sıralama ve düzenleme aracı"
+          },
+          {
+            "name": "PDF Mix Tool",
+            "link": "https://scarpetta.eu/pdfmixtool/",
+            "description": "PDF birleştirme ve ayırma yardımcı aracı"
+          },
+          {
+            "name": "Online2PDF",
+            "link": "https://online2pdf.com/",
+            "description": "PDF dönüştürme ve birleştirme aracı"
+          },
+          {
+            "name": "Popsicle",
+            "link": "https://github.com/pop-os/popsicle",
+            "description": "USB imaj yazdırma aracı"
+          },
+          {
+            "name": "Sublime Text",
+            "link": "https://www.sublimetext.com/",
+            "description": "Hafif ve hızlı metin editörü"
+          },
+          {
+            "name": "Thunar",
+            "link": "https://docs.xfce.org/xfce/thunar/start",
+            "description": "XFCE masaüstü için dosya yöneticisi"
+          },
+          {
+            "name": "GNOME Tweaks",
+            "link": "https://gitlab.gnome.org/GNOME/gnome-tweaks",
+            "description": "GNOME özelleştirme yardımcı aracı"
+          },
+          {
+            "name": "Ventoy",
+            "link": "https://www.ventoy.net/",
+            "description": "Çoklu ISO ile önyüklenebilir USB hazırlama aracı"
+          },
+          {
+            "name": "VLC",
+            "link": "https://www.videolan.org/vlc/",
+            "description": "Çok format destekli medya oynatıcı"
+          },
+          {
+            "name": "Xarchiver",
+            "link": "https://github.com/ib/xarchiver",
+            "description": "GTK tabanlı arşiv yöneticisi"
+          },
+          {
+            "name": "XnView MP",
+            "link": "https://www.xnview.com/en/xnviewmp/",
+            "description": "Görsel görüntüleme ve dönüştürme aracı"
+          },
+          {
+            "name": "Cloudflare WARP",
+            "link": "https://1.1.1.1/",
+            "description": "Güvenli DNS ve ağ tünelleme istemcisi"
+          },
+          {
+            "name": "Microsoft Store RG",
+            "link": "https://store.rg-adguard.net/",
+            "description": "Microsoft Store paketlerini indirme aracı"
+          },
+          {
+            "name": "Password Generator",
+            "link": "https://passwordsgenerator.net/",
+            "description": "Güçlü şifre üretme aracı"
+          },
+          {
+            "name": "Ninite",
+            "link": "https://ninite.com/",
+            "description": "Toplu yazılım kurma ve güncelleme aracı"
+          },
+          {
+            "name": "PrivacyTools",
+            "link": "https://www.privacytools.io/",
+            "description": "Gizlilik araçları ve öneri rehberi"
+          }
+        ]
+      },
+      {
+        "subcategory": "Windows Optimizasyon",
+        "tools": [
+          {
+            "name": "Winutil",
+            "link": "https://github.com/ChrisTitusTech/winutil",
+            "description": "Windows kurulum ve optimizasyon yardımcı aracı"
+          },
+          {
+            "name": "Optimizer",
+            "link": "https://github.com/hellzerg/optimizer",
+            "description": "Windows performans ve gizlilik ayar aracı"
+          },
+          {
+            "name": "Sophia Script for Windows",
+            "link": "https://github.com/farag2/Sophia-Script-for-Windows",
+            "description": "Gelişmiş Windows ayar otomasyon betiği"
+          },
+          {
+            "name": "Win11Debloat",
+            "link": "https://github.com/Raphire/Win11Debloat",
+            "description": "Windows 11 gereksiz bileşen temizleme aracı"
+          },
+          {
+            "name": "Windows Optimize Harden Debloat",
+            "link": "https://github.com/simeononsecurity/Windows-Optimize-Harden-Debloat",
+            "description": "Güvenlik odaklı Windows optimize betiği"
+          },
+          {
+            "name": "Win Debloat Tools",
+            "link": "https://github.com/LeDragoX/Win-Debloat-Tools",
+            "description": "Windows debloat araç koleksiyonu"
+          },
+          {
+            "name": "Windows10Debloater",
+            "link": "https://github.com/Sycnex/Windows10Debloater",
+            "description": "Windows 10 temizleme PowerShell aracı"
+          },
+          {
+            "name": "RyTuneX",
+            "link": "https://github.com/rayenghanmi/RyTuneX",
+            "description": "Windows ince ayar ve bakım aracı"
+          },
+          {
+            "name": "WIMUtil",
+            "link": "https://github.com/memstechtips/WIMUtil",
+            "description": "Windows imaj yönetim ve düzenleme aracı"
+          },
+          {
+            "name": "Windows ISO Debloater",
+            "link": "https://github.com/itsNileshHere/Windows-ISO-Debloater",
+            "description": "ISO seviyesinde Windows sadeleştirme aracı"
+          },
+          {
+            "name": "Windows Gaming Optimization Script",
+            "link": "https://github.com/TheCraZyDuDee/Windows-Gaming-Optimization-Script",
+            "description": "Oyun performansı odaklı optimizasyon betiği"
+          },
+          {
+            "name": "Win11 Customizer Suite",
+            "link": "https://github.com/DuckyOnQuack-999/Win11-Customizer-Suite",
+            "description": "Windows 11 özelleştirme paket aracı"
+          },
+          {
+            "name": "Winhance",
+            "link": "https://github.com/memstechtips/Winhance",
+            "description": "Windows geliştirme ve özelleştirme aracı"
+          },
+          {
+            "name": "Windows Management Tool",
+            "link": "https://github.com/kamrullab/windows-management-tool",
+            "description": "Windows yönetim işlerini merkezileştiren araç"
+          },
+          {
+            "name": "Windows Optimization",
+            "link": "https://github.com/WinTweaks/windows-optimization",
+            "description": "Windows ayar ve optimizasyon komut koleksiyonu"
+          }
+        ]
+      },
+      {
+        "subcategory": "GitHub & Açık Kaynak",
+        "tools": [
+          {
+            "name": "MetaGPT",
+            "link": "https://github.com/geekan/MetaGPT",
+            "description": "Yazılım geliştirme iş akışları için açık kaynak çok ajanlı framework"
+          },
+          {
+            "name": "OpenPipe",
+            "link": "https://github.com/OpenPipe/OpenPipe",
+            "description": "LLM fine-tuning ve gözlemlenebilirlik odaklı açık kaynak platform"
+          },
+          {
+            "name": "Manus",
+            "link": "https://github.com/manus-ai",
+            "description": "Otonom ajan deneyleri için GitHub organizasyonu"
+          },
+          {
+            "name": "Cua",
+            "link": "https://github.com/trycua/cua",
+            "description": "Computer-use ajanları için açık kaynak framework"
+          },
+          {
+            "name": "TextQL",
+            "link": "https://github.com/TextQLLabs",
+            "description": "Doğal dille veri analizi araçları geliştiren organizasyon"
+          },
+          {
+            "name": "Langbase",
+            "link": "https://github.com/LangbaseInc",
+            "description": "LLM pipeline ve agent altyapısı için açık kaynak araçlar"
+          },
+          {
+            "name": "EndexAI",
+            "link": "https://github.com/EndexAI",
+            "description": "AI güvenliği ve geliştirici araçları odaklı GitHub organizasyonu"
+          },
+          {
+            "name": "Shopify",
+            "link": "https://github.com/Shopify",
+            "description": "Hydrogen, CLI ve geliştirici araçları içeren açık kaynak ekosistem"
+          }
+        ]
+      }
+    ]
+  }
+]
