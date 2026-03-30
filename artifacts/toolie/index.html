@@ -7,459 +7,138 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
-      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+      :root{--bg:#0a0a0a;--card-bg:#0f1520;--green:#39ff14;--cyan:#00d4ff;--orange:#ff6b35;--pink:#ff6bff;--yellow:#ffdd00;--red:#ff2244;--lime:#a0ff60;--border:#39ff14;--text:#c0c0c0;--dim:#555;--font:'Press Start 2P',monospace}
+      html{scroll-behavior:smooth}
+      body{background:var(--bg);color:var(--green);font-family:var(--font);font-size:10px;min-height:100vh;position:relative;overflow-x:hidden}
+      body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.04) 2px,rgba(0,0,0,.04) 4px);pointer-events:none;z-index:9999}
+      body::after{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at center,transparent 60%,rgba(0,0,0,.6) 100%);pointer-events:none;z-index:9998}
+      header{text-align:center;padding:32px 16px 20px;border-bottom:2px solid var(--green);position:relative}
+      .header-ascii{color:var(--dim);font-size:7px;letter-spacing:2px;margin-bottom:12px;animation:flicker 8s infinite}
+      .header-title{font-size:clamp(14px,3vw,22px);color:var(--green);text-shadow:0 0 20px var(--green),0 0 40px var(--green);letter-spacing:4px;display:inline-flex;align-items:center;gap:8px}
+      .cursor-blink{display:inline-block;animation:blink 1s step-end infinite}
+      .header-sub{margin-top:10px;font-size:7px;color:var(--dim);letter-spacing:3px}
+      .header-stats{margin-top:8px;font-size:7px;color:var(--cyan)}
+      .search-wrapper{padding:16px;display:flex;justify-content:center;border-bottom:1px solid #1a2a1a}
+      .search-box{background:#000;border:2px solid var(--green);color:var(--green);font-family:var(--font);font-size:9px;padding:10px 16px;width:100%;max-width:480px;outline:none;box-shadow:3px 3px 0 var(--green);caret-color:var(--green)}
+      .search-box::placeholder{color:var(--dim)}
+      .search-box:focus{box-shadow:3px 3px 0 var(--green),0 0 16px rgba(57,255,20,.3)}
+      nav{display:flex;flex-wrap:wrap;gap:4px;padding:12px 16px;background:#050505;border-bottom:2px solid #1a2a1a;justify-content:center}
+      .tab-btn{background:#000;border:2px solid var(--dim);color:var(--dim);font-family:var(--font);font-size:7px;padding:8px 12px;cursor:pointer;display:flex;align-items:center;gap:6px;letter-spacing:1px}
+      .tab-btn:hover{border-color:var(--green);color:var(--green);box-shadow:2px 2px 0 var(--green)}
+      .tab-btn.active{border-color:var(--green);color:#000;background:var(--green);box-shadow:3px 3px 0 #1a6a00}
+      .tab-btn.active .tab-icon{color:#000}
+      .tab-icon{font-size:10px}
+      main{padding:16px;max-width:1600px;margin:0 auto}
+      .category-panel{display:none}
+      .category-panel.active{display:block}
+      .cat-header{display:flex;align-items:center;gap:12px;padding:16px 0 8px;margin-bottom:20px;border-bottom:2px solid currentColor}
+      .cat-icon{font-size:20px}
+      .cat-title{font-size:clamp(10px,2vw,14px);letter-spacing:3px;text-shadow:0 0 12px currentColor}
+      .cat-count{font-size:7px;color:var(--dim);margin-left:auto;letter-spacing:2px}
+      .subcategory{margin-bottom:32px}
+      .sub-header{font-size:8px;color:var(--cyan);margin-bottom:12px;display:flex;align-items:center;gap:8px;letter-spacing:2px}
+      .sub-bracket{color:var(--dim)}
+      .sub-count{font-size:6px;color:var(--dim);margin-left:auto}
+      .tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+      .tool-card{position:relative;display:flex;flex-direction:column;background:var(--card-bg);border:2px solid #1e3a1e;padding:12px 10px;text-decoration:none;color:var(--text);cursor:pointer;min-height:80px;overflow:visible}
+      .tool-card:hover{border-color:var(--green);color:var(--green);box-shadow:4px 4px 0 var(--green);z-index:10}
+      .tool-card:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;border-color:var(--cyan)}
+      .card-inner{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+      .tool-favicon{width:20px;height:20px;image-rendering:pixelated;filter:saturate(.8)}
+      .tool-card:hover .tool-favicon{filter:saturate(1.2) brightness(1.1)}
+      .tool-name{font-size:6.5px;line-height:1.5;word-break:break-word;text-align:center;letter-spacing:.5px}
+      .tooltip{visibility:hidden;opacity:0;position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:#000;border:2px solid var(--green);box-shadow:3px 3px 0 var(--green);color:var(--green);font-family:monospace;font-size:10px;line-height:1.5;padding:8px 10px;width:max-content;max-width:220px;z-index:100;white-space:normal;pointer-events:none;transition:opacity .1s}
+      .tooltip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--green)}
+      .tool-card:hover .tooltip,.tool-card:focus-visible .tooltip{visibility:visible;opacity:1}
+      .no-results{display:none;text-align:center;padding:48px;color:var(--dim);font-size:9px}
+      .no-results.visible{display:block}
 
-      :root {
-        --bg: #0a0a0a;
-        --card-bg: #0f1520;
-        --green: #39ff14;
-        --cyan: #00d4ff;
-        --orange: #ff6b35;
-        --pink: #ff6bff;
-        --yellow: #ffdd00;
-        --red: #ff2244;
-        --lime: #a0ff60;
-        --border: #39ff14;
-        --text: #c0c0c0;
-        --dim: #555;
-        --font: 'Press Start 2P', monospace;
-      }
+      /* ADD BUTTON */
+      .add-btn{position:fixed;bottom:28px;right:28px;z-index:1000;width:52px;height:52px;background:#000;border:3px solid var(--green);color:var(--green);font-family:var(--font);font-size:24px;cursor:pointer;box-shadow:4px 4px 0 var(--green);display:flex;align-items:center;justify-content:center;line-height:1}
+      .add-btn:hover{background:var(--green);color:#000;box-shadow:6px 6px 0 #1a6a00}
+      .add-btn:focus-visible{outline:2px solid var(--cyan)}
 
-      html { scroll-behavior: smooth; }
+      /* MODAL */
+      .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:2000;align-items:center;justify-content:center;padding:16px}
+      .modal-overlay.open{display:flex}
+      .modal{background:#0a0f0a;border:3px solid var(--green);box-shadow:6px 6px 0 var(--green);padding:28px;width:100%;max-width:480px;position:relative}
+      .modal-title{font-size:10px;color:var(--green);letter-spacing:2px;margin-bottom:24px;border-bottom:1px solid #1a3a1a;padding-bottom:12px}
+      .form-row{margin-bottom:16px}
+      .form-label{display:block;font-size:7px;color:var(--cyan);letter-spacing:1px;margin-bottom:6px}
+      .form-label span{color:var(--red);margin-left:2px}
+      .form-input,.form-select{width:100%;background:#000;border:2px solid #1e3a1e;color:var(--green);font-family:monospace;font-size:11px;padding:8px 10px;outline:none;caret-color:var(--green)}
+      .form-input:focus,.form-select:focus{border-color:var(--green);box-shadow:2px 2px 0 var(--green)}
+      .form-select{font-family:var(--font);font-size:7px;cursor:pointer}
+      .form-select option{background:#000}
+      .form-error{font-size:6px;color:var(--red);margin-top:4px;display:none;letter-spacing:.5px}
+      .form-error.visible{display:block}
+      .modal-actions{display:flex;gap:8px;margin-top:20px;justify-content:flex-end}
+      .btn-cancel{background:#000;border:2px solid var(--dim);color:var(--dim);font-family:var(--font);font-size:7px;padding:8px 14px;cursor:pointer}
+      .btn-cancel:hover{border-color:var(--red);color:var(--red)}
+      .btn-submit{background:var(--green);border:2px solid var(--green);color:#000;font-family:var(--font);font-size:7px;padding:8px 14px;cursor:pointer;box-shadow:3px 3px 0 #1a6a00}
+      .btn-submit:hover{box-shadow:4px 4px 0 #1a6a00}
+      .modal-close{position:absolute;top:12px;right:14px;background:none;border:none;color:var(--dim);font-family:var(--font);font-size:10px;cursor:pointer;line-height:1}
+      .modal-close:hover{color:var(--red)}
+      .success-flash{display:none;font-size:7px;color:var(--green);letter-spacing:1px;text-align:center;margin-top:12px;padding:8px;border:1px solid var(--green)}
+      .success-flash.visible{display:block}
 
-      body {
-        background: var(--bg);
-        color: var(--green);
-        font-family: var(--font);
-        font-size: 10px;
-        min-height: 100vh;
-        position: relative;
-        overflow-x: hidden;
-      }
+      footer{text-align:center;padding:24px 16px;border-top:2px solid #1a2a1a;margin-top:32px;color:var(--dim);font-size:7px;letter-spacing:3px}
+      footer span{color:var(--green)}
 
-      /* CRT Scanlines */
-      body::before {
-        content: '';
-        position: fixed;
-        inset: 0;
-        background: repeating-linear-gradient(
-          0deg,
-          transparent,
-          transparent 2px,
-          rgba(0,0,0,0.04) 2px,
-          rgba(0,0,0,0.04) 4px
-        );
-        pointer-events: none;
-        z-index: 9999;
-      }
+      #panel-GENERAL .cat-header{color:var(--green);border-color:var(--green)}
+      #panel-SOURCES .cat-header{color:var(--cyan);border-color:var(--cyan)}
+      #panel-SOURCES .cat-title{color:var(--cyan);text-shadow:0 0 12px var(--cyan)}
+      #panel-DESIGN .cat-header{color:var(--pink);border-color:var(--pink)}
+      #panel-DESIGN .cat-title{color:var(--pink);text-shadow:0 0 12px var(--pink)}
+      #panel-MEDIA .cat-header{color:var(--orange);border-color:var(--orange)}
+      #panel-MEDIA .cat-title{color:var(--orange);text-shadow:0 0 12px var(--orange)}
+      #panel-DEVELOP .cat-header{color:var(--yellow);border-color:var(--yellow)}
+      #panel-DEVELOP .cat-title{color:var(--yellow);text-shadow:0 0 12px var(--yellow)}
+      #panel-CYBERSEC .cat-header{color:var(--red);border-color:var(--red)}
+      #panel-CYBERSEC .cat-title{color:var(--red);text-shadow:0 0 12px var(--red)}
+      #panel-SUPERUSER .cat-header{color:var(--lime);border-color:var(--lime)}
+      #panel-SUPERUSER .cat-title{color:var(--lime);text-shadow:0 0 12px var(--lime)}
 
-      /* CRT Vignette */
-      body::after {
-        content: '';
-        position: fixed;
-        inset: 0;
-        background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.6) 100%);
-        pointer-events: none;
-        z-index: 9998;
-      }
-
-      /* HEADER */
-      header {
-        text-align: center;
-        padding: 32px 16px 20px;
-        border-bottom: 2px solid var(--green);
-        position: relative;
-      }
-
-      .header-ascii {
-        color: var(--dim);
-        font-size: 7px;
-        letter-spacing: 2px;
-        margin-bottom: 12px;
-        animation: flicker 8s infinite;
-      }
-
-      .header-title {
-        font-size: clamp(14px, 3vw, 22px);
-        color: var(--green);
-        text-shadow: 0 0 20px var(--green), 0 0 40px var(--green);
-        letter-spacing: 4px;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .cursor-blink {
-        display: inline-block;
-        animation: blink 1s step-end infinite;
-      }
-
-      .header-sub {
-        margin-top: 10px;
-        font-size: 7px;
-        color: var(--dim);
-        letter-spacing: 3px;
-      }
-
-      .header-stats {
-        margin-top: 8px;
-        font-size: 7px;
-        color: var(--cyan);
-      }
-
-      /* SEARCH */
-      .search-wrapper {
-        padding: 16px;
-        display: flex;
-        justify-content: center;
-        border-bottom: 1px solid #1a2a1a;
-      }
-
-      .search-box {
-        background: #000;
-        border: 2px solid var(--green);
-        color: var(--green);
-        font-family: var(--font);
-        font-size: 9px;
-        padding: 10px 16px;
-        width: 100%;
-        max-width: 480px;
-        outline: none;
-        box-shadow: 3px 3px 0 var(--green);
-        caret-color: var(--green);
-      }
-
-      .search-box::placeholder { color: var(--dim); }
-      .search-box:focus {
-        box-shadow: 3px 3px 0 var(--green), 0 0 16px rgba(57,255,20,0.3);
-      }
-
-      /* NAV TABS */
-      nav {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 4px;
-        padding: 12px 16px;
-        background: #050505;
-        border-bottom: 2px solid #1a2a1a;
-        justify-content: center;
-      }
-
-      .tab-btn {
-        background: #000;
-        border: 2px solid var(--dim);
-        color: var(--dim);
-        font-family: var(--font);
-        font-size: 7px;
-        padding: 8px 12px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        transition: none;
-        letter-spacing: 1px;
-      }
-
-      .tab-btn:hover {
-        border-color: var(--green);
-        color: var(--green);
-        box-shadow: 2px 2px 0 var(--green);
-      }
-
-      .tab-btn.active {
-        border-color: var(--green);
-        color: #000;
-        background: var(--green);
-        box-shadow: 3px 3px 0 #1a6a00;
-      }
-
-      .tab-btn.active .tab-icon { color: #000; }
-
-      .tab-icon { font-size: 10px; }
-
-      /* MAIN CONTENT */
-      main {
-        padding: 16px;
-        max-width: 1600px;
-        margin: 0 auto;
-      }
-
-      .category-panel { display: none; }
-      .category-panel.active { display: block; }
-
-      /* CAT HEADER */
-      .cat-header {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 16px 0 8px;
-        margin-bottom: 20px;
-        border-bottom: 2px solid currentColor;
-      }
-
-      .cat-icon { font-size: 20px; }
-
-      .cat-title {
-        font-size: clamp(10px, 2vw, 14px);
-        letter-spacing: 3px;
-        text-shadow: 0 0 12px currentColor;
-      }
-
-      .cat-count {
-        font-size: 7px;
-        color: var(--dim);
-        margin-left: auto;
-        letter-spacing: 2px;
-      }
-
-      /* SUBCATEGORY */
-      .subcategory { margin-bottom: 32px; }
-
-      .sub-header {
-        font-size: 8px;
-        color: var(--cyan);
-        margin-bottom: 12px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        letter-spacing: 2px;
-      }
-
-      .sub-bracket { color: var(--dim); }
-      .sub-count { font-size: 6px; color: var(--dim); margin-left: auto; }
-
-      /* TOOLS GRID */
-      .tools-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 8px;
-      }
-
-      /* TOOL CARD */
-      .tool-card {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        background: var(--card-bg);
-        border: 2px solid #1e3a1e;
-        padding: 12px 10px;
-        text-decoration: none;
-        color: var(--text);
-        cursor: pointer;
-        transition: none;
-        min-height: 80px;
-        overflow: visible;
-      }
-
-      .tool-card:hover {
-        border-color: var(--green);
-        color: var(--green);
-        box-shadow: 4px 4px 0 var(--green);
-        z-index: 10;
-      }
-
-      .tool-card:focus-visible {
-        outline: 2px solid var(--cyan);
-        outline-offset: 2px;
-        border-color: var(--cyan);
-      }
-
-      .card-inner {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 8px;
-        text-align: center;
-      }
-
-      .tool-favicon {
-        width: 20px;
-        height: 20px;
-        image-rendering: pixelated;
-        filter: saturate(0.8);
-      }
-
-      .tool-card:hover .tool-favicon {
-        filter: saturate(1.2) brightness(1.1);
-      }
-
-      .tool-name {
-        font-size: 6.5px;
-        line-height: 1.5;
-        word-break: break-word;
-        text-align: center;
-        letter-spacing: 0.5px;
-      }
-
-      /* TOOLTIP */
-      .tooltip {
-        visibility: hidden;
-        opacity: 0;
-        position: absolute;
-        bottom: calc(100% + 6px);
-        left: 50%;
-        transform: translateX(-50%);
-        background: #000;
-        border: 2px solid var(--green);
-        box-shadow: 3px 3px 0 var(--green);
-        color: var(--green);
-        font-family: monospace;
-        font-size: 10px;
-        line-height: 1.5;
-        padding: 8px 10px;
-        width: max-content;
-        max-width: 220px;
-        z-index: 100;
-        white-space: normal;
-        pointer-events: none;
-        transition: opacity 0.1s;
-      }
-
-      .tooltip::after {
-        content: '';
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        border: 6px solid transparent;
-        border-top-color: var(--green);
-      }
-
-      .tool-card:hover .tooltip,
-      .tool-card:focus-visible .tooltip {
-        visibility: visible;
-        opacity: 1;
-      }
-
-      /* NO RESULTS */
-      .no-results {
-        display: none;
-        text-align: center;
-        padding: 48px;
-        color: var(--dim);
-        font-size: 9px;
-      }
-
-      .no-results.visible { display: block; }
-
-      /* FOOTER */
-      footer {
-        text-align: center;
-        padding: 24px 16px;
-        border-top: 2px solid #1a2a1a;
-        margin-top: 32px;
-        color: var(--dim);
-        font-size: 7px;
-        letter-spacing: 3px;
-      }
-
-      footer span { color: var(--green); }
-
-      /* COLOR OVERRIDES per category */
-      #panel-GENERAL .cat-header { color: var(--green); border-color: var(--green); }
-      #panel-SOURCES .cat-header { color: var(--cyan); border-color: var(--cyan); }
-      #panel-SOURCES .cat-title { color: var(--cyan); text-shadow: 0 0 12px var(--cyan); }
-      #panel-DESIGN .cat-header { color: var(--pink); border-color: var(--pink); }
-      #panel-DESIGN .cat-title { color: var(--pink); text-shadow: 0 0 12px var(--pink); }
-      #panel-MEDIA .cat-header { color: var(--orange); border-color: var(--orange); }
-      #panel-MEDIA .cat-title { color: var(--orange); text-shadow: 0 0 12px var(--orange); }
-      #panel-DEVELOP .cat-header { color: var(--yellow); border-color: var(--yellow); }
-      #panel-DEVELOP .cat-title { color: var(--yellow); text-shadow: 0 0 12px var(--yellow); }
-      #panel-CYBERSEC .cat-header { color: var(--red); border-color: var(--red); }
-      #panel-CYBERSEC .cat-title { color: var(--red); text-shadow: 0 0 12px var(--red); }
-      #panel-SUPERUSER .cat-header { color: var(--lime); border-color: var(--lime); }
-      #panel-SUPERUSER .cat-title { color: var(--lime); text-shadow: 0 0 12px var(--lime); }
-
-      /* ANIMATIONS */
-      @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-      @keyframes flicker {
-        0%, 95%, 100% { opacity: 1; }
-        96% { opacity: 0.4; }
-        97% { opacity: 1; }
-        98% { opacity: 0.6; }
-        99% { opacity: 1; }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        .cursor-blink, .header-ascii { animation: none !important; }
-      }
-
-      /* RESPONSIVE */
-      @media (max-width: 600px) {
-        .tools-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
-        .tab-label { display: none; }
-        .tab-btn { padding: 8px; }
-      }
+      @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+      @keyframes flicker{0%,95%,100%{opacity:1}96%{opacity:.4}97%{opacity:1}98%{opacity:.6}99%{opacity:1}}
+      @keyframes slideIn{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+      .modal{animation:slideIn .15s ease-out}
+      @media(prefers-reduced-motion:reduce){.cursor-blink,.header-ascii{animation:none!important}}
+      @media(max-width:600px){.tools-grid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}.tab-label{display:none}.tab-btn{padding:8px}.add-btn{bottom:16px;right:16px}}
     </style>
   </head>
   <body>
 
-    <header>
-      <div class="header-ascii">░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░</div>
-      <h1 class="header-title">[ TOOLIE v1.0 ]<span class="cursor-blink">▋</span></h1>
-      <p class="header-sub">RETRO ARAÇ KATALOĞU — ARKADAŞLARLA PAYLAŞ</p>
-      <p class="header-stats">378 ARAÇ · 7 KATEGORİ · 26 ALT KATEGORİ</p>
-      <div class="header-ascii" style="margin-top:12px">░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░</div>
-    </header>
+  <header>
+    <div class="header-ascii">░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░</div>
+    <h1 class="header-title">[ TOOLIE v1.0 ]<span class="cursor-blink">▋</span></h1>
+    <p class="header-sub">RETRO ARAÇ KATALOĞU — ARKADAŞLARLA PAYLAŞ</p>
+    <p class="header-stats" id="globalStats">378 ARAÇ · 7 KATEGORİ · 26 ALT KATEGORİ</p>
+    <div class="header-ascii" style="margin-top:12px">░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░</div>
+  </header>
 
-    <div class="search-wrapper">
-      <input
-        type="search"
-        class="search-box"
-        placeholder="> ARAÇ ARA..."
-        aria-label="Araçlarda ara"
-        id="searchInput"
-        autocomplete="off"
-        spellcheck="false"
-      >
-    </div>
+  <div class="search-wrapper">
+    <input type="search" class="search-box" placeholder="> ARAÇ ARA..." aria-label="Araçlarda ara" id="searchInput" autocomplete="off" spellcheck="false">
+  </div>
 
-    <nav role="tablist" aria-label="Ana kategoriler">
-      <button class="tab-btn active" onclick="switchTab('GENERAL')" data-tab="GENERAL" aria-label="GENERAL kategorisine geç">
-        <span class="tab-icon">◈</span>
-        <span class="tab-label">GENERAL</span>
-      </button>
-    <button class="tab-btn" onclick="switchTab('SOURCES')" data-tab="SOURCES" aria-label="SOURCES kategorisine geç">
-        <span class="tab-icon">◉</span>
-        <span class="tab-label">SOURCES</span>
-      </button>
-    <button class="tab-btn" onclick="switchTab('DESIGN')" data-tab="DESIGN" aria-label="DESIGN kategorisine geç">
-        <span class="tab-icon">◆</span>
-        <span class="tab-label">DESIGN</span>
-      </button>
-    <button class="tab-btn" onclick="switchTab('MEDIA')" data-tab="MEDIA" aria-label="MEDIA kategorisine geç">
-        <span class="tab-icon">◎</span>
-        <span class="tab-label">MEDIA</span>
-      </button>
-    <button class="tab-btn" onclick="switchTab('DEVELOP')" data-tab="DEVELOP" aria-label="DEVELOP kategorisine geç">
-        <span class="tab-icon">◑</span>
-        <span class="tab-label">DEVELOP</span>
-      </button>
-    <button class="tab-btn" onclick="switchTab('CYBERSEC')" data-tab="CYBERSEC" aria-label="CYBERSEC kategorisine geç">
-        <span class="tab-icon">◒</span>
-        <span class="tab-label">CYBERSEC</span>
-      </button>
-    <button class="tab-btn" onclick="switchTab('SUPERUSER')" data-tab="SUPERUSER" aria-label="SUPERUSER kategorisine geç">
-        <span class="tab-icon">◓</span>
-        <span class="tab-label">SUPERUSER</span>
-      </button>
+  <nav role="tablist" aria-label="Ana kategoriler">
+    <button class="tab-btn active" onclick="switchTab('GENERAL')" data-tab="GENERAL" aria-label="GENERAL kategorisine geç"><span class="tab-icon">◈</span><span class="tab-label">GENERAL</span></button>
+    <button class="tab-btn" onclick="switchTab('SOURCES')" data-tab="SOURCES" aria-label="SOURCES kategorisine geç"><span class="tab-icon">◉</span><span class="tab-label">SOURCES</span></button>
+    <button class="tab-btn" onclick="switchTab('DESIGN')" data-tab="DESIGN" aria-label="DESIGN kategorisine geç"><span class="tab-icon">◆</span><span class="tab-label">DESIGN</span></button>
+    <button class="tab-btn" onclick="switchTab('MEDIA')" data-tab="MEDIA" aria-label="MEDIA kategorisine geç"><span class="tab-icon">◎</span><span class="tab-label">MEDIA</span></button>
+    <button class="tab-btn" onclick="switchTab('DEVELOP')" data-tab="DEVELOP" aria-label="DEVELOP kategorisine geç"><span class="tab-icon">◑</span><span class="tab-label">DEVELOP</span></button>
+    <button class="tab-btn" onclick="switchTab('CYBERSEC')" data-tab="CYBERSEC" aria-label="CYBERSEC kategorisine geç"><span class="tab-icon">◒</span><span class="tab-label">CYBERSEC</span></button>
+    <button class="tab-btn" onclick="switchTab('SUPERUSER')" data-tab="SUPERUSER" aria-label="SUPERUSER kategorisine geç"><span class="tab-icon">◓</span><span class="tab-label">SUPERUSER</span></button>
     
-    </nav>
+  </nav>
 
-    <main>
-      <div class="category-panel active" id="panel-GENERAL" role="tabpanel" aria-label="GENERAL">
-      <div class="cat-header">
-        <span class="cat-icon">◈</span>
-        <h2 class="cat-title">░░ GENERAL ░░</h2>
-        <span class="cat-count">93 ARAÇ</span>
-      </div>
-      <section class="subcategory" aria-label="Genel AI Platformları">
-          <h3 class="sub-header">
-            <span class="sub-bracket">[</span>Genel AI Platformları<span class="sub-bracket">]</span>
-            <span class="sub-count">14 araç</span>
-          </h3>
-          <div class="tools-grid" role="list">
-            <a href="https://chatgpt.com/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="ChatGPT — OpenAI&#39;nin genel amaçlı AI asistanı" title="OpenAI&#39;nin genel amaçlı AI asistanı" data-name="chatgpt" data-desc="openai&#39;nin genel amaçlı ai asistanı">
+  <main>
+    <div class="category-panel active" id="panel-GENERAL" role="tabpanel" aria-label="GENERAL">
+      <div class="cat-header"><span class="cat-icon">◈</span><h2 class="cat-title">░░ GENERAL ░░</h2><span class="cat-count" id="count-GENERAL">93 ARAÇ</span></div>
+      <section class="subcategory" id="sub-GENERAL-Genel-AI-Platformları" aria-label="Genel AI Platformları">
+          <h3 class="sub-header"><span class="sub-bracket">[</span>Genel AI Platformları<span class="sub-bracket">]</span><span class="sub-count">14 araç</span></h3>
+          <div class="tools-grid" role="list"><a href="https://chatgpt.com/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="ChatGPT — OpenAI&#39;nin genel amaçlı AI asistanı" title="OpenAI&#39;nin genel amaçlı AI asistanı" data-name="chatgpt" data-desc="openai&#39;nin genel amaçlı ai asistanı">
               <div class="card-inner">
                 <img src="https://www.google.com/s2/favicons?domain=chatgpt.com&sz=32" alt="" class="tool-favicon" aria-hidden="true" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><rect width=%2216%22 height=%2216%22 fill=%22%23222%22/><text x=%228%22 y=%2212%22 text-anchor=%22middle%22 fill=%22%2339ff14%22 font-size=%2210%22>?</text></svg>'">
                 <span class="tool-name">ChatGPT</span>
@@ -543,15 +222,10 @@
                 <span class="tool-name">Perplexity AI</span>
               </div>
               <span class="tooltip" role="tooltip">Kaynaklı hızlı araştırma ve cevap motoru</span>
-            </a>
-          </div>
-        </section><section class="subcategory" aria-label="Verimlilik &amp; İş">
-          <h3 class="sub-header">
-            <span class="sub-bracket">[</span>Verimlilik &amp; İş<span class="sub-bracket">]</span>
-            <span class="sub-count">19 araç</span>
-          </h3>
-          <div class="tools-grid" role="list">
-            <a href="https://www.notion.com/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="Notion — Not, wiki ve proje yönetimini birleştiren çalışma alanı" title="Not, wiki ve proje yönetimini birleştiren çalışma alanı" data-name="notion" data-desc="not, wiki ve proje yönetimini birleştiren çalışma alanı">
+            </a></div>
+        </section><section class="subcategory" id="sub-GENERAL-Verimlilik-&amp;-İş" aria-label="Verimlilik &amp; İş">
+          <h3 class="sub-header"><span class="sub-bracket">[</span>Verimlilik &amp; İş<span class="sub-bracket">]</span><span class="sub-count">19 araç</span></h3>
+          <div class="tools-grid" role="list"><a href="https://www.notion.com/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="Notion — Not, wiki ve proje yönetimini birleştiren çalışma alanı" title="Not, wiki ve proje yönetimini birleştiren çalışma alanı" data-name="notion" data-desc="not, wiki ve proje yönetimini birleştiren çalışma alanı">
               <div class="card-inner">
                 <img src="https://www.google.com/s2/favicons?domain=www.notion.com&sz=32" alt="" class="tool-favicon" aria-hidden="true" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><rect width=%2216%22 height=%2216%22 fill=%22%23222%22/><text x=%228%22 y=%2212%22 text-anchor=%22middle%22 fill=%22%2339ff14%22 font-size=%2210%22>?</text></svg>'">
                 <span class="tool-name">Notion</span>
@@ -665,15 +339,10 @@
                 <span class="tool-name">Runnr.ai</span>
               </div>
               <span class="tooltip" role="tooltip">Otelcilik için müşteri iletişimi otomasyon aracı</span>
-            </a>
-          </div>
-        </section><section class="subcategory" aria-label="Yazı &amp; İçerik">
-          <h3 class="sub-header">
-            <span class="sub-bracket">[</span>Yazı &amp; İçerik<span class="sub-bracket">]</span>
-            <span class="sub-count">9 araç</span>
-          </h3>
-          <div class="tools-grid" role="list">
-            <a href="https://copy.ai/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="Copy.ai — Pazarlama ve satış metni üretim aracı" title="Pazarlama ve satış metni üretim aracı" data-name="copy.ai" data-desc="pazarlama ve satış metni üretim aracı">
+            </a></div>
+        </section><section class="subcategory" id="sub-GENERAL-Yazı-&amp;-İçerik" aria-label="Yazı &amp; İçerik">
+          <h3 class="sub-header"><span class="sub-bracket">[</span>Yazı &amp; İçerik<span class="sub-bracket">]</span><span class="sub-count">9 araç</span></h3>
+          <div class="tools-grid" role="list"><a href="https://copy.ai/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="Copy.ai — Pazarlama ve satış metni üretim aracı" title="Pazarlama ve satış metni üretim aracı" data-name="copy.ai" data-desc="pazarlama ve satış metni üretim aracı">
               <div class="card-inner">
                 <img src="https://www.google.com/s2/favicons?domain=copy.ai&sz=32" alt="" class="tool-favicon" aria-hidden="true" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><rect width=%2216%22 height=%2216%22 fill=%22%23222%22/><text x=%228%22 y=%2212%22 text-anchor=%22middle%22 fill=%22%2339ff14%22 font-size=%2210%22>?</text></svg>'">
                 <span class="tool-name">Copy.ai</span>
@@ -727,15 +396,10 @@
                 <span class="tool-name">DeepL Write</span>
               </div>
               <span class="tooltip" role="tooltip">Yazı düzenleme ve üslup iyileştirme aracı</span>
-            </a>
-          </div>
-        </section><section class="subcategory" aria-label="Elektrik, Elektronik &amp; Robotik">
-          <h3 class="sub-header">
-            <span class="sub-bracket">[</span>Elektrik, Elektronik &amp; Robotik<span class="sub-bracket">]</span>
-            <span class="sub-count">10 araç</span>
-          </h3>
-          <div class="tools-grid" role="list">
-            <a href="https://www.falstad.com/circuit/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="Circuit Simulator Applet — Etkileşimli devre simülatörü" title="Etkileşimli devre simülatörü" data-name="circuit simulator applet" data-desc="etkileşimli devre simülatörü">
+            </a></div>
+        </section><section class="subcategory" id="sub-GENERAL-Elektrik,-Elektronik-&amp;-Robotik" aria-label="Elektrik, Elektronik &amp; Robotik">
+          <h3 class="sub-header"><span class="sub-bracket">[</span>Elektrik, Elektronik &amp; Robotik<span class="sub-bracket">]</span><span class="sub-count">10 araç</span></h3>
+          <div class="tools-grid" role="list"><a href="https://www.falstad.com/circuit/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="Circuit Simulator Applet — Etkileşimli devre simülatörü" title="Etkileşimli devre simülatörü" data-name="circuit simulator applet" data-desc="etkileşimli devre simülatörü">
               <div class="card-inner">
                 <img src="https://www.google.com/s2/favicons?domain=www.falstad.com&sz=32" alt="" class="tool-favicon" aria-hidden="true" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><rect width=%2216%22 height=%2216%22 fill=%22%23222%22/><text x=%228%22 y=%2212%22 text-anchor=%22middle%22 fill=%22%2339ff14%22 font-size=%2210%22>?</text></svg>'">
                 <span class="tool-name">Circuit Simulator Applet</span>
@@ -795,15 +459,10 @@
                 <span class="tool-name">UTP Cable Connectors</span>
               </div>
               <span class="tooltip" role="tooltip">Ağ kablolama ve konnektör referansı</span>
-            </a>
-          </div>
-        </section><section class="subcategory" aria-label="Keşif &amp; Karşılaştırma">
-          <h3 class="sub-header">
-            <span class="sub-bracket">[</span>Keşif &amp; Karşılaştırma<span class="sub-bracket">]</span>
-            <span class="sub-count">8 araç</span>
-          </h3>
-          <div class="tools-grid" role="list">
-            <a href="https://theresanaiforthat.com/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="There&#39;s An AI For That — Göreve göre AI araç keşfi sağlayan dizin" title="Göreve göre AI araç keşfi sağlayan dizin" data-name="there&#39;s an ai for that" data-desc="göreve göre ai araç keşfi sağlayan dizin">
+            </a></div>
+        </section><section class="subcategory" id="sub-GENERAL-Keşif-&amp;-Karşılaştırma" aria-label="Keşif &amp; Karşılaştırma">
+          <h3 class="sub-header"><span class="sub-bracket">[</span>Keşif &amp; Karşılaştırma<span class="sub-bracket">]</span><span class="sub-count">8 araç</span></h3>
+          <div class="tools-grid" role="list"><a href="https://theresanaiforthat.com/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="There&#39;s An AI For That — Göreve göre AI araç keşfi sağlayan dizin" title="Göreve göre AI araç keşfi sağlayan dizin" data-name="there&#39;s an ai for that" data-desc="göreve göre ai araç keşfi sağlayan dizin">
               <div class="card-inner">
                 <img src="https://www.google.com/s2/favicons?domain=theresanaiforthat.com&sz=32" alt="" class="tool-favicon" aria-hidden="true" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><rect width=%2216%22 height=%2216%22 fill=%22%23222%22/><text x=%228%22 y=%2212%22 text-anchor=%22middle%22 fill=%22%2339ff14%22 font-size=%2210%22>?</text></svg>'">
                 <span class="tool-name">There&#39;s An AI For That</span>
@@ -851,15 +510,10 @@
                 <span class="tool-name">Verdent.ai</span>
               </div>
               <span class="tooltip" role="tooltip">AI araç keşfi ve seçimi için dizin platformu</span>
-            </a>
-          </div>
-        </section><section class="subcategory" aria-label="Haber &amp; Teknoloji">
-          <h3 class="sub-header">
-            <span class="sub-bracket">[</span>Haber &amp; Teknoloji<span class="sub-bracket">]</span>
-            <span class="sub-count">7 araç</span>
-          </h3>
-          <div class="tools-grid" role="list">
-            <a href="https://arstechnica.com/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="Ars Technica — Teknoloji haber ve analiz sitesi" title="Teknoloji haber ve analiz sitesi" data-name="ars technica" data-desc="teknoloji haber ve analiz sitesi">
+            </a></div>
+        </section><section class="subcategory" id="sub-GENERAL-Haber-&amp;-Teknoloji" aria-label="Haber &amp; Teknoloji">
+          <h3 class="sub-header"><span class="sub-bracket">[</span>Haber &amp; Teknoloji<span class="sub-bracket">]</span><span class="sub-count">7 araç</span></h3>
+          <div class="tools-grid" role="list"><a href="https://arstechnica.com/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="Ars Technica — Teknoloji haber ve analiz sitesi" title="Teknoloji haber ve analiz sitesi" data-name="ars technica" data-desc="teknoloji haber ve analiz sitesi">
               <div class="card-inner">
                 <img src="https://www.google.com/s2/favicons?domain=arstechnica.com&sz=32" alt="" class="tool-favicon" aria-hidden="true" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><rect width=%2216%22 height=%2216%22 fill=%22%23222%22/><text x=%228%22 y=%2212%22 text-anchor=%22middle%22 fill=%22%2339ff14%22 font-size=%2210%22>?</text></svg>'">
                 <span class="tool-name">Ars Technica</span>
@@ -901,15 +555,10 @@
                 <span class="tool-name">Notebookcheck</span>
               </div>
               <span class="tooltip" role="tooltip">Dizüstü inceleme, benchmark ve donanım haber kaynağı</span>
-            </a>
-          </div>
-        </section><section class="subcategory" aria-label="Sağlık &amp; Wellness">
-          <h3 class="sub-header">
-            <span class="sub-bracket">[</span>Sağlık &amp; Wellness<span class="sub-bracket">]</span>
-            <span class="sub-count">9 araç</span>
-          </h3>
-          <div class="tools-grid" role="list">
-            <a href="https://insighttimer.com/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="Insight Timer — Rehberli meditasyon ve uyku içeriği platformu" title="Rehberli meditasyon ve uyku içeriği platformu" data-name="insight timer" data-desc="rehberli meditasyon ve uyku içeriği platformu">
+            </a></div>
+        </section><section class="subcategory" id="sub-GENERAL-Sağlık-&amp;-Wellness" aria-label="Sağlık &amp; Wellness">
+          <h3 class="sub-header"><span class="sub-bracket">[</span>Sağlık &amp; Wellness<span class="sub-bracket">]</span><span class="sub-count">9 araç</span></h3>
+          <div class="tools-grid" role="list"><a href="https://insighttimer.com/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="Insight Timer — Rehberli meditasyon ve uyku içeriği platformu" title="Rehberli meditasyon ve uyku içeriği platformu" data-name="insight timer" data-desc="rehberli meditasyon ve uyku içeriği platformu">
               <div class="card-inner">
                 <img src="https://www.google.com/s2/favicons?domain=insighttimer.com&sz=32" alt="" class="tool-favicon" aria-hidden="true" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><rect width=%2216%22 height=%2216%22 fill=%22%23222%22/><text x=%228%22 y=%2212%22 text-anchor=%22middle%22 fill=%22%2339ff14%22 font-size=%2210%22>?</text></svg>'">
                 <span class="tool-name">Insight Timer</span>
@@ -963,15 +612,10 @@
                 <span class="tool-name">Workout.cool</span>
               </div>
               <span class="tooltip" role="tooltip">Egzersiz planlama ve antrenman üretim aracı</span>
-            </a>
-          </div>
-        </section><section class="subcategory" aria-label="Finans &amp; Bütçe">
-          <h3 class="sub-header">
-            <span class="sub-bracket">[</span>Finans &amp; Bütçe<span class="sub-bracket">]</span>
-            <span class="sub-count">11 araç</span>
-          </h3>
-          <div class="tools-grid" role="list">
-            <a href="https://www.ynab.com/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="YNAB — Sıfır tabanlı bütçe planlama uygulaması" title="Sıfır tabanlı bütçe planlama uygulaması" data-name="ynab" data-desc="sıfır tabanlı bütçe planlama uygulaması">
+            </a></div>
+        </section><section class="subcategory" id="sub-GENERAL-Finans-&amp;-Bütçe" aria-label="Finans &amp; Bütçe">
+          <h3 class="sub-header"><span class="sub-bracket">[</span>Finans &amp; Bütçe<span class="sub-bracket">]</span><span class="sub-count">11 araç</span></h3>
+          <div class="tools-grid" role="list"><a href="https://www.ynab.com/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="YNAB — Sıfır tabanlı bütçe planlama uygulaması" title="Sıfır tabanlı bütçe planlama uygulaması" data-name="ynab" data-desc="sıfır tabanlı bütçe planlama uygulaması">
               <div class="card-inner">
                 <img src="https://www.google.com/s2/favicons?domain=www.ynab.com&sz=32" alt="" class="tool-favicon" aria-hidden="true" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><rect width=%2216%22 height=%2216%22 fill=%22%23222%22/><text x=%228%22 y=%2212%22 text-anchor=%22middle%22 fill=%22%2339ff14%22 font-size=%2210%22>?</text></svg>'">
                 <span class="tool-name">YNAB</span>
@@ -1037,15 +681,10 @@
                 <span class="tool-name">Mint</span>
               </div>
               <span class="tooltip" role="tooltip">Ocak 2024&#39;te kapatılan bütçe takip uygulaması</span>
-            </a>
-          </div>
-        </section><section class="subcategory" aria-label="Freelance &amp; İş">
-          <h3 class="sub-header">
-            <span class="sub-bracket">[</span>Freelance &amp; İş<span class="sub-bracket">]</span>
-            <span class="sub-count">6 araç</span>
-          </h3>
-          <div class="tools-grid" role="list">
-            <a href="https://www.upwork.com/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="Upwork — Büyük ölçekli freelance iş platformu" title="Büyük ölçekli freelance iş platformu" data-name="upwork" data-desc="büyük ölçekli freelance iş platformu">
+            </a></div>
+        </section><section class="subcategory" id="sub-GENERAL-Freelance-&amp;-İş" aria-label="Freelance &amp; İş">
+          <h3 class="sub-header"><span class="sub-bracket">[</span>Freelance &amp; İş<span class="sub-bracket">]</span><span class="sub-count">6 araç</span></h3>
+          <div class="tools-grid" role="list"><a href="https://www.upwork.com/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="Upwork — Büyük ölçekli freelance iş platformu" title="Büyük ölçekli freelance iş platformu" data-name="upwork" data-desc="büyük ölçekli freelance iş platformu">
               <div class="card-inner">
                 <img src="https://www.google.com/s2/favicons?domain=www.upwork.com&sz=32" alt="" class="tool-favicon" aria-hidden="true" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><rect width=%2216%22 height=%2216%22 fill=%22%23222%22/><text x=%228%22 y=%2212%22 text-anchor=%22middle%22 fill=%22%2339ff14%22 font-size=%2210%22>?</text></svg>'">
                 <span class="tool-name">Upwork</span>
@@ -1081,23 +720,18 @@
                 <span class="tool-name">Rezi AI</span>
               </div>
               <span class="tooltip" role="tooltip">Özgeçmiş ve iş başvurusu hazırlama aracı</span>
-            </a>
-          </div>
+            </a></div>
         </section>
+      <section class="subcategory user-added-section" id="useradded-GENERAL" style="display:none" aria-label="Kullanıcı Eklemeleri">
+        <h3 class="sub-header"><span class="sub-bracket">[</span>Kullanıcı Eklemeleri<span class="sub-bracket">]</span><span class="sub-count" id="ua-count-GENERAL">0 araç</span></h3>
+        <div class="tools-grid" role="list" id="ua-grid-GENERAL"></div>
+      </section>
     </div>
   <div class="category-panel" id="panel-SOURCES" role="tabpanel" aria-label="SOURCES">
-      <div class="cat-header">
-        <span class="cat-icon">◉</span>
-        <h2 class="cat-title">░░ SOURCES ░░</h2>
-        <span class="cat-count">51 ARAÇ</span>
-      </div>
-      <section class="subcategory" aria-label="Akademik &amp; Araştırma">
-          <h3 class="sub-header">
-            <span class="sub-bracket">[</span>Akademik &amp; Araştırma<span class="sub-bracket">]</span>
-            <span class="sub-count">14 araç</span>
-          </h3>
-          <div class="tools-grid" role="list">
-            <a href="https://scispace.com/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="SciSpace — Akademik makale okuma ve sadeleştirme aracı" title="Akademik makale okuma ve sadeleştirme aracı" data-name="scispace" data-desc="akademik makale okuma ve sadeleştirme aracı">
+      <div class="cat-header"><span class="cat-icon">◉</span><h2 class="cat-title">░░ SOURCES ░░</h2><span class="cat-count" id="count-SOURCES">51 ARAÇ</span></div>
+      <section class="subcategory" id="sub-SOURCES-Akademik-&amp;-Araştırma" aria-label="Akademik &amp; Araştırma">
+          <h3 class="sub-header"><span class="sub-bracket">[</span>Akademik &amp; Araştırma<span class="sub-bracket">]</span><span class="sub-count">14 araç</span></h3>
+          <div class="tools-grid" role="list"><a href="https://scispace.com/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="SciSpace — Akademik makale okuma ve sadeleştirme aracı" title="Akademik makale okuma ve sadeleştirme aracı" data-name="scispace" data-desc="akademik makale okuma ve sadeleştirme aracı">
               <div class="card-inner">
                 <img src="https://www.google.com/s2/favicons?domain=scispace.com&sz=32" alt="" class="tool-favicon" aria-hidden="true" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><rect width=%2216%22 height=%2216%22 fill=%22%23222%22/><text x=%228%22 y=%2212%22 text-anchor=%22middle%22 fill=%22%2339ff14%22 font-size=%2210%22>?</text></svg>'">
                 <span class="tool-name">SciSpace</span>
@@ -1181,15 +815,10 @@
                 <span class="tool-name">Nature</span>
               </div>
               <span class="tooltip" role="tooltip">Bilimsel yayınlar ve araştırma haberleri kaynağı</span>
-            </a>
-          </div>
-        </section><section class="subcategory" aria-label="Akademik &amp; Çalışma">
-          <h3 class="sub-header">
-            <span class="sub-bracket">[</span>Akademik &amp; Çalışma<span class="sub-bracket">]</span>
-            <span class="sub-count">15 araç</span>
-          </h3>
-          <div class="tools-grid" role="list">
-            <a href="https://apps.ankiweb.net/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="Anki — Aralıklı tekrar kartlarıyla çalışma aracı" title="Aralıklı tekrar kartlarıyla çalışma aracı" data-name="anki" data-desc="aralıklı tekrar kartlarıyla çalışma aracı">
+            </a></div>
+        </section><section class="subcategory" id="sub-SOURCES-Akademik-&amp;-Çalışma" aria-label="Akademik &amp; Çalışma">
+          <h3 class="sub-header"><span class="sub-bracket">[</span>Akademik &amp; Çalışma<span class="sub-bracket">]</span><span class="sub-count">15 araç</span></h3>
+          <div class="tools-grid" role="list"><a href="https://apps.ankiweb.net/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="Anki — Aralıklı tekrar kartlarıyla çalışma aracı" title="Aralıklı tekrar kartlarıyla çalışma aracı" data-name="anki" data-desc="aralıklı tekrar kartlarıyla çalışma aracı">
               <div class="card-inner">
                 <img src="https://www.google.com/s2/favicons?domain=apps.ankiweb.net&sz=32" alt="" class="tool-favicon" aria-hidden="true" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><rect width=%2216%22 height=%2216%22 fill=%22%23222%22/><text x=%228%22 y=%2212%22 text-anchor=%22middle%22 fill=%22%2339ff14%22 font-size=%2210%22>?</text></svg>'">
                 <span class="tool-name">Anki</span>
@@ -1279,15 +908,10 @@
                 <span class="tool-name">News in Levels</span>
               </div>
               <span class="tooltip" role="tooltip">Seviye bazlı İngilizce haber okuma sitesi</span>
-            </a>
-          </div>
-        </section><section class="subcategory" aria-label="Araştırma &amp; Dataset">
-          <h3 class="sub-header">
-            <span class="sub-bracket">[</span>Araştırma &amp; Dataset<span class="sub-bracket">]</span>
-            <span class="sub-count">6 araç</span>
-          </h3>
-          <div class="tools-grid" role="list">
-            <a href="https://kaggle.com/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="Kaggle — Dataset, notebook ve veri bilimi yarışma platformu" title="Dataset, notebook ve veri bilimi yarışma platformu" data-name="kaggle" data-desc="dataset, notebook ve veri bilimi yarışma platformu">
+            </a></div>
+        </section><section class="subcategory" id="sub-SOURCES-Araştırma-&amp;-Dataset" aria-label="Araştırma &amp; Dataset">
+          <h3 class="sub-header"><span class="sub-bracket">[</span>Araştırma &amp; Dataset<span class="sub-bracket">]</span><span class="sub-count">6 araç</span></h3>
+          <div class="tools-grid" role="list"><a href="https://kaggle.com/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="Kaggle — Dataset, notebook ve veri bilimi yarışma platformu" title="Dataset, notebook ve veri bilimi yarışma platformu" data-name="kaggle" data-desc="dataset, notebook ve veri bilimi yarışma platformu">
               <div class="card-inner">
                 <img src="https://www.google.com/s2/favicons?domain=kaggle.com&sz=32" alt="" class="tool-favicon" aria-hidden="true" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><rect width=%2216%22 height=%2216%22 fill=%22%23222%22/><text x=%228%22 y=%2212%22 text-anchor=%22middle%22 fill=%22%2339ff14%22 font-size=%2210%22>?</text></svg>'">
                 <span class="tool-name">Kaggle</span>
@@ -1323,15 +947,10 @@
                 <span class="tool-name">FiveThirtyEight Data</span>
               </div>
               <span class="tooltip" role="tooltip">Gazetecilik ve analiz projeleri için açık veri arşivi</span>
-            </a>
-          </div>
-        </section><section class="subcategory" aria-label="Kitap &amp; PDF Kaynakları">
-          <h3 class="sub-header">
-            <span class="sub-bracket">[</span>Kitap &amp; PDF Kaynakları<span class="sub-bracket">]</span>
-            <span class="sub-count">16 araç</span>
-          </h3>
-          <div class="tools-grid" role="list">
-            <a href="https://libgen.li" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="Library Genesis — Akademik kitap arşivi *(mirror değişebilir)*" title="Akademik kitap arşivi *(mirror değişebilir)*" data-name="library genesis" data-desc="akademik kitap arşivi *(mirror değişebilir)*">
+            </a></div>
+        </section><section class="subcategory" id="sub-SOURCES-Kitap-&amp;-PDF-Kaynakları" aria-label="Kitap &amp; PDF Kaynakları">
+          <h3 class="sub-header"><span class="sub-bracket">[</span>Kitap &amp; PDF Kaynakları<span class="sub-bracket">]</span><span class="sub-count">16 araç</span></h3>
+          <div class="tools-grid" role="list"><a href="https://libgen.li" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="Library Genesis — Akademik kitap arşivi *(mirror değişebilir)*" title="Akademik kitap arşivi *(mirror değişebilir)*" data-name="library genesis" data-desc="akademik kitap arşivi *(mirror değişebilir)*">
               <div class="card-inner">
                 <img src="https://www.google.com/s2/favicons?domain=libgen.li&sz=32" alt="" class="tool-favicon" aria-hidden="true" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><rect width=%2216%22 height=%2216%22 fill=%22%23222%22/><text x=%228%22 y=%2212%22 text-anchor=%22middle%22 fill=%22%2339ff14%22 font-size=%2210%22>?</text></svg>'">
                 <span class="tool-name">Library Genesis</span>
@@ -1427,23 +1046,18 @@
                 <span class="tool-name">Textbook Revolution</span>
               </div>
               <span class="tooltip" role="tooltip">Ücretsiz ders kitabı ve eğitim materyali kaynağı</span>
-            </a>
-          </div>
+            </a></div>
         </section>
+      <section class="subcategory user-added-section" id="useradded-SOURCES" style="display:none" aria-label="Kullanıcı Eklemeleri">
+        <h3 class="sub-header"><span class="sub-bracket">[</span>Kullanıcı Eklemeleri<span class="sub-bracket">]</span><span class="sub-count" id="ua-count-SOURCES">0 araç</span></h3>
+        <div class="tools-grid" role="list" id="ua-grid-SOURCES"></div>
+      </section>
     </div>
   <div class="category-panel" id="panel-DESIGN" role="tabpanel" aria-label="DESIGN">
-      <div class="cat-header">
-        <span class="cat-icon">◆</span>
-        <h2 class="cat-title">░░ DESIGN ░░</h2>
-        <span class="cat-count">40 ARAÇ</span>
-      </div>
-      <section class="subcategory" aria-label="AI Görsel Üretimi">
-          <h3 class="sub-header">
-            <span class="sub-bracket">[</span>AI Görsel Üretimi<span class="sub-bracket">]</span>
-            <span class="sub-count">16 araç</span>
-          </h3>
-          <div class="tools-grid" role="list">
-            <a href="https://leonardo.ai/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="Leonardo AI — Oyun, konsept ve ürün görseli üretim platformu" title="Oyun, konsept ve ürün görseli üretim platformu" data-name="leonardo ai" data-desc="oyun, konsept ve ürün görseli üretim platformu">
+      <div class="cat-header"><span class="cat-icon">◆</span><h2 class="cat-title">░░ DESIGN ░░</h2><span class="cat-count" id="count-DESIGN">40 ARAÇ</span></div>
+      <section class="subcategory" id="sub-DESIGN-AI-Görsel-Üretimi" aria-label="AI Görsel Üretimi">
+          <h3 class="sub-header"><span class="sub-bracket">[</span>AI Görsel Üretimi<span class="sub-bracket">]</span><span class="sub-count">16 araç</span></h3>
+          <div class="tools-grid" role="list"><a href="https://leonardo.ai/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="Leonardo AI — Oyun, konsept ve ürün görseli üretim platformu" title="Oyun, konsept ve ürün görseli üretim platformu" data-name="leonardo ai" data-desc="oyun, konsept ve ürün görseli üretim platformu">
               <div class="card-inner">
                 <img src="https://www.google.com/s2/favicons?domain=leonardo.ai&sz=32" alt="" class="tool-favicon" aria-hidden="true" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><rect width=%2216%22 height=%2216%22 fill=%22%23222%22/><text x=%228%22 y=%2212%22 text-anchor=%22middle%22 fill=%22%2339ff14%22 font-size=%2210%22>?</text></svg>'">
                 <span class="tool-name">Leonardo AI</span>
@@ -1539,15 +1153,10 @@
                 <span class="tool-name">Adobe Firefly</span>
               </div>
               <span class="tooltip" role="tooltip">Adobe ekosistemi için generatif görsel araçları</span>
-            </a>
-          </div>
-        </section><section class="subcategory" aria-label="Tasarım &amp; Medya">
-          <h3 class="sub-header">
-            <span class="sub-bracket">[</span>Tasarım &amp; Medya<span class="sub-bracket">]</span>
-            <span class="sub-count">24 araç</span>
-          </h3>
-          <div class="tools-grid" role="list">
-            <a href="https://www.canva.com/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="Canva — Hızlı görsel, sunum ve sosyal medya tasarımı platformu" title="Hızlı görsel, sunum ve sosyal medya tasarımı platformu" data-name="canva" data-desc="hızlı görsel, sunum ve sosyal medya tasarımı platformu">
+            </a></div>
+        </section><section class="subcategory" id="sub-DESIGN-Tasarım-&amp;-Medya" aria-label="Tasarım &amp; Medya">
+          <h3 class="sub-header"><span class="sub-bracket">[</span>Tasarım &amp; Medya<span class="sub-bracket">]</span><span class="sub-count">24 araç</span></h3>
+          <div class="tools-grid" role="list"><a href="https://www.canva.com/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="Canva — Hızlı görsel, sunum ve sosyal medya tasarımı platformu" title="Hızlı görsel, sunum ve sosyal medya tasarımı platformu" data-name="canva" data-desc="hızlı görsel, sunum ve sosyal medya tasarımı platformu">
               <div class="card-inner">
                 <img src="https://www.google.com/s2/favicons?domain=www.canva.com&sz=32" alt="" class="tool-favicon" aria-hidden="true" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><rect width=%2216%22 height=%2216%22 fill=%22%23222%22/><text x=%228%22 y=%2212%22 text-anchor=%22middle%22 fill=%22%2339ff14%22 font-size=%2210%22>?</text></svg>'">
                 <span class="tool-name">Canva</span>
@@ -1691,23 +1300,18 @@
                 <span class="tool-name">Eyecandy</span>
               </div>
               <span class="tooltip" role="tooltip">Görsel teknik ve sinematik ilham kütüphanesi</span>
-            </a>
-          </div>
+            </a></div>
         </section>
+      <section class="subcategory user-added-section" id="useradded-DESIGN" style="display:none" aria-label="Kullanıcı Eklemeleri">
+        <h3 class="sub-header"><span class="sub-bracket">[</span>Kullanıcı Eklemeleri<span class="sub-bracket">]</span><span class="sub-count" id="ua-count-DESIGN">0 araç</span></h3>
+        <div class="tools-grid" role="list" id="ua-grid-DESIGN"></div>
+      </section>
     </div>
   <div class="category-panel" id="panel-MEDIA" role="tabpanel" aria-label="MEDIA">
-      <div class="cat-header">
-        <span class="cat-icon">◎</span>
-        <h2 class="cat-title">░░ MEDIA ░░</h2>
-        <span class="cat-count">30 ARAÇ</span>
-      </div>
-      <section class="subcategory" aria-label="Video &amp; Animasyon">
-          <h3 class="sub-header">
-            <span class="sub-bracket">[</span>Video &amp; Animasyon<span class="sub-bracket">]</span>
-            <span class="sub-count">10 araç</span>
-          </h3>
-          <div class="tools-grid" role="list">
-            <a href="https://runwayml.com/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="Runway ML — Metinden video ve AI video düzenleme platformu" title="Metinden video ve AI video düzenleme platformu" data-name="runway ml" data-desc="metinden video ve ai video düzenleme platformu">
+      <div class="cat-header"><span class="cat-icon">◎</span><h2 class="cat-title">░░ MEDIA ░░</h2><span class="cat-count" id="count-MEDIA">30 ARAÇ</span></div>
+      <section class="subcategory" id="sub-MEDIA-Video-&amp;-Animasyon" aria-label="Video &amp; Animasyon">
+          <h3 class="sub-header"><span class="sub-bracket">[</span>Video &amp; Animasyon<span class="sub-bracket">]</span><span class="sub-count">10 araç</span></h3>
+          <div class="tools-grid" role="list"><a href="https://runwayml.com/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="Runway ML — Metinden video ve AI video düzenleme platformu" title="Metinden video ve AI video düzenleme platformu" data-name="runway ml" data-desc="metinden video ve ai video düzenleme platformu">
               <div class="card-inner">
                 <img src="https://www.google.com/s2/favicons?domain=runwayml.com&sz=32" alt="" class="tool-favicon" aria-hidden="true" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><rect width=%2216%22 height=%2216%22 fill=%22%23222%22/><text x=%228%22 y=%2212%22 text-anchor=%22middle%22 fill=%22%2339ff14%22 font-size=%2210%22>?</text></svg>'">
                 <span class="tool-name">Runway ML</span>
@@ -1767,15 +1371,10 @@
                 <span class="tool-name">Revid PDF to Brainrot</span>
               </div>
               <span class="tooltip" role="tooltip">PDF içeriklerini kısa viral videolara dönüştüren araç</span>
-            </a>
-          </div>
-        </section><section class="subcategory" aria-label="Ses, Müzik &amp; Podcast">
-          <h3 class="sub-header">
-            <span class="sub-bracket">[</span>Ses, Müzik &amp; Podcast<span class="sub-bracket">]</span>
-            <span class="sub-count">12 araç</span>
-          </h3>
-          <div class="tools-grid" role="list">
-            <a href="https://elevenlabs.io/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="ElevenLabs — Doğal ses sentezi ve ses klonlama platformu" title="Doğal ses sentezi ve ses klonlama platformu" data-name="elevenlabs" data-desc="doğal ses sentezi ve ses klonlama platformu">
+            </a></div>
+        </section><section class="subcategory" id="sub-MEDIA-Ses,-Müzik-&amp;-Podcast" aria-label="Ses, Müzik &amp; Podcast">
+          <h3 class="sub-header"><span class="sub-bracket">[</span>Ses, Müzik &amp; Podcast<span class="sub-bracket">]</span><span class="sub-count">12 araç</span></h3>
+          <div class="tools-grid" role="list"><a href="https://elevenlabs.io/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="ElevenLabs — Doğal ses sentezi ve ses klonlama platformu" title="Doğal ses sentezi ve ses klonlama platformu" data-name="elevenlabs" data-desc="doğal ses sentezi ve ses klonlama platformu">
               <div class="card-inner">
                 <img src="https://www.google.com/s2/favicons?domain=elevenlabs.io&sz=32" alt="" class="tool-favicon" aria-hidden="true" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><rect width=%2216%22 height=%2216%22 fill=%22%23222%22/><text x=%228%22 y=%2212%22 text-anchor=%22middle%22 fill=%22%2339ff14%22 font-size=%2210%22>?</text></svg>'">
                 <span class="tool-name">ElevenLabs</span>
@@ -1847,15 +1446,10 @@
                 <span class="tool-name">Riff.ai</span>
               </div>
               <span class="tooltip" role="tooltip">AI destekli müzik üretim platformu</span>
-            </a>
-          </div>
-        </section><section class="subcategory" aria-label="Medya &amp; Playlist Araçları">
-          <h3 class="sub-header">
-            <span class="sub-bracket">[</span>Medya &amp; Playlist Araçları<span class="sub-bracket">]</span>
-            <span class="sub-count">8 araç</span>
-          </h3>
-          <div class="tools-grid" role="list">
-            <a href="https://www.tunemymusic.com/tr/transfer/spotify-to-youtube-music" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="Tune My Music — Müzik servisleri arasında çalma listesi taşıma aracı" title="Müzik servisleri arasında çalma listesi taşıma aracı" data-name="tune my music" data-desc="müzik servisleri arasında çalma listesi taşıma aracı">
+            </a></div>
+        </section><section class="subcategory" id="sub-MEDIA-Medya-&amp;-Playlist-Araçları" aria-label="Medya &amp; Playlist Araçları">
+          <h3 class="sub-header"><span class="sub-bracket">[</span>Medya &amp; Playlist Araçları<span class="sub-bracket">]</span><span class="sub-count">8 araç</span></h3>
+          <div class="tools-grid" role="list"><a href="https://www.tunemymusic.com/tr/transfer/spotify-to-youtube-music" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="Tune My Music — Müzik servisleri arasında çalma listesi taşıma aracı" title="Müzik servisleri arasında çalma listesi taşıma aracı" data-name="tune my music" data-desc="müzik servisleri arasında çalma listesi taşıma aracı">
               <div class="card-inner">
                 <img src="https://www.google.com/s2/favicons?domain=www.tunemymusic.com&sz=32" alt="" class="tool-favicon" aria-hidden="true" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><rect width=%2216%22 height=%2216%22 fill=%22%23222%22/><text x=%228%22 y=%2212%22 text-anchor=%22middle%22 fill=%22%2339ff14%22 font-size=%2210%22>?</text></svg>'">
                 <span class="tool-name">Tune My Music</span>
@@ -1903,23 +1497,18 @@
                 <span class="tool-name">YTS</span>
               </div>
               <span class="tooltip" role="tooltip">Film odaklı medya dizin</span>
-            </a>
-          </div>
+            </a></div>
         </section>
+      <section class="subcategory user-added-section" id="useradded-MEDIA" style="display:none" aria-label="Kullanıcı Eklemeleri">
+        <h3 class="sub-header"><span class="sub-bracket">[</span>Kullanıcı Eklemeleri<span class="sub-bracket">]</span><span class="sub-count" id="ua-count-MEDIA">0 araç</span></h3>
+        <div class="tools-grid" role="list" id="ua-grid-MEDIA"></div>
+      </section>
     </div>
   <div class="category-panel" id="panel-DEVELOP" role="tabpanel" aria-label="DEVELOP">
-      <div class="cat-header">
-        <span class="cat-icon">◑</span>
-        <h2 class="cat-title">░░ DEVELOP ░░</h2>
-        <span class="cat-count">65 ARAÇ</span>
-      </div>
-      <section class="subcategory" aria-label="Kodlama &amp; Geliştirme">
-          <h3 class="sub-header">
-            <span class="sub-bracket">[</span>Kodlama &amp; Geliştirme<span class="sub-bracket">]</span>
-            <span class="sub-count">22 araç</span>
-          </h3>
-          <div class="tools-grid" role="list">
-            <a href="https://blackbox.ai/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="BLACKBOX.AI — Kod önerisi ve örnek keşfi aracı" title="Kod önerisi ve örnek keşfi aracı" data-name="blackbox.ai" data-desc="kod önerisi ve örnek keşfi aracı">
+      <div class="cat-header"><span class="cat-icon">◑</span><h2 class="cat-title">░░ DEVELOP ░░</h2><span class="cat-count" id="count-DEVELOP">65 ARAÇ</span></div>
+      <section class="subcategory" id="sub-DEVELOP-Kodlama-&amp;-Geliştirme" aria-label="Kodlama &amp; Geliştirme">
+          <h3 class="sub-header"><span class="sub-bracket">[</span>Kodlama &amp; Geliştirme<span class="sub-bracket">]</span><span class="sub-count">22 araç</span></h3>
+          <div class="tools-grid" role="list"><a href="https://blackbox.ai/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="BLACKBOX.AI — Kod önerisi ve örnek keşfi aracı" title="Kod önerisi ve örnek keşfi aracı" data-name="blackbox.ai" data-desc="kod önerisi ve örnek keşfi aracı">
               <div class="card-inner">
                 <img src="https://www.google.com/s2/favicons?domain=blackbox.ai&sz=32" alt="" class="tool-favicon" aria-hidden="true" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><rect width=%2216%22 height=%2216%22 fill=%22%23222%22/><text x=%228%22 y=%2212%22 text-anchor=%22middle%22 fill=%22%2339ff14%22 font-size=%2210%22>?</text></svg>'">
                 <span class="tool-name">BLACKBOX.AI</span>
@@ -2051,15 +1640,10 @@
                 <span class="tool-name">Render</span>
               </div>
               <span class="tooltip" role="tooltip">Uygulama yayınlama ve barındırma platformu</span>
-            </a>
-          </div>
-        </section><section class="subcategory" aria-label="No-Code &amp; Builder">
-          <h3 class="sub-header">
-            <span class="sub-bracket">[</span>No-Code &amp; Builder<span class="sub-bracket">]</span>
-            <span class="sub-count">12 araç</span>
-          </h3>
-          <div class="tools-grid" role="list">
-            <a href="https://bolt.new/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="bolt.new — Prompt ile full-stack uygulama prototipi oluşturan araç" title="Prompt ile full-stack uygulama prototipi oluşturan araç" data-name="bolt.new" data-desc="prompt ile full-stack uygulama prototipi oluşturan araç">
+            </a></div>
+        </section><section class="subcategory" id="sub-DEVELOP-No-Code-&amp;-Builder" aria-label="No-Code &amp; Builder">
+          <h3 class="sub-header"><span class="sub-bracket">[</span>No-Code &amp; Builder<span class="sub-bracket">]</span><span class="sub-count">12 araç</span></h3>
+          <div class="tools-grid" role="list"><a href="https://bolt.new/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="bolt.new — Prompt ile full-stack uygulama prototipi oluşturan araç" title="Prompt ile full-stack uygulama prototipi oluşturan araç" data-name="bolt.new" data-desc="prompt ile full-stack uygulama prototipi oluşturan araç">
               <div class="card-inner">
                 <img src="https://www.google.com/s2/favicons?domain=bolt.new&sz=32" alt="" class="tool-favicon" aria-hidden="true" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><rect width=%2216%22 height=%2216%22 fill=%22%23222%22/><text x=%228%22 y=%2212%22 text-anchor=%22middle%22 fill=%22%2339ff14%22 font-size=%2210%22>?</text></svg>'">
                 <span class="tool-name">bolt.new</span>
@@ -2131,15 +1715,10 @@
                 <span class="tool-name">Emergent</span>
               </div>
               <span class="tooltip" role="tooltip">AI destekli uygulama geliştirme ve teslim platformu</span>
-            </a>
-          </div>
-        </section><section class="subcategory" aria-label="Ajan &amp; Model Geliştirme">
-          <h3 class="sub-header">
-            <span class="sub-bracket">[</span>Ajan &amp; Model Geliştirme<span class="sub-bracket">]</span>
-            <span class="sub-count">15 araç</span>
-          </h3>
-          <div class="tools-grid" role="list">
-            <a href="https://agentops.ai/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="AgentOps — AI ajan gözlemleme ve izleme platformu" title="AI ajan gözlemleme ve izleme platformu" data-name="agentops" data-desc="ai ajan gözlemleme ve izleme platformu">
+            </a></div>
+        </section><section class="subcategory" id="sub-DEVELOP-Ajan-&amp;-Model-Geliştirme" aria-label="Ajan &amp; Model Geliştirme">
+          <h3 class="sub-header"><span class="sub-bracket">[</span>Ajan &amp; Model Geliştirme<span class="sub-bracket">]</span><span class="sub-count">15 araç</span></h3>
+          <div class="tools-grid" role="list"><a href="https://agentops.ai/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="AgentOps — AI ajan gözlemleme ve izleme platformu" title="AI ajan gözlemleme ve izleme platformu" data-name="agentops" data-desc="ai ajan gözlemleme ve izleme platformu">
               <div class="card-inner">
                 <img src="https://www.google.com/s2/favicons?domain=agentops.ai&sz=32" alt="" class="tool-favicon" aria-hidden="true" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><rect width=%2216%22 height=%2216%22 fill=%22%23222%22/><text x=%228%22 y=%2212%22 text-anchor=%22middle%22 fill=%22%2339ff14%22 font-size=%2210%22>?</text></svg>'">
                 <span class="tool-name">AgentOps</span>
@@ -2229,15 +1808,10 @@
                 <span class="tool-name">Quiver</span>
               </div>
               <span class="tooltip" role="tooltip">Prompt akışı ve AI çalışma alanı aracı - İkon oluşturma</span>
-            </a>
-          </div>
-        </section><section class="subcategory" aria-label="Kodlama Öğrenme">
-          <h3 class="sub-header">
-            <span class="sub-bracket">[</span>Kodlama Öğrenme<span class="sub-bracket">]</span>
-            <span class="sub-count">16 araç</span>
-          </h3>
-          <div class="tools-grid" role="list">
-            <a href="https://www.freecodecamp.org/learn" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="FreeCodeCamp / Learn — Uygulamalı yazılım öğrenme ve sertifika platformu" title="Uygulamalı yazılım öğrenme ve sertifika platformu" data-name="freecodecamp / learn" data-desc="uygulamalı yazılım öğrenme ve sertifika platformu">
+            </a></div>
+        </section><section class="subcategory" id="sub-DEVELOP-Kodlama-Öğrenme" aria-label="Kodlama Öğrenme">
+          <h3 class="sub-header"><span class="sub-bracket">[</span>Kodlama Öğrenme<span class="sub-bracket">]</span><span class="sub-count">16 araç</span></h3>
+          <div class="tools-grid" role="list"><a href="https://www.freecodecamp.org/learn" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="FreeCodeCamp / Learn — Uygulamalı yazılım öğrenme ve sertifika platformu" title="Uygulamalı yazılım öğrenme ve sertifika platformu" data-name="freecodecamp / learn" data-desc="uygulamalı yazılım öğrenme ve sertifika platformu">
               <div class="card-inner">
                 <img src="https://www.google.com/s2/favicons?domain=www.freecodecamp.org&sz=32" alt="" class="tool-favicon" aria-hidden="true" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><rect width=%2216%22 height=%2216%22 fill=%22%23222%22/><text x=%228%22 y=%2212%22 text-anchor=%22middle%22 fill=%22%2339ff14%22 font-size=%2210%22>?</text></svg>'">
                 <span class="tool-name">FreeCodeCamp / Learn</span>
@@ -2333,23 +1907,18 @@
                 <span class="tool-name">CodeDex C++</span>
               </div>
               <span class="tooltip" role="tooltip">Oyunlaştırılmış C++ öğrenme parkuru</span>
-            </a>
-          </div>
+            </a></div>
         </section>
+      <section class="subcategory user-added-section" id="useradded-DEVELOP" style="display:none" aria-label="Kullanıcı Eklemeleri">
+        <h3 class="sub-header"><span class="sub-bracket">[</span>Kullanıcı Eklemeleri<span class="sub-bracket">]</span><span class="sub-count" id="ua-count-DEVELOP">0 araç</span></h3>
+        <div class="tools-grid" role="list" id="ua-grid-DEVELOP"></div>
+      </section>
     </div>
   <div class="category-panel" id="panel-CYBERSEC" role="tabpanel" aria-label="CYBERSEC">
-      <div class="cat-header">
-        <span class="cat-icon">◒</span>
-        <h2 class="cat-title">░░ CYBERSEC ░░</h2>
-        <span class="cat-count">34 ARAÇ</span>
-      </div>
-      <section class="subcategory" aria-label="Genel">
-          <h3 class="sub-header">
-            <span class="sub-bracket">[</span>Genel<span class="sub-bracket">]</span>
-            <span class="sub-count">34 araç</span>
-          </h3>
-          <div class="tools-grid" role="list">
-            <a href="https://tryhackme.com/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="TryHackMe — İnteraktif siber güvenlik laboratuvarları platformu" title="İnteraktif siber güvenlik laboratuvarları platformu" data-name="tryhackme" data-desc="i̇nteraktif siber güvenlik laboratuvarları platformu">
+      <div class="cat-header"><span class="cat-icon">◒</span><h2 class="cat-title">░░ CYBERSEC ░░</h2><span class="cat-count" id="count-CYBERSEC">34 ARAÇ</span></div>
+      <section class="subcategory" id="sub-CYBERSEC-Genel" aria-label="Genel">
+          <h3 class="sub-header"><span class="sub-bracket">[</span>Genel<span class="sub-bracket">]</span><span class="sub-count">34 araç</span></h3>
+          <div class="tools-grid" role="list"><a href="https://tryhackme.com/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="TryHackMe — İnteraktif siber güvenlik laboratuvarları platformu" title="İnteraktif siber güvenlik laboratuvarları platformu" data-name="tryhackme" data-desc="i̇nteraktif siber güvenlik laboratuvarları platformu">
               <div class="card-inner">
                 <img src="https://www.google.com/s2/favicons?domain=tryhackme.com&sz=32" alt="" class="tool-favicon" aria-hidden="true" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><rect width=%2216%22 height=%2216%22 fill=%22%23222%22/><text x=%228%22 y=%2212%22 text-anchor=%22middle%22 fill=%22%2339ff14%22 font-size=%2210%22>?</text></svg>'">
                 <span class="tool-name">TryHackMe</span>
@@ -2553,23 +2122,18 @@
                 <span class="tool-name">Breach Directory</span>
               </div>
               <span class="tooltip" role="tooltip">Veri ihlali sorgulama aracı</span>
-            </a>
-          </div>
+            </a></div>
         </section>
+      <section class="subcategory user-added-section" id="useradded-CYBERSEC" style="display:none" aria-label="Kullanıcı Eklemeleri">
+        <h3 class="sub-header"><span class="sub-bracket">[</span>Kullanıcı Eklemeleri<span class="sub-bracket">]</span><span class="sub-count" id="ua-count-CYBERSEC">0 araç</span></h3>
+        <div class="tools-grid" role="list" id="ua-grid-CYBERSEC"></div>
+      </section>
     </div>
   <div class="category-panel" id="panel-SUPERUSER" role="tabpanel" aria-label="SUPERUSER">
-      <div class="cat-header">
-        <span class="cat-icon">◓</span>
-        <h2 class="cat-title">░░ SUPERUSER ░░</h2>
-        <span class="cat-count">65 ARAÇ</span>
-      </div>
-      <section class="subcategory" aria-label="Faydalı Siteler">
-          <h3 class="sub-header">
-            <span class="sub-bracket">[</span>Faydalı Siteler<span class="sub-bracket">]</span>
-            <span class="sub-count">21 araç</span>
-          </h3>
-          <div class="tools-grid" role="list">
-            <a href="https://web.archive.org/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="Wayback Machine — Web sitelerinin eski sürümlerini arşivden açan araç" title="Web sitelerinin eski sürümlerini arşivden açan araç" data-name="wayback machine" data-desc="web sitelerinin eski sürümlerini arşivden açan araç">
+      <div class="cat-header"><span class="cat-icon">◓</span><h2 class="cat-title">░░ SUPERUSER ░░</h2><span class="cat-count" id="count-SUPERUSER">65 ARAÇ</span></div>
+      <section class="subcategory" id="sub-SUPERUSER-Faydalı-Siteler" aria-label="Faydalı Siteler">
+          <h3 class="sub-header"><span class="sub-bracket">[</span>Faydalı Siteler<span class="sub-bracket">]</span><span class="sub-count">21 araç</span></h3>
+          <div class="tools-grid" role="list"><a href="https://web.archive.org/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="Wayback Machine — Web sitelerinin eski sürümlerini arşivden açan araç" title="Web sitelerinin eski sürümlerini arşivden açan araç" data-name="wayback machine" data-desc="web sitelerinin eski sürümlerini arşivden açan araç">
               <div class="card-inner">
                 <img src="https://www.google.com/s2/favicons?domain=web.archive.org&sz=32" alt="" class="tool-favicon" aria-hidden="true" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><rect width=%2216%22 height=%2216%22 fill=%22%23222%22/><text x=%228%22 y=%2212%22 text-anchor=%22middle%22 fill=%22%2339ff14%22 font-size=%2210%22>?</text></svg>'">
                 <span class="tool-name">Wayback Machine</span>
@@ -2695,15 +2259,10 @@
                 <span class="tool-name">Tunç Kurt — Gayret Et</span>
               </div>
               <span class="tooltip" role="tooltip">Motivasyon videosu</span>
-            </a>
-          </div>
-        </section><section class="subcategory" aria-label="Sistem &amp; Yardımcı Araçlar">
-          <h3 class="sub-header">
-            <span class="sub-bracket">[</span>Sistem &amp; Yardımcı Araçlar<span class="sub-bracket">]</span>
-            <span class="sub-count">21 araç</span>
-          </h3>
-          <div class="tools-grid" role="list">
-            <a href="https://www.bleachbit.org/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="BleachBit — Sistem temizleme ve gizlilik aracı" title="Sistem temizleme ve gizlilik aracı" data-name="bleachbit" data-desc="sistem temizleme ve gizlilik aracı">
+            </a></div>
+        </section><section class="subcategory" id="sub-SUPERUSER-Sistem-&amp;-Yardımcı-Araçlar" aria-label="Sistem &amp; Yardımcı Araçlar">
+          <h3 class="sub-header"><span class="sub-bracket">[</span>Sistem &amp; Yardımcı Araçlar<span class="sub-bracket">]</span><span class="sub-count">21 araç</span></h3>
+          <div class="tools-grid" role="list"><a href="https://www.bleachbit.org/" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="BleachBit — Sistem temizleme ve gizlilik aracı" title="Sistem temizleme ve gizlilik aracı" data-name="bleachbit" data-desc="sistem temizleme ve gizlilik aracı">
               <div class="card-inner">
                 <img src="https://www.google.com/s2/favicons?domain=www.bleachbit.org&sz=32" alt="" class="tool-favicon" aria-hidden="true" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><rect width=%2216%22 height=%2216%22 fill=%22%23222%22/><text x=%228%22 y=%2212%22 text-anchor=%22middle%22 fill=%22%2339ff14%22 font-size=%2210%22>?</text></svg>'">
                 <span class="tool-name">BleachBit</span>
@@ -2829,15 +2388,10 @@
                 <span class="tool-name">PrivacyTools</span>
               </div>
               <span class="tooltip" role="tooltip">Gizlilik araçları ve öneri rehberi</span>
-            </a>
-          </div>
-        </section><section class="subcategory" aria-label="Windows Optimizasyon">
-          <h3 class="sub-header">
-            <span class="sub-bracket">[</span>Windows Optimizasyon<span class="sub-bracket">]</span>
-            <span class="sub-count">15 araç</span>
-          </h3>
-          <div class="tools-grid" role="list">
-            <a href="https://github.com/ChrisTitusTech/winutil" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="Winutil — Windows kurulum ve optimizasyon yardımcı aracı" title="Windows kurulum ve optimizasyon yardımcı aracı" data-name="winutil" data-desc="windows kurulum ve optimizasyon yardımcı aracı">
+            </a></div>
+        </section><section class="subcategory" id="sub-SUPERUSER-Windows-Optimizasyon" aria-label="Windows Optimizasyon">
+          <h3 class="sub-header"><span class="sub-bracket">[</span>Windows Optimizasyon<span class="sub-bracket">]</span><span class="sub-count">15 araç</span></h3>
+          <div class="tools-grid" role="list"><a href="https://github.com/ChrisTitusTech/winutil" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="Winutil — Windows kurulum ve optimizasyon yardımcı aracı" title="Windows kurulum ve optimizasyon yardımcı aracı" data-name="winutil" data-desc="windows kurulum ve optimizasyon yardımcı aracı">
               <div class="card-inner">
                 <img src="https://www.google.com/s2/favicons?domain=github.com&sz=32" alt="" class="tool-favicon" aria-hidden="true" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><rect width=%2216%22 height=%2216%22 fill=%22%23222%22/><text x=%228%22 y=%2212%22 text-anchor=%22middle%22 fill=%22%2339ff14%22 font-size=%2210%22>?</text></svg>'">
                 <span class="tool-name">Winutil</span>
@@ -2927,15 +2481,10 @@
                 <span class="tool-name">Windows Optimization</span>
               </div>
               <span class="tooltip" role="tooltip">Windows ayar ve optimizasyon komut koleksiyonu</span>
-            </a>
-          </div>
-        </section><section class="subcategory" aria-label="GitHub &amp; Açık Kaynak">
-          <h3 class="sub-header">
-            <span class="sub-bracket">[</span>GitHub &amp; Açık Kaynak<span class="sub-bracket">]</span>
-            <span class="sub-count">8 araç</span>
-          </h3>
-          <div class="tools-grid" role="list">
-            <a href="https://github.com/geekan/MetaGPT" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="MetaGPT — Yazılım geliştirme iş akışları için açık kaynak çok ajanlı framework" title="Yazılım geliştirme iş akışları için açık kaynak çok ajanlı framework" data-name="metagpt" data-desc="yazılım geliştirme iş akışları için açık kaynak çok ajanlı framework">
+            </a></div>
+        </section><section class="subcategory" id="sub-SUPERUSER-GitHub-&amp;-Açık-Kaynak" aria-label="GitHub &amp; Açık Kaynak">
+          <h3 class="sub-header"><span class="sub-bracket">[</span>GitHub &amp; Açık Kaynak<span class="sub-bracket">]</span><span class="sub-count">8 araç</span></h3>
+          <div class="tools-grid" role="list"><a href="https://github.com/geekan/MetaGPT" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="MetaGPT — Yazılım geliştirme iş akışları için açık kaynak çok ajanlı framework" title="Yazılım geliştirme iş akışları için açık kaynak çok ajanlı framework" data-name="metagpt" data-desc="yazılım geliştirme iş akışları için açık kaynak çok ajanlı framework">
               <div class="card-inner">
                 <img src="https://www.google.com/s2/favicons?domain=github.com&sz=32" alt="" class="tool-favicon" aria-hidden="true" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><rect width=%2216%22 height=%2216%22 fill=%22%23222%22/><text x=%228%22 y=%2212%22 text-anchor=%22middle%22 fill=%22%2339ff14%22 font-size=%2210%22>?</text></svg>'">
                 <span class="tool-name">MetaGPT</span>
@@ -2983,64 +2532,191 @@
                 <span class="tool-name">Shopify</span>
               </div>
               <span class="tooltip" role="tooltip">Hydrogen, CLI ve geliştirici araçları içeren açık kaynak ekosistem</span>
-            </a>
-          </div>
+            </a></div>
         </section>
+      <section class="subcategory user-added-section" id="useradded-SUPERUSER" style="display:none" aria-label="Kullanıcı Eklemeleri">
+        <h3 class="sub-header"><span class="sub-bracket">[</span>Kullanıcı Eklemeleri<span class="sub-bracket">]</span><span class="sub-count" id="ua-count-SUPERUSER">0 araç</span></h3>
+        <div class="tools-grid" role="list" id="ua-grid-SUPERUSER"></div>
+      </section>
     </div>
   
-      <p class="no-results" id="noResults">░ SONUÇ BULUNAMADI ░</p>
-    </main>
+    <p class="no-results" id="noResults">░ SONUÇ BULUNAMADI ░</p>
+  </main>
 
-    <footer>
-      <span>[ TOOLIE v1.0 ]</span> — PRESS START TO BROWSE —
-      <span>378 ARAÇ YÜKLENDİ</span>
-    </footer>
+  <footer>
+    <span>[ TOOLIE v1.0 ]</span> — PRESS START TO BROWSE — <span id="footerCount">378 ARAÇ YÜKLENDİ</span>
+  </footer>
 
-    <script>
-      function switchTab(cat) {
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.category-panel').forEach(p => p.classList.remove('active'));
-        document.querySelector('[data-tab="' + cat + '"]').classList.add('active');
-        document.getElementById('panel-' + cat).classList.add('active');
-        clearSearch();
-      }
+  <!-- ADD BUTTON -->
+  <button class="add-btn" id="addBtn" aria-label="Yeni araç ekle" title="Yeni araç ekle">+</button>
 
-      const searchInput = document.getElementById('searchInput');
-      const noResults = document.getElementById('noResults');
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <button class="modal-close" id="modalClose" aria-label="Kapat">✕</button>
+      <h2 class="modal-title" id="modalTitle">░ YENİ ARAÇ EKLE ░</h2>
 
-      function clearSearch() {
-        searchInput.value = '';
-        filterCards('');
-      }
+      <div class="form-row">
+        <label class="form-label" for="f-cat">KATEGORİ<span>*</span></label>
+        <select class="form-select" id="f-cat" required>
+          <option value="">-- Seç --</option>
+          <option value="GENERAL">GENERAL</option><option value="SOURCES">SOURCES</option><option value="DESIGN">DESIGN</option><option value="MEDIA">MEDIA</option><option value="DEVELOP">DEVELOP</option><option value="CYBERSEC">CYBERSEC</option><option value="SUPERUSER">SUPERUSER</option>
+        </select>
+        <p class="form-error" id="err-cat">Kategori seçilmedi.</p>
+      </div>
 
-      searchInput.addEventListener('input', function() {
-        const q = this.value.toLowerCase().trim();
-        filterCards(q);
+      <div class="form-row">
+        <label class="form-label" for="f-name">İSİM<span>*</span></label>
+        <input class="form-input" type="text" id="f-name" placeholder="Araç adı" maxlength="80" autocomplete="off">
+        <p class="form-error" id="err-name">İsim zorunlu.</p>
+      </div>
+
+      <div class="form-row">
+        <label class="form-label" for="f-link">LİNK<span>*</span></label>
+        <input class="form-input" type="url" id="f-link" placeholder="https://..." autocomplete="off">
+        <p class="form-error" id="err-link">Geçerli bir URL girin.</p>
+      </div>
+
+      <div class="form-row">
+        <label class="form-label" for="f-desc">AÇIKLAMA<span>*</span></label>
+        <input class="form-input" type="text" id="f-desc" placeholder="Kısa Türkçe açıklama" maxlength="200" autocomplete="off">
+        <p class="form-error" id="err-desc">Açıklama zorunlu.</p>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-cancel" id="btnCancel">İPTAL</button>
+        <button class="btn-submit" id="btnSubmit">EKLE ▶</button>
+      </div>
+      <p class="success-flash" id="successFlash">✓ ARAÇ EKLENDİ!</p>
+    </div>
+  </div>
+
+  <script>
+    // ── Tab switching ──────────────────────────────────────────
+    function switchTab(cat) {
+      document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.category-panel').forEach(p=>p.classList.remove('active'));
+      document.querySelector('[data-tab="'+cat+'"]').classList.add('active');
+      document.getElementById('panel-'+cat).classList.add('active');
+      clearSearch();
+    }
+
+    // ── Search ─────────────────────────────────────────────────
+    const searchInput = document.getElementById('searchInput');
+    const noResults = document.getElementById('noResults');
+    function clearSearch(){ searchInput.value=''; filterCards(''); }
+    searchInput.addEventListener('input', function(){ filterCards(this.value.toLowerCase().trim()); });
+    function filterCards(q) {
+      const panel = document.querySelector('.category-panel.active');
+      if(!panel) return;
+      let visible=0;
+      panel.querySelectorAll('.tool-card').forEach(c=>{
+        const m=!q||c.dataset.name.includes(q)||c.dataset.desc.includes(q);
+        c.style.display=m?'':'none';
+        if(m) visible++;
       });
+      panel.querySelectorAll('.subcategory').forEach(s=>{
+        const any=[...s.querySelectorAll('.tool-card')].some(c=>c.style.display!=='none');
+        s.style.display=any?'':'none';
+      });
+      noResults.classList.toggle('visible', visible===0 && q.length>0);
+    }
 
-      function filterCards(q) {
-        const activePanel = document.querySelector('.category-panel.active');
-        if (!activePanel) return;
+    // ── LocalStorage helpers ────────────────────────────────────
+    const LS_KEY = 'toolie_user_tools';
+    function loadUserTools(){ try{ return JSON.parse(localStorage.getItem(LS_KEY)||'[]'); }catch{ return []; } }
+    function saveUserTools(arr){ localStorage.setItem(LS_KEY, JSON.stringify(arr)); }
 
-        const cards = activePanel.querySelectorAll('.tool-card');
-        let visible = 0;
+    function getDomain(url){ try{ return new URL(url).hostname; }catch{ return url; } }
+    function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 
-        cards.forEach(card => {
-          const name = card.dataset.name || '';
-          const desc = card.dataset.desc || '';
-          const match = !q || name.includes(q) || desc.includes(q);
-          card.style.display = match ? '' : 'none';
-          if (match) visible++;
-        });
+    function buildCard(tool){
+      const fav='https://www.google.com/s2/favicons?domain='+getDomain(tool.link)+'&sz=32';
+      const n=esc(tool.name),d=esc(tool.description),l=esc(tool.link);
+      const div=document.createElement('div');
+      div.innerHTML='<a href="'+l+'" class="tool-card" target="_blank" rel="noopener noreferrer" aria-label="'+n+' — '+d+'" title="'+d+'" data-name="'+n.toLowerCase()+'" data-desc="'+d.toLowerCase()+'"><div class="card-inner"><img src="'+fav+'" alt="" class="tool-favicon" aria-hidden="true" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><rect width=%2216%22 height=%2216%22 fill=%22%23222%22/><text x=%228%22 y=%2212%22 text-anchor=%22middle%22 fill=%22%2339ff14%22 font-size=%2210%22>?</text></svg>'"><span class="tool-name">'+n+'</span></div><span class="tooltip" role="tooltip">'+d+'</span></a>';
+      return div.firstChild;
+    }
 
-        const subcats = activePanel.querySelectorAll('.subcategory');
-        subcats.forEach(sub => {
-          const anyVisible = [...sub.querySelectorAll('.tool-card')].some(c => c.style.display !== 'none');
-          sub.style.display = anyVisible ? '' : 'none';
-        });
+    function renderUserTool(tool){
+      const cat=tool.category;
+      const grid=document.getElementById('ua-grid-'+cat);
+      const section=document.getElementById('useradded-'+cat);
+      if(!grid||!section) return;
+      grid.appendChild(buildCard(tool));
+      section.style.display='';
+      // update count
+      const cnt=document.getElementById('ua-count-'+cat);
+      if(cnt) cnt.textContent=grid.children.length+' araç';
+      // update header total
+      const hc=document.getElementById('count-'+cat);
+      if(hc){ const m=hc.textContent.match(/d+/); if(m) hc.textContent=(parseInt(m[0])+1)+' ARAÇ'; }
+    }
 
-        noResults.classList.toggle('visible', visible === 0 && q.length > 0);
-      }
-    </script>
+    function updateGlobalCount(){
+      const ua=loadUserTools();
+      const total=378+ua.length;
+      document.getElementById('globalStats').textContent=total+' ARAÇ · 7 KATEGORİ · 26+ ALT KATEGORİ';
+      document.getElementById('footerCount').textContent=total+' ARAÇ YÜKLENDİ';
+    }
+
+    // ── Init user tools from localStorage ─────────────────────
+    (function init(){
+      const ua=loadUserTools();
+      ua.forEach(t=>renderUserTool(t));
+      updateGlobalCount();
+    })();
+
+    // ── Modal ──────────────────────────────────────────────────
+    const overlay=document.getElementById('modalOverlay');
+    const addBtn=document.getElementById('addBtn');
+    const modalClose=document.getElementById('modalClose');
+    const btnCancel=document.getElementById('btnCancel');
+    const btnSubmit=document.getElementById('btnSubmit');
+    const successFlash=document.getElementById('successFlash');
+
+    function openModal(){ overlay.classList.add('open'); document.getElementById('f-name').focus(); successFlash.classList.remove('visible'); }
+    function closeModal(){ overlay.classList.remove('open'); resetForm(); }
+
+    addBtn.addEventListener('click', openModal);
+    modalClose.addEventListener('click', closeModal);
+    btnCancel.addEventListener('click', closeModal);
+    overlay.addEventListener('click', e=>{ if(e.target===overlay) closeModal(); });
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+
+    function resetForm(){
+      ['f-cat','f-name','f-link','f-desc'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+      ['err-cat','err-name','err-link','err-desc'].forEach(id=>{ const el=document.getElementById(id); if(el) el.classList.remove('visible'); });
+      successFlash.classList.remove('visible');
+    }
+
+    function validate(){
+      let ok=true;
+      const cat=document.getElementById('f-cat').value.trim();
+      const name=document.getElementById('f-name').value.trim();
+      const link=document.getElementById('f-link').value.trim();
+      const desc=document.getElementById('f-desc').value.trim();
+      const setErr=(id,show)=>document.getElementById(id).classList.toggle('visible',show);
+      setErr('err-cat',!cat); if(!cat) ok=false;
+      setErr('err-name',!name); if(!name) ok=false;
+      let validUrl=false;
+      try{ new URL(link); validUrl=true; }catch{}
+      setErr('err-link',!validUrl); if(!validUrl) ok=false;
+      setErr('err-desc',!desc); if(!desc) ok=false;
+      return ok?{category:cat,name,link,description:desc}:null;
+    }
+
+    btnSubmit.addEventListener('click', function(){
+      const tool=validate();
+      if(!tool) return;
+      const ua=loadUserTools();
+      ua.push(tool);
+      saveUserTools(ua);
+      renderUserTool(tool);
+      updateGlobalCount();
+      successFlash.classList.add('visible');
+      setTimeout(()=>{ closeModal(); }, 1000);
+    });
+  </script>
   </body>
   </html>
