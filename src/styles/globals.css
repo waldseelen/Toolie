@@ -1,0 +1,270 @@
+/* ═══════════════════════════════════════════════════════
+   TOOLIE v1.0 — Global Styles & Design System
+   Retro Pixel-Art Theme with Light/Dark Mode
+   ═══════════════════════════════════════════════════════ */
+
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+
+/* ── CSS Reset ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ═══════════════════════════════════════════════════════
+   DARK THEME (Soft Mocha)
+   ═══════════════════════════════════════════════════════ */
+:root,
+:root[data-theme="dark"] {
+  --bg: #1e1e2e;
+  --bg-secondary: #181825;
+  --card-bg: #313244;
+  --card-border: #45475a;
+  --card-hover-shadow: var(--green);
+
+  --green: #a6e3a1;
+  --cyan: #89dceb;
+  --orange: #fab387;
+  --pink: #f5c2e7;
+  --yellow: #f9e2af;
+  --red: #f38ba8;
+  --lime: #94e2d5;
+
+  --border: #a6e3a1;
+  --border-dim: #313244;
+  --text: #cdd6f4;
+  --text-bright: #f5e0dc;
+  --dim: #6c7086;
+
+  --scanline-opacity: 0.02;
+  --vignette-opacity: 0.3;
+  --glow-strength: 0.6;
+  --content-max: 1600px;
+
+  --font-pixel: "Press Start 2P", monospace;
+}
+
+/* ═══════════════════════════════════════════════════════
+   LIGHT THEME (High Contrast Soft)
+   ═══════════════════════════════════════════════════════ */
+:root[data-theme="light"] {
+  --bg: #fcfaf5;
+  --bg-secondary: #f3ece0;
+  --card-bg: #ffffff;
+  --card-border: #dcd6c8;
+  --card-hover-shadow: rgba(0, 0, 0, 0.1);
+
+  --green: #4e8d6f;
+  --cyan: #5a9cb3;
+  --orange: #b3854e;
+  --pink: #b37380;
+  --yellow: #9c8e4e;
+  --red: #cc5c5c;
+  --lime: #7a8d4e;
+
+  --border: #4e8d6f;
+  --border-dim: #dcd6c8;
+  --text: #2d2d2d;
+  --text-bright: #121212;
+  --dim: #767676;
+
+  --scanline-opacity: 0.005;
+  --vignette-opacity: 0.05;
+  --glow-strength: 0;
+
+  --font-pixel: "Press Start 2P", monospace;
+}
+
+/* ── Base ── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--green);
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  line-height: 1.45;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* ── CRT Scanlines ── */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, var(--scanline-opacity)) 2px,
+    rgba(0, 0, 0, var(--scanline-opacity)) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ── CRT Vignette ── */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 60%,
+    rgba(0, 0, 0, var(--vignette-opacity)) 100%
+  );
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--dim);
+  border: 2px solid var(--bg);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--green);
+}
+
+/* ── Selection ── */
+::selection {
+  background: var(--green);
+  color: var(--bg);
+}
+
+/* ── Focus visible ── */
+:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+/* ── Link reset ── */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.skipLink {
+  position: absolute;
+  left: 12px;
+  top: -44px;
+  z-index: 10000;
+  background: var(--bg);
+  color: var(--green);
+  border: 2px solid var(--cyan);
+  padding: 8px 10px;
+}
+
+.skipLink:focus {
+  top: 12px;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ═══════════════════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════════════════ */
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes flicker {
+  0%,
+  95%,
+  100% {
+    opacity: 1;
+  }
+  96% {
+    opacity: 0.4;
+  }
+  97% {
+    opacity: 1;
+  }
+  98% {
+    opacity: 0.6;
+  }
+  99% {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse-skeleton {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

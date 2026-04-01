@@ -1,0 +1,65 @@
+.skeletonWrapper {
+  padding: 16px;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.skeletonHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0 8px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid var(--border-dim);
+}
+
+.skeletonHeaderBar {
+  width: 200px;
+  height: 14px;
+  background: var(--border-dim);
+  animation: pulse-skeleton 1.5s ease-in-out infinite;
+}
+
+.skeletonGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+}
+
+.skeletonCard {
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  padding: 12px 10px;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  animation: pulse-skeleton 1.5s ease-in-out infinite;
+}
+
+.skeletonIcon {
+  width: 20px;
+  height: 20px;
+  background: var(--border-dim);
+}
+
+.skeletonText {
+  width: 80%;
+  height: 8px;
+  background: var(--border-dim);
+}
+
+.skeletonSubHeader {
+  width: 160px;
+  height: 10px;
+  background: var(--border-dim);
+  margin: 24px 0 12px;
+  animation: pulse-skeleton 1.5s ease-in-out infinite;
+}
+
+@media (max-width: 600px) {
+  .skeletonGrid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+}

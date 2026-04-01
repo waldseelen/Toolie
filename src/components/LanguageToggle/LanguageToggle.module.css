@@ -1,0 +1,44 @@
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-width: 92px;
+  min-height: 34px;
+  padding: 6px 10px;
+  background: var(--bg);
+  border: 2px solid var(--dim);
+  color: var(--text-bright);
+  font-family: var(--font-pixel);
+  font-size: 9px;
+  cursor: pointer;
+  transition: none;
+  line-height: 1;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.toggle:hover {
+  border-color: var(--green);
+  color: var(--green);
+  box-shadow: 2px 2px 0 var(--green);
+}
+
+.toggle:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+.divider {
+  color: var(--dim);
+  opacity: 0.85;
+}
+
+.bracket {
+  color: var(--dim);
+}
+
+.active {
+  color: var(--green);
+  text-shadow: 0 0 calc(8px * var(--glow-strength)) var(--green);
+}

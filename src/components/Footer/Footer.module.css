@@ -1,0 +1,13 @@
+.footer {
+  text-align: center;
+  padding: 24px 16px;
+  border-top: 2px solid var(--border-dim);
+  margin-top: 32px;
+  color: var(--dim);
+  font-size: 7px;
+  letter-spacing: 3px;
+}
+
+.footer span {
+  color: var(--green);
+}

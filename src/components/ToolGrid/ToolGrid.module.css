@@ -1,0 +1,84 @@
+.panel {
+  animation: slideUp 0.2s ease-out;
+}
+
+.catHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0 10px;
+  margin-bottom: 18px;
+  border-bottom: 2px solid var(--accent-color, var(--green));
+  color: var(--accent-color, var(--green));
+}
+
+.catIcon {
+  font-size: 20px;
+}
+
+.catTitle {
+  font-size: clamp(10px, 2vw, 14px);
+  letter-spacing: 3px;
+  color: var(--accent-color, var(--green));
+  text-shadow: 0 0 calc(12px * var(--glow-strength)) var(--accent-color, var(--green));
+}
+
+.catCount {
+  font-size: 7px;
+  color: var(--dim);
+  margin-left: auto;
+  letter-spacing: 2px;
+}
+
+.subcategory {
+  margin-bottom: 28px;
+}
+
+.subHeader {
+  font-size: 8px;
+  color: var(--cyan);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: 2px;
+}
+
+.subBracket {
+  color: var(--dim);
+}
+
+.subCount {
+  font-size: 6px;
+  color: var(--dim);
+  margin-left: auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 110px));
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+}
+
+.noResults {
+  text-align: center;
+  padding: 48px;
+  color: var(--dim);
+  font-size: 9px;
+  letter-spacing: 2px;
+}
+
+.noResultsIcon {
+  font-size: 32px;
+  display: block;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
+    gap: 10px;
+  }
+}

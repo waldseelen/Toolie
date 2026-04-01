@@ -1,0 +1,26 @@
+{
+  "name": "TOOLIE — Retro Araç Kataloğu",
+  "short_name": "TOOLIE",
+  "description": "378+ araç, 7 kategori, pixel-art tasarım. Retro tarzda dinamik araç kataloğu.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#39ff14",
+  "orientation": "any",
+  "categories": ["utilities", "productivity"],
+  "lang": "tr",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
