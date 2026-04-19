@@ -77,6 +77,7 @@ function ToolieAppInner({ categories, stats }: ToolieAppProps) {
       <CategoryNav
         categories={categories}
         activeCategory={activeCategory}
+        locale={locale}
         onCategoryChange={handleCategoryChange}
         t={t}
       />

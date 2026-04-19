@@ -2,11 +2,13 @@
 
 import styles from "./CategoryNav.module.css";
 import type { CategoryData } from "@/lib/types";
-import type { TranslationKey } from "@/lib/i18n";
+import type { Locale, TranslationKey } from "@/lib/i18n";
+import { getLocalizedName } from "@/lib/taxonomy";
 
 interface CategoryNavProps {
   categories: CategoryData[];
   activeCategory: string;
+  locale: Locale;
   onCategoryChange: (name: string) => void;
   t: (key: TranslationKey) => string;
 }
@@ -14,6 +16,7 @@ interface CategoryNavProps {
 export function CategoryNav({
   categories,
   activeCategory,
+  locale,
   onCategoryChange,
   t,
 }: CategoryNavProps) {
@@ -25,6 +28,13 @@ export function CategoryNav({
     >
       {categories.map((cat) => {
         const isActive = activeCategory === cat.name;
+        const displayName = getLocalizedName(
+          locale,
+          cat.nameTr,
+          cat.nameEn,
+          cat.name
+        );
+
         return (
           <button
             key={cat.id}
@@ -34,7 +44,7 @@ export function CategoryNav({
             role="tab"
             aria-selected={isActive}
             aria-controls={`panel-${cat.name}`}
-            aria-label={`${cat.name} ${t("categorySwitch")}`}
+            aria-label={`${displayName} ${t("categorySwitch")}`}
             style={
               isActive
                 ? ({
@@ -46,7 +56,7 @@ export function CategoryNav({
             }
           >
             <span className={styles.tabIcon}>{cat.icon}</span>
-            <span className={styles.tabLabel}>{cat.name}</span>
+            <span className={styles.tabLabel}>{displayName}</span>
           </button>
         );
       })}

@@ -10,23 +10,33 @@ datasource db {
 model Category {
   id            String        @id @default(cuid())
   name          String        @unique
+  slug          String?       @unique
+  nameTr        String?
+  nameEn        String?
   icon          String        @default("◈")
   color         String        @default("#39ff14")
   sortOrder     Int           @default(0)
   subcategories Subcategory[]
   createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @default(now()) @updatedAt
 }
 
 model Subcategory {
   id         String   @id @default(cuid())
   name       String
+  key        String?
+  slug       String?  @unique
+  nameTr     String?
+  nameEn     String?
   categoryId String
   category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   sortOrder  Int      @default(0)
   tools      Tool[]
   createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
 
   @@unique([categoryId, name])
+  @@unique([categoryId, key])
 }
 
 model Tool {
@@ -38,6 +48,7 @@ model Tool {
   subcategoryId String
   subcategory   Subcategory @relation(fields: [subcategoryId], references: [id], onDelete: Cascade)
   faviconUrl    String?
+  sortOrder     Int         @default(0)
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
 }

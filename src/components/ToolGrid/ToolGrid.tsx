@@ -3,6 +3,7 @@
 import styles from "./ToolGrid.module.css";
 import type { CategoryData } from "@/lib/types";
 import type { Locale, TranslationKey } from "@/lib/i18n";
+import { getLocalizedName } from "@/lib/taxonomy";
 import { ToolCard } from "../ToolCard/ToolCard";
 
 interface ToolGridProps {
@@ -23,6 +24,12 @@ export function ToolGrid({
   t,
 }: ToolGridProps) {
   const query = searchQuery.toLowerCase().trim();
+  const categoryName = getLocalizedName(
+    locale,
+    category.nameTr,
+    category.nameEn,
+    category.name
+  );
 
   let totalVisibleTools = 0;
 
@@ -41,7 +48,11 @@ export function ToolGrid({
         : sub.tools;
 
       totalVisibleTools += filteredTools.length;
-      return { ...sub, tools: filteredTools };
+      return {
+        ...sub,
+        displayName: getLocalizedName(locale, sub.nameTr, sub.nameEn, sub.name),
+        tools: filteredTools,
+      };
     })
     .filter((sub) => sub.tools.length > 0);
 
@@ -68,14 +79,14 @@ export function ToolGrid({
       className={styles.panel}
       id={`panel-${category.name}`}
       role="tabpanel"
-      aria-label={category.name}
+      aria-label={categoryName}
     >
       <div
         className={styles.catHeader}
         style={{ "--accent-color": category.color } as React.CSSProperties}
       >
         <span className={styles.catIcon}>{category.icon}</span>
-        <h2 className={styles.catTitle}>░░ {category.name} ░░</h2>
+        <h2 className={styles.catTitle}>░░ {categoryName} ░░</h2>
         <span className={styles.catCount}>
           {query
             ? `${totalVisibleTools}/${totalCatTools} ${t("toolCountUpper")}`
@@ -87,11 +98,11 @@ export function ToolGrid({
         <section
           key={sub.id}
           className={styles.subcategory}
-          aria-label={sub.name}
+          aria-label={sub.displayName}
         >
           <h3 className={styles.subHeader}>
             <span className={styles.subBracket}>[</span>
-            {sub.name}
+            {sub.displayName}
             <span className={styles.subBracket}>]</span>
             <span className={styles.subCount}>
               {sub.tools.length} {t("toolCount")}

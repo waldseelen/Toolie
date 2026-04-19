@@ -1,19 +1,9 @@
 import { PrismaClient } from "@prisma/client";
 import { readFileSync } from "fs";
 import { join } from "path";
+import { TAXONOMY_BY_CATEGORY_KEY } from "../src/lib/taxonomy";
 
 const prisma = new PrismaClient();
-
-/* ── Category metadata ── */
-const CATEGORY_META: Record<string, { icon: string; color: string }> = {
-  GENERAL: { icon: "◈", color: "#39ff14" },
-  SOURCES: { icon: "◉", color: "#00d4ff" },
-  DESIGN: { icon: "◆", color: "#ff6bff" },
-  MEDIA: { icon: "◎", color: "#ff6b35" },
-  DEVELOP: { icon: "◑", color: "#ffdd00" },
-  CYBERSEC: { icon: "◒", color: "#ff2244" },
-  SUPERUSER: { icon: "◓", color: "#a0ff60" },
-};
 
 interface SeedTool {
   name: string;
@@ -43,16 +33,32 @@ async function main() {
 
   for (let catIdx = 0; catIdx < data.length; catIdx++) {
     const catData = data[catIdx];
-    const meta = CATEGORY_META[catData.category] ?? {
+    const taxonomyCategory = TAXONOMY_BY_CATEGORY_KEY[catData.category];
+
+    const meta = taxonomyCategory ?? {
       icon: "◈",
       color: "#39ff14",
+      slug: null,
+      nameTr: null,
+      nameEn: null,
+      subcategories: [],
     };
 
     const category = await prisma.category.upsert({
       where: { name: catData.category },
-      update: { icon: meta.icon, color: meta.color, sortOrder: catIdx },
+      update: {
+        slug: meta.slug,
+        nameTr: meta.nameTr,
+        nameEn: meta.nameEn,
+        icon: meta.icon,
+        color: meta.color,
+        sortOrder: catIdx,
+      },
       create: {
         name: catData.category,
+        slug: meta.slug,
+        nameTr: meta.nameTr,
+        nameEn: meta.nameEn,
         icon: meta.icon,
         color: meta.color,
         sortOrder: catIdx,
@@ -64,6 +70,10 @@ async function main() {
     for (let subIdx = 0; subIdx < catData.subcategories.length; subIdx++) {
       const subData = catData.subcategories[subIdx];
 
+      const taxonomySubcategory = meta.subcategories.find(
+        (entry) => entry.oldName === subData.subcategory
+      );
+
       const subcategory = await prisma.subcategory.upsert({
         where: {
           categoryId_name: {
@@ -71,15 +81,25 @@ async function main() {
             name: subData.subcategory,
           },
         },
-        update: { sortOrder: subIdx },
+        update: {
+          key: taxonomySubcategory?.key ?? null,
+          slug: taxonomySubcategory?.slug ?? null,
+          nameTr: taxonomySubcategory?.nameTr ?? null,
+          nameEn: taxonomySubcategory?.nameEn ?? null,
+          sortOrder: subIdx,
+        },
         create: {
           name: subData.subcategory,
+          key: taxonomySubcategory?.key ?? null,
+          slug: taxonomySubcategory?.slug ?? null,
+          nameTr: taxonomySubcategory?.nameTr ?? null,
+          nameEn: taxonomySubcategory?.nameEn ?? null,
           categoryId: category.id,
           sortOrder: subIdx,
         },
       });
 
-      for (const toolData of subData.tools) {
+      for (const [toolIdx, toolData] of subData.tools.entries()) {
         const domain = extractDomain(toolData.link);
         await prisma.tool.create({
           data: {
@@ -91,6 +111,7 @@ async function main() {
             faviconUrl: domain
               ? `https://www.google.com/s2/favicons?domain=${domain}&sz=32`
               : null,
+            sortOrder: toolIdx,
           },
         });
         totalTools++;

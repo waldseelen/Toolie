@@ -11,7 +11,7 @@ export default async function HomePage() {
         orderBy: { sortOrder: "asc" },
         include: {
           tools: {
-            orderBy: { createdAt: "asc" },
+            orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
           },
         },
       },
@@ -22,12 +22,19 @@ export default async function HomePage() {
   const categoryData: CategoryData[] = categories.map((cat) => ({
     id: cat.id,
     name: cat.name,
+    slug: cat.slug,
+    nameTr: cat.nameTr,
+    nameEn: cat.nameEn,
     icon: cat.icon,
     color: cat.color,
     sortOrder: cat.sortOrder,
     subcategories: cat.subcategories.map((sub) => ({
       id: sub.id,
       name: sub.name,
+      key: sub.key,
+      slug: sub.slug,
+      nameTr: sub.nameTr,
+      nameEn: sub.nameEn,
       sortOrder: sub.sortOrder,
       tools: sub.tools.map((tool) => ({
         id: tool.id,

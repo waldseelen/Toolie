@@ -1,8 +1,0 @@
-uploads = []
-generated = []
-
-[[outputs]]
-id = "sUbOMfE7gFGZxlwBbGg8b"
-uri = "file://attached_assets/TOOLS.json"
-type = "unspecified"
-title = "TOOLS.json"

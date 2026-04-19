@@ -1,24 +1,14 @@
+import { TAXONOMY } from "@/lib/taxonomy";
+
 /* ── Category visual metadata ── */
 
-export const CATEGORY_COLORS: Record<string, string> = {
-  GENERAL: "#39ff14",
-  SOURCES: "#00d4ff",
-  DESIGN: "#ff6bff",
-  MEDIA: "#ff6b35",
-  DEVELOP: "#ffdd00",
-  CYBERSEC: "#ff2244",
-  SUPERUSER: "#a0ff60",
-};
+export const CATEGORY_COLORS: Record<string, string> = Object.fromEntries(
+  TAXONOMY.map((category) => [category.key, category.color])
+);
 
-export const CATEGORY_ICONS: Record<string, string> = {
-  GENERAL: "◈",
-  SOURCES: "◉",
-  DESIGN: "◆",
-  MEDIA: "◎",
-  DEVELOP: "◑",
-  CYBERSEC: "◒",
-  SUPERUSER: "◓",
-};
+export const CATEGORY_ICONS: Record<string, string> = Object.fromEntries(
+  TAXONOMY.map((category) => [category.key, category.icon])
+);
 
 /* ── Pixel-art fallback SVG for missing favicons ── */
 export const FAVICON_FALLBACK =
