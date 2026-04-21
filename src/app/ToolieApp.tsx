@@ -1,46 +1,97 @@
 "use client";
 
-import { Suspense, useMemo, useState, useCallback, useEffect } from "react";
+import {
+  Suspense,
+  startTransition,
+  useDeferredValue,
+  useMemo,
+  useState,
+  useCallback,
+  useEffect,
+} from "react";
 import { Header } from "@/components/Header/Header";
 import { SearchBar } from "@/components/SearchBar/SearchBar";
+import { FilterBar } from "@/components/FilterBar/FilterBar";
 import { CategoryNav } from "@/components/CategoryNav/CategoryNav";
 import { ToolGrid } from "@/components/ToolGrid/ToolGrid";
 import { Footer } from "@/components/Footer/Footer";
+import { HomeSections } from "@/components/HomeSections/HomeSections";
+import { CompareTray } from "@/components/CompareTray/CompareTray";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useLanguage } from "@/hooks/useLanguage";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import type { CategoryData, ToolStats } from "@/lib/types";
+import { useCompare } from "@/hooks/useCompare";
+import { useCollections } from "@/hooks/useCollections";
+import { useToolSearch } from "@/hooks/useToolSearch";
+import { useURLParams } from "@/hooks/useURLParams";
+import type { CategoryData, ToolData, ToolStats } from "@/lib/types";
 
 interface ToolieAppProps {
   categories: CategoryData[];
+  featuredTools: ToolData[];
+  latestTools: ToolData[];
   stats: ToolStats;
 }
 
-function ToolieAppInner({ categories, stats }: ToolieAppProps) {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const pathname = usePathname();
+function ToolieAppInner({ categories, featuredTools, latestTools, stats }: ToolieAppProps) {
   const { locale, toggleLanguage, t } = useLanguage();
 
-  const activeCategory = searchParams.get("cat") || "GENERAL";
-  const searchQuery = searchParams.get("q") || "";
+  const {
+    activeCategory,
+    searchQuery,
+    tag,
+    pricing,
+    platform,
+    sort,
+    setCategory,
+    setSearch,
+  } = useURLParams();
 
   const [localSearch, setLocalSearch] = useState(searchQuery);
+  const deferredSearch = useDeferredValue(localSearch);
   const { favorites, toggleFavorite } = useFavorites();
+  const { ids: comparedIds, toggle: toggleCompare, clear: clearCompare } =
+    useCompare();
+  const {
+    collections,
+    createCollection,
+    toggleTool: toggleCollectionTool,
+  } = useCollections();
+  const allTools = useMemo(
+    () =>
+      categories.flatMap((category) =>
+        category.subcategories.flatMap((subcategory) => subcategory.tools)
+      ),
+    [categories]
+  );
+  const { search } = useToolSearch(allTools);
+  const searchResults = useMemo(
+    () => search(deferredSearch),
+    [deferredSearch, search]
+  );
+  const searchResultIds = useMemo(
+    () =>
+      deferredSearch.trim()
+        ? new Set(searchResults.map((tool) => tool.id))
+        : null,
+    [deferredSearch, searchResults]
+  );
+  const comparedTools = useMemo(
+    () =>
+      comparedIds
+        .map((id) => allTools.find((tool) => tool.id === id))
+        .filter((tool): tool is ToolData => Boolean(tool)),
+    [allTools, comparedIds]
+  );
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      const params = new URLSearchParams(searchParams.toString());
-      if (localSearch) {
-        params.set("q", localSearch);
-      } else {
-        params.delete("q");
-      }
-      const qs = params.toString();
-      router.replace(`${pathname}${qs ? `?${qs}` : ""}`, { scroll: false });
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [localSearch, searchParams, router, pathname]);
+    if (localSearch === searchQuery) {
+      return;
+    }
+
+    startTransition(() => {
+      setSearch(localSearch);
+    });
+  }, [localSearch, searchQuery, setSearch]);
 
   useEffect(() => {
     setLocalSearch(searchQuery);
@@ -48,22 +99,21 @@ function ToolieAppInner({ categories, stats }: ToolieAppProps) {
 
   const handleCategoryChange = useCallback(
     (cat: string) => {
-      const params = new URLSearchParams(searchParams.toString());
-      if (cat === "GENERAL") {
-        params.delete("cat");
-      } else {
-        params.set("cat", cat);
-      }
-      const qs = params.toString();
-      router.replace(`${pathname}${qs ? `?${qs}` : ""}`, { scroll: false });
+      setCategory(cat);
     },
-    [searchParams, router, pathname]
+    [setCategory]
   );
 
   const activeCategoryData = useMemo(
     () => categories.find((c) => c.name === activeCategory) || categories[0],
     [categories, activeCategory]
   );
+  const shouldShowHomeSections =
+    activeCategory === categories[0]?.name &&
+    !localSearch.trim() &&
+    !tag &&
+    !pricing &&
+    !platform;
 
   return (
     <>
@@ -74,6 +124,22 @@ function ToolieAppInner({ categories, stats }: ToolieAppProps) {
         t={t}
       />
       <SearchBar value={localSearch} onChange={setLocalSearch} t={t} />
+      <FilterBar t={t} />
+      {shouldShowHomeSections && (
+        <HomeSections
+          locale={locale}
+          featuredTools={featuredTools}
+          latestTools={latestTools}
+          favorites={favorites}
+          comparedIds={comparedIds}
+          collections={collections}
+          onCreateCollection={createCollection}
+          onToggleCollection={toggleCollectionTool}
+          onToggleCompare={toggleCompare}
+          onToggleFavorite={toggleFavorite}
+          t={t}
+        />
+      )}
       <CategoryNav
         categories={categories}
         activeCategory={activeCategory}
@@ -87,21 +153,42 @@ function ToolieAppInner({ categories, stats }: ToolieAppProps) {
             category={activeCategoryData}
             locale={locale}
             searchQuery={localSearch}
+            tag={tag}
+            pricing={pricing}
+            platform={platform}
+            sort={sort}
+            searchResultIds={searchResultIds}
             favorites={favorites}
+            comparedIds={comparedIds}
+            collections={collections}
+            onCreateCollection={createCollection}
+            onToggleCollection={toggleCollectionTool}
             onToggleFavorite={toggleFavorite}
+            onToggleCompare={toggleCompare}
             t={t}
           />
         )}
       </main>
+      <CompareTray comparedTools={comparedTools} onClear={clearCompare} t={t} />
       <Footer t={t} />
     </>
   );
 }
 
-export function ToolieApp({ categories, stats }: ToolieAppProps) {
+export function ToolieApp({
+  categories,
+  featuredTools,
+  latestTools,
+  stats,
+}: ToolieAppProps) {
   return (
     <Suspense>
-      <ToolieAppInner categories={categories} stats={stats} />
+      <ToolieAppInner
+        categories={categories}
+        featuredTools={featuredTools}
+        latestTools={latestTools}
+        stats={stats}
+      />
     </Suspense>
   );
 }

@@ -42,13 +42,46 @@ model Subcategory {
 model Tool {
   id            String      @id @default(cuid())
   name          String
+  slug          String?     @unique
   link          String
   description   String
   descriptionEn String?
   subcategoryId String
   subcategory   Subcategory @relation(fields: [subcategoryId], references: [id], onDelete: Cascade)
   faviconUrl    String?
+  pricingModel  String?
+  platforms     String?
+  featured      Boolean     @default(false)
+  featuredLabel String?
+  hasApi        Boolean     @default(false)
+  isOpenSource  Boolean     @default(false)
+  officialDocsUrl String?
+  githubUrl     String?
+  logoUrl       String?
+  status        String      @default("active")
+  verified      Boolean     @default(false)
+  lastCheckedAt DateTime?
+  lastStatusCode Int?
+  isBroken      Boolean     @default(false)
   sortOrder     Int         @default(0)
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
+  tags          Tag[]
+}
+
+model Tag {
+  id    String @id @default(cuid())
+  name  String @unique
+  slug  String @unique
+  tools Tool[]
+}
+
+model Submission {
+  id          String   @id @default(cuid())
+  name        String
+  link        String
+  description String
+  categoryKey String?
+  submittedAt DateTime @default(now())
+  status      String   @default("pending")
 }

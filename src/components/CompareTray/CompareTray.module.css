@@ -1,0 +1,53 @@
+.tray {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 80;
+  width: min(320px, calc(100vw - 32px));
+  padding: 1rem;
+  border: 2px solid var(--cyan);
+  background: var(--card-bg);
+  box-shadow: 4px 4px 0 var(--cyan);
+}
+
+.title {
+  color: var(--text-bright);
+  margin-bottom: 0.75rem;
+}
+
+.list {
+  display: grid;
+  gap: 0.4rem;
+  margin-bottom: 0.9rem;
+}
+
+.item {
+  color: var(--text);
+}
+
+.actions {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.button {
+  flex: 1;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--border-dim);
+  background: var(--bg);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.button:hover,
+.button:focus-visible {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.primary {
+  border-color: var(--green);
+  background: var(--green);
+  color: #111;
+  font-weight: 700;
+}

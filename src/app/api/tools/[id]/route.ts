@@ -2,6 +2,7 @@ import { Prisma } from "@prisma/client";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { translateTextToEnglish } from "@/lib/translate";
+import { STATUS_VALUES } from "@/lib/tool-data";
 
 interface Params {
   params: Promise<{ id: string }>;
@@ -32,6 +33,22 @@ async function getNextSortOrder(subcategoryId: string): Promise<number> {
   });
 
   return (result._max.sortOrder ?? -1) + 1;
+}
+
+function asBoolean(value: unknown): boolean | undefined {
+  return typeof value === "boolean" ? value : undefined;
+}
+
+function asStatus(value: unknown): string | undefined {
+  const normalized = asTrimmedString(value);
+
+  if (!normalized) {
+    return undefined;
+  }
+
+  return STATUS_VALUES.includes(normalized as (typeof STATUS_VALUES)[number])
+    ? normalized
+    : undefined;
 }
 
 /* ── PUT /api/tools/[id] ── */
@@ -71,6 +88,21 @@ export async function PUT(request: Request, { params }: Params) {
     const description = asTrimmedString(body.description);
     const descriptionEn = asTrimmedString(body.descriptionEn);
     const subcategoryId = asTrimmedString(body.subcategoryId);
+    const pricingModel = asTrimmedString(body.pricingModel);
+    const platforms = asTrimmedString(body.platforms);
+    const featured = asBoolean(body.featured);
+    const featuredLabel = asTrimmedString(body.featuredLabel);
+    const hasApi = asBoolean(body.hasApi);
+    const isOpenSource = asBoolean(body.isOpenSource);
+    const officialDocsUrl = asTrimmedString(body.officialDocsUrl);
+    const githubUrl = asTrimmedString(body.githubUrl);
+    const logoUrl = asTrimmedString(body.logoUrl);
+    const status = asStatus(body.status);
+    const verified = asBoolean(body.verified);
+    const lastStatusCode =
+      typeof body.lastStatusCode === "number" ? body.lastStatusCode : undefined;
+    const isBroken = asBoolean(body.isBroken);
+    const tags = Array.isArray(body.tags) ? body.tags : undefined;
 
     if (hasName && !name) {
       return NextResponse.json(
@@ -158,6 +190,24 @@ export async function PUT(request: Request, { params }: Params) {
         ...(movedSortOrder !== undefined && {
           sortOrder: movedSortOrder,
         }),
+        ...(pricingModel !== undefined && { pricingModel }),
+        ...(platforms !== undefined && { platforms }),
+        ...(featured !== undefined && { featured }),
+        ...(featuredLabel !== undefined && { featuredLabel }),
+        ...(hasApi !== undefined && { hasApi }),
+        ...(isOpenSource !== undefined && { isOpenSource }),
+        ...(officialDocsUrl !== undefined && { officialDocsUrl }),
+        ...(githubUrl !== undefined && { githubUrl }),
+        ...(logoUrl !== undefined && { logoUrl }),
+        ...(status !== undefined && { status }),
+        ...(verified !== undefined && { verified }),
+        ...(lastStatusCode !== undefined && { lastStatusCode }),
+        ...(isBroken !== undefined && { isBroken }),
+        ...(tags !== undefined && {
+          tags: {
+            set: tags.map((id: string) => ({ id }))
+          }
+        })
       },
     });
 

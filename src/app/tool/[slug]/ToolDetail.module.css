@@ -1,0 +1,221 @@
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  color: var(--fg);
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 3rem;
+  font-size: 0.875rem;
+  color: var(--text-dim);
+}
+
+.backLink {
+  color: var(--cyan);
+  text-decoration: none;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}
+
+.separator {
+  opacity: 0.5;
+}
+
+.categoryPath {
+  color: var(--fg);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.favicon {
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  background: var(--card-bg);
+  padding: 8px;
+  border: 1px solid var(--border-dim);
+  image-rendering: pixelated;
+}
+
+.title {
+  font-size: 2.5rem;
+  margin: 0;
+  color: var(--green);
+}
+
+.featuredLabel {
+  margin-top: 0.5rem;
+  color: var(--yellow);
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.infoBadge {
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--border-dim);
+  background: var(--bg);
+  color: var(--green);
+  font-size: 0.8rem;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.tagChip {
+  background: var(--card-bg);
+  color: var(--cyan);
+  border: 1px solid var(--border-dim);
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-family: monospace;
+}
+
+.details {
+  background: var(--card-bg);
+  border: 1px solid var(--border-dim);
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 3rem;
+}
+
+.description {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  margin-top: 0;
+  margin-bottom: 2rem;
+}
+
+.metaGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.metaCard {
+  display: grid;
+  gap: 0.4rem;
+  padding: 0.9rem;
+  border: 1px solid var(--border-dim);
+  background: var(--bg);
+}
+
+.metaLabel {
+  color: var(--dim);
+}
+
+.metaValue {
+  color: var(--text-bright);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.visitButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--cyan);
+  color: #000;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: opacity 0.2s;
+}
+
+.visitButton:hover {
+  opacity: 0.9;
+}
+
+.secondaryButton {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.75rem 1.2rem;
+  border: 1px solid var(--border-dim);
+  background: var(--bg);
+  color: var(--text);
+}
+
+.secondaryButton:hover {
+  border-color: var(--cyan);
+}
+
+.similar {
+  margin-top: 4rem;
+}
+
+.similarTitle {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--cyan);
+}
+
+.similarGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.similarCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border-dim);
+  padding: 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--fg);
+  transition: border-color 0.2s;
+}
+
+.similarCard:hover {
+  border-color: var(--cyan);
+}
+
+.similarIcon {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  image-rendering: pixelated;
+}
+
+.similarName {
+  margin: 0 0 0.25rem 0;
+  font-size: 1rem;
+}
+
+.similarDesc {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-dim);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

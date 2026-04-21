@@ -1,22 +1,51 @@
 import { prisma } from "@/lib/prisma";
 import type { CategoryData, ToolStats } from "@/lib/types";
+import { mapToolsToData, mapToolToData } from "@/lib/tool-data";
 import { ToolieApp } from "./ToolieApp";
 
 /* ── Server Component: fetch data from DB ── */
 export default async function HomePage() {
-  const categories = await prisma.category.findMany({
-    orderBy: { sortOrder: "asc" },
-    include: {
-      subcategories: {
-        orderBy: { sortOrder: "asc" },
-        include: {
-          tools: {
-            orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
+  const [categories, featuredTools, latestTools] = await Promise.all([
+    prisma.category.findMany({
+      orderBy: { sortOrder: "asc" },
+      include: {
+        subcategories: {
+          orderBy: { sortOrder: "asc" },
+          include: {
+            tools: {
+              orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
+              include: { tags: { select: { id: true, name: true, slug: true } } },
+            },
           },
         },
       },
-    },
-  });
+    }),
+    prisma.tool.findMany({
+      where: { featured: true },
+      orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
+      take: 8,
+      include: {
+        tags: { select: { id: true, name: true, slug: true } },
+        subcategory: {
+          include: {
+            category: true,
+          },
+        },
+      },
+    }),
+    prisma.tool.findMany({
+      orderBy: { createdAt: "desc" },
+      take: 8,
+      include: {
+        tags: { select: { id: true, name: true, slug: true } },
+        subcategory: {
+          include: {
+            category: true,
+          },
+        },
+      },
+    }),
+  ]);
 
   /* Map Prisma result to our types */
   const categoryData: CategoryData[] = categories.map((cat) => ({
@@ -36,14 +65,28 @@ export default async function HomePage() {
       nameTr: sub.nameTr,
       nameEn: sub.nameEn,
       sortOrder: sub.sortOrder,
-      tools: sub.tools.map((tool) => ({
-        id: tool.id,
-        name: tool.name,
-        link: tool.link,
-        description: tool.description,
-        descriptionEn: tool.descriptionEn,
-        faviconUrl: tool.faviconUrl,
-      })),
+      tools: sub.tools.map((tool) =>
+        mapToolToData({
+          ...tool,
+          subcategory: {
+            id: sub.id,
+            name: sub.name,
+            key: sub.key,
+            slug: sub.slug,
+            nameTr: sub.nameTr,
+            nameEn: sub.nameEn,
+            category: {
+              id: cat.id,
+              name: cat.name,
+              slug: cat.slug,
+              nameTr: cat.nameTr,
+              nameEn: cat.nameEn,
+              icon: cat.icon,
+              color: cat.color,
+            },
+          },
+        })
+      ),
     })),
   }));
 
@@ -62,5 +105,12 @@ export default async function HomePage() {
     ),
   };
 
-  return <ToolieApp categories={categoryData} stats={stats} />;
+  return (
+    <ToolieApp
+      categories={categoryData}
+      featuredTools={mapToolsToData(featuredTools)}
+      latestTools={mapToolsToData(latestTools)}
+      stats={stats}
+    />
+  );
 }

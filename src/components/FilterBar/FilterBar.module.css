@@ -1,0 +1,44 @@
+.filterBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding: 1rem 0;
+  border-bottom: 1px dashed var(--border-dim);
+  margin-bottom: 1rem;
+}
+
+.filterGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.label {
+  font-family: var(--font-pixel);
+  font-size: 8px;
+  color: var(--cyan);
+  text-transform: uppercase;
+}
+
+.select {
+  background: var(--card-bg);
+  color: var(--fg);
+  border: 1px solid var(--border-dim);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.875rem;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.select:hover,
+.select:focus {
+  border-color: var(--cyan);
+}
+
+.select option {
+  background: var(--bg);
+  color: var(--fg);
+}

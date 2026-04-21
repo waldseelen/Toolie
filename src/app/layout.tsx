@@ -1,8 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import "@/styles/globals.css";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
+import { siteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "TOOLIE v1.0 — Retro Araç Kataloğu",
   description:
     "378+ araç, 7 kategori, pixel-art tasarım. Kullanıcıların çeşitli araçlara hızlıca ulaşmasını sağlayan dinamik bir katalog sitesi.",

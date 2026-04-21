@@ -1,0 +1,54 @@
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.eyebrow {
+  color: var(--dim);
+  margin-bottom: 0.5rem;
+}
+
+.title {
+  color: var(--text-bright);
+}
+
+.tableWrap {
+  overflow-x: auto;
+  border: 1px solid var(--border-dim);
+  background: var(--card-bg);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 720px;
+}
+
+.cell {
+  padding: 0.9rem;
+  text-align: left;
+  border-top: 1px solid var(--border-dim);
+  color: var(--text);
+  vertical-align: top;
+}
+
+.headCell {
+  color: var(--cyan);
+}
+
+.toolHead {
+  color: var(--text-bright);
+}
+
+.empty {
+  color: var(--dim);
+}

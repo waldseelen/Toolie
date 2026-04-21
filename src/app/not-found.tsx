@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useLanguage } from "@/hooks/useLanguage";
 
 export default function NotFound() {
@@ -50,7 +51,7 @@ export default function NotFound() {
         {t("notFoundMessage")}
       </p>
 
-      <a
+      <Link
         href="/"
         style={{
           fontSize: "8px",
@@ -61,7 +62,7 @@ export default function NotFound() {
         }}
       >
         {t("notFoundBack")}
-      </a>
+      </Link>
     </div>
   );
 }

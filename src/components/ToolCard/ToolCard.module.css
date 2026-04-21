@@ -5,6 +5,11 @@
   overflow: visible;
 }
 
+.cardWrap:hover,
+.cardWrap:focus-within {
+  z-index: 20;
+}
+
 .card {
   position: relative;
   display: flex;
@@ -125,9 +130,51 @@
   z-index: 11;
 }
 
+.collectionWrap {
+  opacity: 0.35;
+  transition: opacity 0.1s ease;
+}
+
+.cardWrap:hover .collectionWrap,
+.cardWrap:focus-within .collectionWrap {
+  opacity: 1;
+}
+
 .cardWrap:hover .favBtn,
 .cardWrap:focus-within .favBtn {
   opacity: 1;
+}
+
+.compareToggle {
+  position: absolute;
+  left: 4px;
+  bottom: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 6px;
+  background: var(--bg);
+  border: 1px solid var(--border-dim);
+  color: var(--text);
+  font-size: 7px;
+  opacity: 0;
+  transition: opacity 0.1s ease, border-color 0.1s ease, color 0.1s ease;
+  z-index: 11;
+}
+
+.compareToggle input {
+  margin: 0;
+}
+
+.cardWrap:hover .compareToggle,
+.cardWrap:focus-within .compareToggle {
+  opacity: 1;
+}
+
+.compareToggle:hover,
+.compareToggle:focus-within {
+  border-color: var(--cyan);
+  color: var(--cyan);
 }
 
 .favBtn:hover,
@@ -140,8 +187,31 @@
   opacity: 1;
 }
 
+.verifiedBadge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--green);
+  color: var(--bg);
+  border: 1px solid var(--bg);
+  font-size: 8px;
+  line-height: 1;
+  z-index: 11;
+}
+
 @media (hover: none) {
   .favBtn {
+    opacity: 1;
+  }
+
+  .collectionWrap,
+  .compareToggle {
     opacity: 1;
   }
 
@@ -154,4 +224,22 @@
   .cardWrap {
     max-width: none;
   }
+}
+
+.tagChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--dim);
+}
+
+.tagChip {
+  background: var(--bg);
+  color: var(--accent-color, var(--cyan));
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 9px;
+  border: 1px solid var(--accent-color, var(--cyan));
 }

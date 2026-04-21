@@ -1,0 +1,181 @@
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+  color: var(--text);
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px dashed var(--border-dim);
+}
+
+.heading {
+  margin: 0;
+  color: var(--cyan);
+  font-family: var(--font-pixel);
+  line-height: 1.6;
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.navLink {
+  padding: 0.45rem 0.75rem;
+  border: 1px solid var(--border-dim);
+  background: var(--card-bg);
+  color: var(--text);
+}
+
+.navButton {
+  padding: 0.45rem 0.75rem;
+  border: 1px solid var(--border-dim);
+  background: var(--card-bg);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.navLink:hover,
+.navLink:focus-visible,
+.navButton:hover,
+.navButton:focus-visible {
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+
+.sectionTitle {
+  margin-bottom: 1rem;
+  color: var(--text-bright);
+}
+
+.tableWrap {
+  overflow-x: auto;
+  border: 1px solid var(--border-dim);
+  background: var(--card-bg);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 840px;
+}
+
+.table th,
+.table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-dim);
+  vertical-align: top;
+}
+
+.table th {
+  color: var(--cyan);
+}
+
+.dim {
+  color: var(--dim);
+}
+
+.link {
+  color: var(--green);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid var(--border-dim);
+  background: var(--bg);
+  color: var(--text-bright);
+  font-size: 0.8rem;
+}
+
+.statusHealthy {
+  color: var(--green);
+}
+
+.statusBroken {
+  color: var(--red);
+}
+
+.statusNeutral {
+  color: var(--yellow);
+}
+
+.button {
+  padding: 0.55rem 0.85rem;
+  border: 1px solid var(--border-dim);
+  background: var(--bg);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.button:hover,
+.button:focus-visible {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.dangerButton:hover,
+.dangerButton:focus-visible {
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.loginSection {
+  max-width: 440px;
+  display: grid;
+  gap: 1rem;
+}
+
+.loginForm {
+  display: grid;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--border-dim);
+  background: var(--card-bg);
+}
+
+.field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.label {
+  color: var(--text-bright);
+}
+
+.input {
+  width: 100%;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid var(--border-dim);
+  background: var(--bg);
+  color: var(--text);
+}
+
+.primaryButton {
+  border-color: var(--green);
+  background: var(--green);
+  color: #111;
+  font-weight: 700;
+}
+
+.errorText {
+  color: var(--red);
+}

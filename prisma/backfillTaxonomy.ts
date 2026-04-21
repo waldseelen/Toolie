@@ -1,7 +1,5 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../src/lib/prisma";
 import { TAXONOMY } from "../src/lib/taxonomy";
-
-const prisma = new PrismaClient();
 
 async function main() {
   console.log("🧭 Backfilling taxonomy metadata...");

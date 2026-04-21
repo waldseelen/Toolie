@@ -32,6 +32,42 @@ export const translations = {
     addFavorite: "favorilere ekle",
     removeFavoriteTitle: "Favorilerden çıkar",
     addFavoriteTitle: "Favorilere ekle",
+    badgeVerified: "Doğrulandı",
+    compareToggle: "karşılaştırmaya ekle",
+    compareToggleRemove: "karşılaştırmadan çıkar",
+    addToCollection: "koleksiyona ekle",
+    collectionsTitle: "Koleksiyonlar",
+    collectionsEmpty: "Henüz koleksiyon yok",
+    newCollectionPlaceholder: "Yeni koleksiyon adı",
+    compareTrayTitle: "Karşılaştırma",
+    clearCompare: "Temizle",
+    compareAction: "Karşılaştır",
+
+    /* Spotlight */
+    featuredToolsTitle: "Editörün Seçimleri",
+    featuredToolsCopy: "Öne çıkarılan araçlar, kategori renklerini koruyarak hızlı keşif için burada listelenir.",
+    newAdditionsTitle: "Yeni Eklenenler",
+    newAdditionsCopy: "Veritabanına son eklenen araçlar yatay akışta sunulur.",
+
+    /* Detail */
+    backToCatalog: "Kataloğa Dön",
+    similarToolsTitle: "Benzer Araçlar",
+    visitOfficialSite: "Resmi Siteyi Ziyaret Et",
+    officialDocs: "Resmi Dokümanlar",
+    sourceCode: "Kaynak Kodu",
+    pricingModelLabel: "Fiyatlandırma",
+    platformsLabel: "Platformlar",
+    currentStatus: "Durum",
+    lastChecked: "Son Kontrol",
+    toolHealth: "Bağlantı Sağlığı",
+    healthBroken: "Sorunlu",
+    healthHealthy: "Sağlıklı",
+    healthUnknown: "Bilinmiyor",
+    badgeApi: "API",
+    badgeOpenSource: "Açık Kaynak",
+    statusActive: "Aktif",
+    statusDead: "Pasif",
+    statusRedirected: "Yönleniyor",
 
     /* Theme Toggle */
     switchToLight: "Aydınlık temaya geç",
@@ -58,6 +94,25 @@ export const translations = {
 
     /* Loading */
     loading: "Yükleniyor",
+
+    /* Filters */
+    filterPricing: "Fiyatlandırma",
+    filterPlatform: "Platform",
+    filterSort: "Sıralama",
+    filterAll: "Tümü",
+    filterFree: "Ücretsiz",
+    filterPaid: "Ücretli",
+    filterFreemium: "Freemium",
+    filterWeb: "Web",
+    filterDesktop: "Masaüstü",
+    filterMobile: "Mobil",
+    sortNewest: "En Yeni",
+    sortAZ: "A-Z",
+
+    /* Phase 3 */
+    submissionsTitle: "Gönderiler",
+    comparePageTitle: "Araç Karşılaştırması",
+    collectionsPageTitle: "Koleksiyonlar",
   },
 
   en: {
@@ -87,6 +142,42 @@ export const translations = {
     addFavorite: "add to favorites",
     removeFavoriteTitle: "Remove from favorites",
     addFavoriteTitle: "Add to favorites",
+    badgeVerified: "Verified",
+    compareToggle: "add to compare",
+    compareToggleRemove: "remove from compare",
+    addToCollection: "add to collection",
+    collectionsTitle: "Collections",
+    collectionsEmpty: "No collections yet",
+    newCollectionPlaceholder: "New collection name",
+    compareTrayTitle: "Compare",
+    clearCompare: "Clear",
+    compareAction: "Compare",
+
+    /* Spotlight */
+    featuredToolsTitle: "Featured Tools",
+    featuredToolsCopy: "Editor-picked tools, rendered with category accent colors for quick discovery.",
+    newAdditionsTitle: "New Additions",
+    newAdditionsCopy: "Recently added tools, presented as a horizontal discovery rail.",
+
+    /* Detail */
+    backToCatalog: "Back to Catalog",
+    similarToolsTitle: "Similar Tools",
+    visitOfficialSite: "Visit Official Site",
+    officialDocs: "Official Docs",
+    sourceCode: "Source Code",
+    pricingModelLabel: "Pricing",
+    platformsLabel: "Platforms",
+    currentStatus: "Status",
+    lastChecked: "Last Checked",
+    toolHealth: "Link Health",
+    healthBroken: "Broken",
+    healthHealthy: "Healthy",
+    healthUnknown: "Unknown",
+    badgeApi: "API",
+    badgeOpenSource: "Open Source",
+    statusActive: "Active",
+    statusDead: "Dead",
+    statusRedirected: "Redirected",
 
     /* Theme Toggle */
     switchToLight: "Switch to light theme",
@@ -113,6 +204,25 @@ export const translations = {
 
     /* Loading */
     loading: "Loading",
+
+    /* Filters */
+    filterPricing: "Pricing",
+    filterPlatform: "Platform",
+    filterSort: "Sort",
+    filterAll: "All",
+    filterFree: "Free",
+    filterPaid: "Paid",
+    filterFreemium: "Freemium",
+    filterWeb: "Web",
+    filterDesktop: "Desktop",
+    filterMobile: "Mobile",
+    sortNewest: "Newest",
+    sortAZ: "A-Z",
+
+    /* Phase 3 */
+    submissionsTitle: "Submissions",
+    comparePageTitle: "Tool Comparison",
+    collectionsPageTitle: "Collections",
   },
 } as const;
 

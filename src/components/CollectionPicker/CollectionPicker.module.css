@@ -1,0 +1,89 @@
+.wrap {
+  position: absolute;
+  top: 4px;
+  right: 30px;
+  z-index: 12;
+}
+
+.trigger {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 10px;
+  color: var(--dim);
+  padding: 8px;
+  line-height: 1;
+  opacity: 0.35;
+  transition: opacity 0.1s, color 0.1s;
+}
+
+.trigger:hover,
+.trigger:focus-visible,
+.active {
+  color: var(--cyan);
+  opacity: 1;
+}
+
+.panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  width: 220px;
+  padding: 0.7rem;
+  border: 1px solid var(--border-dim);
+  background: var(--card-bg);
+  box-shadow: 3px 3px 0 var(--cyan);
+}
+
+.panelTitle {
+  color: var(--text-bright);
+  margin-bottom: 0.5rem;
+}
+
+.list {
+  display: grid;
+  gap: 0.35rem;
+  margin-bottom: 0.6rem;
+  max-height: 140px;
+  overflow-y: auto;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--text);
+}
+
+.inputRow {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid var(--border-dim);
+  background: var(--bg);
+  color: var(--text);
+}
+
+.button {
+  padding: 0.45rem 0.65rem;
+  border: 1px solid var(--border-dim);
+  background: var(--bg);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.button:hover,
+.button:focus-visible {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.empty {
+  color: var(--dim);
+  margin-bottom: 0.6rem;
+}

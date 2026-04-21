@@ -2,6 +2,7 @@
 
 import styles from "./ToolGrid.module.css";
 import type { CategoryData } from "@/lib/types";
+import type { CollectionData } from "@/lib/types";
 import type { Locale, TranslationKey } from "@/lib/i18n";
 import { getLocalizedName } from "@/lib/taxonomy";
 import { ToolCard } from "../ToolCard/ToolCard";
@@ -10,8 +11,18 @@ interface ToolGridProps {
   category: CategoryData;
   locale: Locale;
   searchQuery: string;
+  searchResultIds?: Set<string> | null;
+  tag?: string;
+  pricing?: string;
+  platform?: string;
+  sort?: string;
   favorites: string[];
+  comparedIds: string[];
+  collections: CollectionData[];
+  onCreateCollection: (name: string, initialToolId?: string) => string | null;
+  onToggleCollection: (collectionId: string, toolId: string) => void;
   onToggleFavorite: (id: string) => void;
+  onToggleCompare: (id: string) => void;
   t: (key: TranslationKey) => string;
 }
 
@@ -19,8 +30,18 @@ export function ToolGrid({
   category,
   locale,
   searchQuery,
+  searchResultIds,
+  tag,
+  pricing,
+  platform,
+  sort,
   favorites,
+  comparedIds,
+  collections,
+  onCreateCollection,
+  onToggleCollection,
   onToggleFavorite,
+  onToggleCompare,
   t,
 }: ToolGridProps) {
   const query = searchQuery.toLowerCase().trim();
@@ -35,17 +56,37 @@ export function ToolGrid({
 
   const filteredSubcategories = category.subcategories
     .map((sub) => {
-      const filteredTools = query
-        ? sub.tools.filter((tool) => {
-            const descriptionEn = tool.descriptionEn?.toLowerCase() ?? "";
+      let filteredTools = [...sub.tools];
+      
+      if (query && searchResultIds) {
+        filteredTools = filteredTools.filter((tool) => searchResultIds.has(tool.id));
+      }
 
-            return (
-              tool.name.toLowerCase().includes(query) ||
-              tool.description.toLowerCase().includes(query) ||
-              descriptionEn.includes(query)
-            );
-          })
-        : sub.tools;
+      if (tag) {
+        filteredTools = filteredTools.filter((tool) => 
+          tool.tags?.some(t => t.slug === tag)
+        );
+      }
+
+      if (pricing) {
+        filteredTools = filteredTools.filter((tool) => tool.pricingModel === pricing);
+      }
+
+      if (platform) {
+        filteredTools = filteredTools.filter((tool) => tool.platforms?.includes(platform));
+      }
+
+      if (sort === "newest") {
+        filteredTools.sort(
+          (a, b) =>
+            new Date(b.createdAt ?? 0).getTime() -
+            new Date(a.createdAt ?? 0).getTime()
+        );
+      } else if (sort === "az") {
+        filteredTools.sort((a, b) => a.name.localeCompare(b.name));
+      } else {
+        // Default sort (sortOrder implicitly preserved from server)
+      }
 
       totalVisibleTools += filteredTools.length;
       return {
@@ -116,7 +157,12 @@ export function ToolGrid({
                 locale={locale}
                 accentColor={category.color}
                 isFavorite={favorites.includes(tool.id)}
+                isCompared={comparedIds.includes(tool.id)}
+                collections={collections}
+                onCreateCollection={onCreateCollection}
+                onToggleCollection={onToggleCollection}
                 onToggleFavorite={onToggleFavorite}
+                onToggleCompare={onToggleCompare}
                 t={t}
               />
             ))}

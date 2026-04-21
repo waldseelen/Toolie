@@ -1,0 +1,99 @@
+.page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+  color: var(--text);
+}
+
+.hero {
+  display: grid;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  border: 1px solid var(--border-dim);
+  background: linear-gradient(135deg, var(--card-bg), var(--bg-secondary));
+}
+
+.eyebrow {
+  color: var(--dim);
+  letter-spacing: 0.1em;
+}
+
+.title {
+  color: var(--text-bright);
+  margin: 0;
+}
+
+.description {
+  color: var(--dim);
+  max-width: 60rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  display: grid;
+  gap: 0.85rem;
+  padding: 1rem;
+  border: 1px solid var(--border-dim);
+  background: var(--card-bg);
+  color: var(--text);
+}
+
+.card:hover,
+.card:focus-visible {
+  border-color: var(--accent-color, var(--green));
+  box-shadow: 3px 3px 0 var(--accent-color, var(--green));
+}
+
+.cardTitleRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.logo {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border-dim);
+  background: var(--bg);
+  image-rendering: pixelated;
+  object-fit: contain;
+}
+
+.cardTitle {
+  color: var(--text-bright);
+  margin: 0;
+}
+
+.meta {
+  color: var(--dim);
+}
+
+.copy {
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.tagRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.tag {
+  padding: 0.2rem 0.5rem;
+  border: 1px solid var(--border-dim);
+  color: var(--accent-color, var(--cyan));
+  background: var(--bg);
+}
+
+.empty {
+  padding: 2rem;
+  border: 1px dashed var(--border-dim);
+  color: var(--dim);
+}

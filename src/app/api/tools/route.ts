@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { translateTextToEnglish } from "@/lib/translate";
+import { createUniqueSlug } from "@/lib/slug";
+import { STATUS_VALUES } from "@/lib/tool-data";
 
 function asTrimmedString(value: unknown): string | null {
   if (typeof value !== "string") {
@@ -29,12 +31,41 @@ async function getNextSortOrder(subcategoryId: string): Promise<number> {
   return (result._max.sortOrder ?? -1) + 1;
 }
 
+function asBoolean(value: unknown): boolean | undefined {
+  return typeof value === "boolean" ? value : undefined;
+}
+
+function asStatus(value: unknown): string | undefined {
+  const normalized = asTrimmedString(value);
+
+  if (!normalized) {
+    return undefined;
+  }
+
+  return STATUS_VALUES.includes(normalized as (typeof STATUS_VALUES)[number])
+    ? normalized
+    : undefined;
+}
+
+async function createToolSlug(name: string): Promise<string> {
+  const existingTools = await prisma.tool.findMany({
+    where: { slug: { not: null } },
+    select: { slug: true },
+  });
+  const usedSlugs = new Set(existingTools.map((tool) => tool.slug!));
+
+  return createUniqueSlug(name, usedSlugs);
+}
+
 /* ── GET /api/tools ── */
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const cat = asTrimmedString(searchParams.get("cat"));
-    const q = asTrimmedString(searchParams.get("q"));
+    const tag = asTrimmedString(searchParams.get("tag"));
+    const pricing = asTrimmedString(searchParams.get("pricing"));
+    const platform = asTrimmedString(searchParams.get("platform"));
+    const sort = asTrimmedString(searchParams.get("sort"));
 
     const categories = await prisma.category.findMany({
       where: cat ? { name: cat } : undefined,
@@ -44,16 +75,19 @@ export async function GET(request: Request) {
           orderBy: { sortOrder: "asc" },
           include: {
             tools: {
-              where: q
-                ? {
-                    OR: [
-                      { name: { contains: q } },
-                      { description: { contains: q } },
-                      { descriptionEn: { contains: q } },
-                    ],
-                  }
-                : undefined,
-              orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
+              where: {
+                ...(tag ? { tags: { some: { slug: tag } } } : {}),
+                ...(pricing ? { pricingModel: pricing } : {}),
+                ...(platform ? { platforms: { contains: platform } } : {})
+              },
+              orderBy: sort === "newest" 
+                ? [{ createdAt: "desc" }]
+                : sort === "az"
+                ? [{ name: "asc" }]
+                : [{ sortOrder: "asc" }, { createdAt: "asc" }],
+              include: {
+                tags: { select: { id: true, name: true, slug: true } }
+              }
             },
           },
         },
@@ -79,6 +113,18 @@ export async function POST(request: Request) {
     const description = asTrimmedString(body.description);
     const descriptionEn = asTrimmedString(body.descriptionEn);
     const subcategoryId = asTrimmedString(body.subcategoryId);
+    const pricingModel = asTrimmedString(body.pricingModel);
+    const platforms = asTrimmedString(body.platforms);
+    const featured = asBoolean(body.featured) ?? false;
+    const featuredLabel = asTrimmedString(body.featuredLabel);
+    const hasApi = asBoolean(body.hasApi) ?? false;
+    const isOpenSource = asBoolean(body.isOpenSource) ?? false;
+    const officialDocsUrl = asTrimmedString(body.officialDocsUrl);
+    const githubUrl = asTrimmedString(body.githubUrl);
+    const logoUrl = asTrimmedString(body.logoUrl);
+    const status = asStatus(body.status) ?? "active";
+    const verified = asBoolean(body.verified) ?? false;
+    const tags = Array.isArray(body.tags) ? body.tags : [];
 
     if (!name || !link || !description || !subcategoryId) {
       return NextResponse.json(
@@ -115,12 +161,34 @@ export async function POST(request: Request) {
     const tool = await prisma.tool.create({
       data: {
         name,
+        slug: await createToolSlug(name),
         link,
         description,
         descriptionEn: resolvedDescriptionEn,
         subcategoryId,
         faviconUrl: resolveFaviconUrl(link),
+        pricingModel,
+        platforms,
+        featured,
+        featuredLabel,
+        hasApi,
+        isOpenSource,
+        officialDocsUrl,
+        githubUrl,
+        logoUrl,
+        status,
+        verified,
         sortOrder: await getNextSortOrder(subcategoryId),
+        ...(tags.length > 0
+          ? {
+              tags: {
+                connect: tags.map((id: string) => ({ id })),
+              },
+            }
+          : {}),
+      },
+      include: {
+        tags: { select: { id: true, name: true, slug: true } },
       },
     });
 

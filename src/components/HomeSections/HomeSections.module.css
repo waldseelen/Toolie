@@ -1,0 +1,47 @@
+.sections {
+  display: grid;
+  gap: 2rem;
+  margin: 0 auto 2rem;
+  max-width: 1600px;
+  padding: 0 16px;
+}
+
+.section {
+  display: grid;
+  gap: 1rem;
+}
+
+.headingRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: baseline;
+}
+
+.title {
+  color: var(--text-bright);
+}
+
+.copy {
+  color: var(--dim);
+  max-width: 56rem;
+}
+
+.featuredGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.latestRail {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.featuredCard,
+.latestCard {
+  flex: 0 0 auto;
+}

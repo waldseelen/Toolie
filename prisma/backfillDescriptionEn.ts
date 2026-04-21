@@ -1,7 +1,6 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../src/lib/prisma";
 import { translateTextToEnglish } from "../src/lib/translate";
 
-const prisma = new PrismaClient();
 const BATCH_SIZE = 8;
 
 async function main() {
