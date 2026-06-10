@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { createSubmission } from "@/lib/db";
 import { TAXONOMY } from "@/lib/taxonomy";
 
 function asTrimmedString(value: unknown): string | null {
@@ -32,13 +32,11 @@ export async function POST(request: Request) {
       ? categoryKey
       : null;
 
-    const submission = await prisma.submission.create({
-      data: {
-        name,
-        link,
-        description,
-        categoryKey: normalizedCategoryKey,
-      },
+    const submission = await createSubmission({
+      name,
+      link,
+      description,
+      categoryKey: normalizedCategoryKey,
     });
 
     return NextResponse.json(submission, { status: 201 });

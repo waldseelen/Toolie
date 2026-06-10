@@ -1,9 +1,8 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { prisma } from "@/lib/prisma";
+import { getTagBySlug, getToolsByTagSlug } from "@/lib/db";
 import { getRequestLocale } from "@/lib/request-locale";
 import { absoluteUrl, buildOgImageUrl } from "@/lib/site";
-import { mapToolsToData } from "@/lib/tool-data";
 import { ListingPage } from "@/components/ListingPage/ListingPage";
 
 interface Props {
@@ -13,9 +12,7 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = await getRequestLocale();
   const { slug } = await params;
-  const tag = await prisma.tag.findUnique({
-    where: { slug },
-  });
+  const tag = await getTagBySlug(slug);
 
   if (!tag) {
     return { title: "Not Found — TOOLIE" };
@@ -50,26 +47,12 @@ export default async function TagPage({ params }: Props) {
   const locale = await getRequestLocale();
   const { slug } = await params;
 
-  const tag = await prisma.tag.findUnique({
-    where: { slug },
-    include: {
-      tools: {
-        orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
-        include: {
-          tags: { select: { id: true, name: true, slug: true } },
-          subcategory: {
-            include: {
-              category: true,
-            },
-          },
-        },
-      },
-    },
-  });
-
+  const tag = await getTagBySlug(slug);
   if (!tag) {
     notFound();
   }
+
+  const tools = await getToolsByTagSlug(slug);
 
   const copy =
     locale === "en"
@@ -83,7 +66,8 @@ export default async function TagPage({ params }: Props) {
       eyebrow={locale === "en" ? "TAG" : "ETIKET"}
       locale={locale}
       title={`#${tag.slug}`}
-      tools={mapToolsToData(tag.tools)}
+      tools={tools}
     />
   );
 }
+

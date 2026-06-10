@@ -1,12 +1,9 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { getAllTags } from "@/lib/db";
 
 export async function GET() {
   try {
-    const tags = await prisma.tag.findMany({
-      orderBy: { name: "asc" },
-    });
-    
+    const tags = await getAllTags();
     return NextResponse.json(tags);
   } catch (error) {
     console.error("Error fetching tags:", error);

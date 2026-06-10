@@ -1,5 +1,4 @@
-"use client";
-
+import { useState, useEffect } from "react";
 import { useTheme } from "@/hooks/useTheme";
 import type { TranslationKey } from "@/lib/i18n";
 import styles from "./ThemeToggle.module.css";
@@ -10,6 +9,19 @@ interface ThemeToggleProps {
 
 export function ThemeToggle({ t }: ThemeToggleProps) {
   const { theme, toggleTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <button type="button" className={styles.toggle} aria-hidden="true">
+        ☀
+      </button>
+    );
+  }
 
   return (
     <button

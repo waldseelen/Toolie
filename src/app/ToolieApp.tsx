@@ -24,6 +24,7 @@ import { useCollections } from "@/hooks/useCollections";
 import { useToolSearch } from "@/hooks/useToolSearch";
 import { useURLParams } from "@/hooks/useURLParams";
 import type { CategoryData, ToolData, ToolStats } from "@/lib/types";
+import appStyles from "./ToolieApp.module.css";
 
 interface ToolieAppProps {
   categories: CategoryData[];
@@ -115,8 +116,10 @@ function ToolieAppInner({ categories, featuredTools, latestTools, stats }: Tooli
     !pricing &&
     !platform;
 
+  const hasTray = comparedIds.length > 0;
+
   return (
-    <>
+    <div className={`${appStyles.appWrapper} ${hasTray ? appStyles.trayActive : ''}`}>
       <Header
         stats={stats}
         locale={locale}
@@ -170,8 +173,10 @@ function ToolieAppInner({ categories, featuredTools, latestTools, stats }: Tooli
         )}
       </main>
       <CompareTray comparedTools={comparedTools} onClear={clearCompare} t={t} />
-      <Footer t={t} />
-    </>
+      <div className={appStyles.footerSpacer}>
+        <Footer t={t} />
+      </div>
+    </div>
   );
 }
 

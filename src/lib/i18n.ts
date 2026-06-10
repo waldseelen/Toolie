@@ -74,6 +74,10 @@ export const translations = {
     switchToDark: "Karanlık temaya geç",
     lightTheme: "Aydınlık Tema",
     darkTheme: "Karanlık Tema",
+    toggleCrt: "CRT Filtresini Değiştir",
+    toggleHighContrast: "Yüksek Kontrastı Değiştir",
+    crtLabel: "CRT",
+    hcLabel: "HC",
 
     /* Language Toggle */
     switchLang: "Switch to English",
@@ -91,6 +95,11 @@ export const translations = {
     notFoundTitle: "[ 404 ]",
     notFoundMessage: "Aradığın sayfa bulunamadı.",
     notFoundBack: "[ ANA SAYFAYA DÖN ]",
+    offlineBadge: "ÇEVRİMDIŞI",
+    autoFillButton: "URL'den Çek",
+    autoFillLoading: "Çekiliyor...",
+    shareBtn: "Koleksiyonu Paylaş",
+    copied: "Kopyalandı!",
 
     /* Loading */
     loading: "Yükleniyor",
@@ -184,6 +193,10 @@ export const translations = {
     switchToDark: "Switch to dark theme",
     lightTheme: "Light Theme",
     darkTheme: "Dark Theme",
+    toggleCrt: "Toggle CRT Scanlines",
+    toggleHighContrast: "Toggle High Contrast",
+    crtLabel: "CRT",
+    hcLabel: "HC",
 
     /* Language Toggle */
     switchLang: "Türkçe'ye geç",
@@ -201,6 +214,11 @@ export const translations = {
     notFoundTitle: "[ 404 ]",
     notFoundMessage: "The page you are looking for was not found.",
     notFoundBack: "[ BACK TO HOME ]",
+    offlineBadge: "OFFLINE",
+    autoFillButton: "Autofill URL",
+    autoFillLoading: "Fetching...",
+    shareBtn: "Share Collection",
+    copied: "Copied!",
 
     /* Loading */
     loading: "Loading",

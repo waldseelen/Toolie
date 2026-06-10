@@ -1,0 +1,12 @@
+.appWrapper {
+  --tray-height: 0px;
+  transition: padding-bottom var(--transition-base, 0.2s ease);
+}
+
+.trayActive {
+  --tray-height: 120px;
+}
+
+.footerSpacer {
+  padding-bottom: var(--tray-height);
+}

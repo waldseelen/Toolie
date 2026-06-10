@@ -6,7 +6,7 @@ import { TAXONOMY } from "@/lib/taxonomy";
 import styles from "./SubmitPageClient.module.css";
 
 export function SubmitPageClient() {
-  const { locale } = useLanguage();
+  const { locale, t } = useLanguage();
   const [formData, setFormData] = useState({
     name: "",
     link: "",
@@ -16,6 +16,34 @@ export function SubmitPageClient() {
   const [status, setStatus] = useState<"idle" | "saving" | "saved" | "error">(
     "idle"
   );
+  const [scraping, setScraping] = useState(false);
+  const [scrapeError, setScrapeError] = useState("");
+
+  const handleScrape = async () => {
+    if (!formData.link) return;
+    setScraping(true);
+    setScrapeError("");
+    try {
+      const response = await fetch(`/api/scrape?url=${encodeURIComponent(formData.link)}`);
+      if (!response.ok) {
+        throw new Error("Scrape failed");
+      }
+      const data = await response.json();
+      if (data.error) {
+        throw new Error(data.error);
+      }
+      setFormData((previous) => ({
+        ...previous,
+        name: data.title || previous.name,
+        description: data.description || previous.description,
+      }));
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Autofill failed.";
+      setScrapeError(message);
+    } finally {
+      setScraping(false);
+    }
+  };
 
   const copy = {
     title: locale === "en" ? "Submit a Tool" : "Araç Gönder",
@@ -77,13 +105,26 @@ export function SubmitPageClient() {
         </label>
         <label className={styles.field}>
           <span>{copy.link}</span>
-          <input
-            className={styles.input}
-            value={formData.link}
-            onChange={(event) =>
-              setFormData((previous) => ({ ...previous, link: event.target.value }))
-            }
-          />
+          <div className={styles.linkRow}>
+            <input
+              type="url"
+              className={styles.input}
+              value={formData.link}
+              onChange={(event) =>
+                setFormData((previous) => ({ ...previous, link: event.target.value }))
+              }
+              placeholder="https://..."
+            />
+            <button
+              type="button"
+              className={styles.scrapeBtn}
+              onClick={handleScrape}
+              disabled={scraping || !formData.link}
+            >
+              {scraping ? t("autoFillLoading") : t("autoFillButton")}
+            </button>
+          </div>
+          {scrapeError && <span className={styles.scrapeError}>{scrapeError}</span>}
         </label>
         <label className={styles.field}>
           <span>{copy.toolDescription}</span>

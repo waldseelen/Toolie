@@ -2,7 +2,7 @@
   position: fixed;
   right: 16px;
   bottom: 16px;
-  z-index: 80;
+  z-index: var(--z-tray);
   width: min(320px, calc(100vw - 32px));
   padding: 1rem;
   border: 2px solid var(--cyan);

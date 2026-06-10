@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { prisma } from "@/lib/prisma";
+import { getToolById, getAllTags, getSubcategoriesForAdmin } from "@/lib/db";
 import { EditToolForm } from "@/components/Admin/EditToolForm";
 
 interface Props {
@@ -10,25 +10,23 @@ export default async function AdminEditToolPage({ params }: Props) {
   const { id } = await params;
   
   const [tool, allTags, allSubcategories] = await Promise.all([
-    prisma.tool.findUnique({
-      where: { id },
-      include: {
-        tags: { select: { id: true, name: true, slug: true } }
-      }
-    }),
-    prisma.tag.findMany({
-      orderBy: { name: "asc" },
-      select: { id: true, name: true, slug: true }
-    }),
-    prisma.subcategory.findMany({
-      orderBy: [{ category: { sortOrder: "asc" } }, { sortOrder: "asc" }],
-      include: { category: true },
-    }),
+    getToolById(id),
+    getAllTags(),
+    getSubcategoriesForAdmin(),
   ]);
 
   if (!tool) {
     notFound();
   }
+
+  const editToolData = {
+    ...tool,
+    subcategoryId: tool.subcategory?.id || "",
+    featured: tool.featured || false,
+    pricingModel: tool.pricingModel || null,
+    platforms: tool.platforms || null,
+    tags: tool.tags || [],
+  };
 
   return (
     <div>
@@ -36,7 +34,7 @@ export default async function AdminEditToolPage({ params }: Props) {
       <div style={{ marginTop: "2rem" }}>
         <EditToolForm
           mode="edit"
-          tool={tool}
+          tool={editToolData}
           allTags={allTags}
           allSubcategories={allSubcategories.map((subcategory) => ({
             id: subcategory.id,
@@ -45,10 +43,11 @@ export default async function AdminEditToolPage({ params }: Props) {
             slug: subcategory.slug,
             nameTr: subcategory.nameTr,
             nameEn: subcategory.nameEn,
-            categoryName: subcategory.category.name,
+            categoryName: subcategory.category?.name || "GENERAL",
           }))}
         />
       </div>
     </div>
   );
 }
+

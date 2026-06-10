@@ -52,6 +52,7 @@ type ToolShape = {
   lastCheckedAt?: Date | string | null;
   lastStatusCode?: number | null;
   isBroken?: boolean;
+  votes?: number;
   createdAt?: Date | string | null;
   updatedAt?: Date | string | null;
   tags?: TagData[];
@@ -126,6 +127,7 @@ export function mapToolToData(tool: ToolShape): ToolData {
     lastCheckedAt: toIsoString(tool.lastCheckedAt),
     lastStatusCode: tool.lastStatusCode ?? null,
     isBroken: tool.isBroken ?? false,
+    votes: tool.votes ?? 0,
     createdAt: toIsoString(tool.createdAt),
     updatedAt: toIsoString(tool.updatedAt),
     tags: tool.tags ?? [],

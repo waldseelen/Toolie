@@ -1,12 +1,9 @@
-import { prisma } from "@/lib/prisma";
+import { getPendingSubmissions } from "@/lib/db";
 import styles from "@/styles/admin.module.css";
 import { SubmissionActions } from "@/components/SubmissionActions/SubmissionActions";
 
 export default async function AdminSubmissionsPage() {
-  const submissions = await prisma.submission.findMany({
-    where: { status: "pending" },
-    orderBy: { submittedAt: "desc" },
-  });
+  const submissions = await getPendingSubmissions();
 
   return (
     <section>
@@ -32,7 +29,7 @@ export default async function AdminSubmissionsPage() {
                   </a>
                 </td>
                 <td className={styles.dim}>{submission.categoryKey || "GENERAL"}</td>
-                <td className={styles.dim}>{submission.submittedAt.toLocaleString()}</td>
+                <td className={styles.dim}>{new Date(submission.submittedAt).toLocaleString()}</td>
                 <td>{submission.description}</td>
                 <td>
                   <div className={styles.actions}>
@@ -47,3 +44,4 @@ export default async function AdminSubmissionsPage() {
     </section>
   );
 }
+

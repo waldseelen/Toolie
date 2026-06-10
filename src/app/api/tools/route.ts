@@ -1,5 +1,11 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { getDb } from "@/lib/firebase";
+import {
+  getCategoriesWithSubcategoriesAndTools,
+  createTool,
+  getAllTags,
+  getNextSortOrder,
+} from "@/lib/db";
 import { translateTextToEnglish } from "@/lib/translate";
 import { createUniqueSlug } from "@/lib/slug";
 import { STATUS_VALUES } from "@/lib/tool-data";
@@ -22,15 +28,6 @@ function resolveFaviconUrl(link: string): string | null {
   }
 }
 
-async function getNextSortOrder(subcategoryId: string): Promise<number> {
-  const result = await prisma.tool.aggregate({
-    where: { subcategoryId },
-    _max: { sortOrder: true },
-  });
-
-  return (result._max.sortOrder ?? -1) + 1;
-}
-
 function asBoolean(value: unknown): boolean | undefined {
   return typeof value === "boolean" ? value : undefined;
 }
@@ -48,11 +45,11 @@ function asStatus(value: unknown): string | undefined {
 }
 
 async function createToolSlug(name: string): Promise<string> {
-  const existingTools = await prisma.tool.findMany({
-    where: { slug: { not: null } },
-    select: { slug: true },
-  });
-  const usedSlugs = new Set(existingTools.map((tool) => tool.slug!));
+  const db = getDb();
+  const snap = await db.collection("tools").get();
+  const usedSlugs = new Set(
+    snap.docs.map((doc) => doc.data().slug).filter(Boolean) as string[]
+  );
 
   return createUniqueSlug(name, usedSlugs);
 }
@@ -67,31 +64,12 @@ export async function GET(request: Request) {
     const platform = asTrimmedString(searchParams.get("platform"));
     const sort = asTrimmedString(searchParams.get("sort"));
 
-    const categories = await prisma.category.findMany({
-      where: cat ? { name: cat } : undefined,
-      orderBy: { sortOrder: "asc" },
-      include: {
-        subcategories: {
-          orderBy: { sortOrder: "asc" },
-          include: {
-            tools: {
-              where: {
-                ...(tag ? { tags: { some: { slug: tag } } } : {}),
-                ...(pricing ? { pricingModel: pricing } : {}),
-                ...(platform ? { platforms: { contains: platform } } : {})
-              },
-              orderBy: sort === "newest" 
-                ? [{ createdAt: "desc" }]
-                : sort === "az"
-                ? [{ name: "asc" }]
-                : [{ sortOrder: "asc" }, { createdAt: "asc" }],
-              include: {
-                tags: { select: { id: true, name: true, slug: true } }
-              }
-            },
-          },
-        },
-      },
+    const categories = await getCategoriesWithSubcategoriesAndTools({
+      cat,
+      tag,
+      pricing,
+      platform,
+      sort,
     });
 
     return NextResponse.json(categories);
@@ -136,12 +114,10 @@ export async function POST(request: Request) {
       );
     }
 
-    const subcategory = await prisma.subcategory.findUnique({
-      where: { id: subcategoryId },
-      select: { id: true },
-    });
+    const db = getDb();
+    const subcategoryDoc = await db.collection("subcategories").doc(subcategoryId).get();
 
-    if (!subcategory) {
+    if (!subcategoryDoc.exists) {
       return NextResponse.json(
         { error: "Geçersiz subcategoryId" },
         { status: 404 }
@@ -158,41 +134,37 @@ export async function POST(request: Request) {
       }
     }
 
-    const tool = await prisma.tool.create({
-      data: {
-        name,
-        slug: await createToolSlug(name),
-        link,
-        description,
-        descriptionEn: resolvedDescriptionEn,
-        subcategoryId,
-        faviconUrl: resolveFaviconUrl(link),
-        pricingModel,
-        platforms,
-        featured,
-        featuredLabel,
-        hasApi,
-        isOpenSource,
-        officialDocsUrl,
-        githubUrl,
-        logoUrl,
-        status,
-        verified,
-        sortOrder: await getNextSortOrder(subcategoryId),
-        ...(tags.length > 0
-          ? {
-              tags: {
-                connect: tags.map((id: string) => ({ id })),
-              },
-            }
-          : {}),
-      },
-      include: {
-        tags: { select: { id: true, name: true, slug: true } },
-      },
+    const slug = await createToolSlug(name);
+    const sortOrder = await getNextSortOrder(subcategoryId);
+
+    const tool = await createTool({
+      name,
+      slug,
+      link,
+      description,
+      descriptionEn: resolvedDescriptionEn,
+      subcategoryId,
+      faviconUrl: resolveFaviconUrl(link),
+      pricingModel,
+      platforms,
+      featured,
+      featuredLabel,
+      hasApi,
+      isOpenSource,
+      officialDocsUrl,
+      githubUrl,
+      logoUrl,
+      status,
+      verified,
+      sortOrder,
+      tagIds: tags,
     });
 
-    return NextResponse.json(tool, { status: 201 });
+    const allTags = await getAllTags();
+    const tagsMap = new Map(allTags.map((t) => [t.id, t]));
+    const toolTags = tags.map((id: string) => tagsMap.get(id)).filter(Boolean);
+
+    return NextResponse.json({ ...tool, tags: toolTags }, { status: 201 });
   } catch (error) {
     console.error("POST /api/tools error:", error);
     return NextResponse.json(

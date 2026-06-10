@@ -1,4 +1,7 @@
-import { prisma } from "../src/lib/prisma";
+import { getAllTools, updateTool } from "../src/lib/db";
+
+// Setup dotenv manually for script runtime
+import "dotenv/config";
 
 const CONCURRENCY_LIMIT = 10;
 const REQUEST_TIMEOUT_MS = 15000;
@@ -56,13 +59,8 @@ async function runWithConcurrency<T>(
 }
 
 async function main() {
-  const tools = await prisma.tool.findMany({
-    select: {
-      id: true,
-      name: true,
-      link: true,
-    },
-  });
+  console.log("🔍 Fetching tools for link checking...");
+  const tools = await getAllTools();
 
   const results: LinkCheckResult[] = [];
 
@@ -73,13 +71,10 @@ async function main() {
       const statusCode = await fetchStatus(tool.link);
       const isBroken = statusCode >= 400;
 
-      await prisma.tool.update({
-        where: { id: tool.id },
-        data: {
-          lastCheckedAt: checkedAt,
-          lastStatusCode: statusCode,
-          isBroken,
-        },
+      await updateTool(tool.id, {
+        lastCheckedAt: checkedAt.toISOString(),
+        lastStatusCode: statusCode,
+        isBroken,
       });
 
       results.push({
@@ -90,13 +85,10 @@ async function main() {
         checkedAt,
       });
     } catch {
-      await prisma.tool.update({
-        where: { id: tool.id },
-        data: {
-          lastCheckedAt: checkedAt,
-          lastStatusCode: null,
-          isBroken: true,
-        },
+      await updateTool(tool.id, {
+        lastCheckedAt: checkedAt.toISOString(),
+        lastStatusCode: null,
+        isBroken: true,
       });
 
       results.push({
@@ -129,7 +121,4 @@ main()
   .catch((error) => {
     console.error("Link health check failed:", error);
     process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
   });

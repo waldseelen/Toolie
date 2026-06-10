@@ -1,7 +1,11 @@
+"use client";
+
 import dynamic from "next/dynamic";
 import styles from "./Header.module.css";
 import type { ToolStats } from "@/lib/types";
 import type { Locale, TranslationKey } from "@/lib/i18n";
+import { useCRT } from "@/hooks/useCRT";
+import { useHighContrast } from "@/hooks/useHighContrast";
 
 const ThemeToggle = dynamic(
   () => import("../ThemeToggle/ThemeToggle").then((mod) => mod.ThemeToggle),
@@ -16,6 +20,9 @@ interface HeaderProps {
 }
 
 export function Header({ stats, locale, toggleLanguage, t }: HeaderProps) {
+  useCRT();
+  useHighContrast();
+
   return (
     <header className={styles.header}>
       <div className={styles.ascii} aria-hidden="true">
@@ -31,6 +38,7 @@ export function Header({ stats, locale, toggleLanguage, t }: HeaderProps) {
         </h1>
         <div className={styles.controls}>
           <ThemeToggle t={t} />
+
           <button
             type="button"
             className={styles.langToggle}

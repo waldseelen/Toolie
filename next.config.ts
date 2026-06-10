@@ -1,17 +1,8 @@
-import path from "path";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  outputFileTracingRoot: path.join(__dirname),
   experimental: {
     devtoolSegmentExplorer: false,
-  },
-  webpack: (config, { dev }) => {
-    if (dev) {
-      config.cache = false;
-    }
-
-    return config;
   },
   images: {
     remotePatterns: [

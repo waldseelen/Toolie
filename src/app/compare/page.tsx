@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { prisma } from "@/lib/prisma";
+import { getToolById } from "@/lib/db";
 import { getRequestLocale } from "@/lib/request-locale";
 import { absoluteUrl } from "@/lib/site";
-import { mapToolsToData, splitPlatforms } from "@/lib/tool-data";
+import { splitPlatforms } from "@/lib/tool-data";
 import { ComparePageClient } from "@/components/ComparePageClient/ComparePageClient";
 import styles from "./ComparePage.module.css";
+import type { ToolData } from "@/lib/types";
 
 interface ComparePageProps {
   searchParams: Promise<{ ids?: string }>;
@@ -23,21 +24,13 @@ export default async function ComparePage({ searchParams }: ComparePageProps) {
     .filter(Boolean)
     .slice(0, 4);
 
-  const tools = mapToolsToData(
-    await prisma.tool.findMany({
-      where: { id: { in: requestedIds } },
-      include: {
-        tags: { select: { id: true, name: true, slug: true } },
-        subcategory: {
-          include: {
-            category: true,
-          },
-        },
-      },
-    })
+  const toolsRaw = await Promise.all(
+    requestedIds.map((id) => getToolById(id))
   );
+  const tools = toolsRaw.filter(Boolean) as ToolData[];
 
   const compareUrl = absoluteUrl(`/compare?ids=${requestedIds.join(",")}`);
+
 
   return (
     <main className={styles.page}>

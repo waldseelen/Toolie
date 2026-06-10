@@ -1,14 +1,11 @@
-import { prisma } from "@/lib/prisma";
+import { getAllTools } from "@/lib/db";
 import Link from "next/link";
 import styles from "@/styles/admin.module.css";
 
 export default async function AdminToolsPage() {
-  const tools = await prisma.tool.findMany({
-    orderBy: [{ createdAt: "desc" }],
-    include: {
-      subcategory: { include: { category: true } }
-    }
-  });
+  const tools = await getAllTools();
+  // Sort by createdAt desc for admin tools overview
+  tools.sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
 
   return (
     <section>
@@ -39,7 +36,7 @@ export default async function AdminToolsPage() {
             <tr key={tool.id}>
               <td>{tool.name}</td>
               <td className={styles.dim}>
-                {tool.subcategory.category.name} &gt; {tool.subcategory.name}
+                {tool.category?.name || "GENERAL"} &gt; {tool.subcategory?.name || "GENERAL"}
               </td>
               <td>
                 {tool.featured ? (
@@ -68,3 +65,4 @@ export default async function AdminToolsPage() {
     </section>
   );
 }
+

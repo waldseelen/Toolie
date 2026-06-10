@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { getDb } from "@/lib/firebase";
+import { getSubmissionById, updateSubmissionStatus, getNextSortOrder } from "@/lib/db";
 import { translateTextToEnglish } from "@/lib/translate";
 import { createUniqueSlug } from "@/lib/slug";
 
@@ -16,43 +17,39 @@ function resolveFaviconUrl(link: string): string | null {
   }
 }
 
-async function getNextSortOrder(subcategoryId: string): Promise<number> {
-  const result = await prisma.tool.aggregate({
-    where: { subcategoryId },
-    _max: { sortOrder: true },
-  });
-
-  return (result._max.sortOrder ?? -1) + 1;
-}
-
 async function createToolSlug(name: string): Promise<string> {
-  const existingTools = await prisma.tool.findMany({
-    where: { slug: { not: null } },
-    select: { slug: true },
-  });
-  const usedSlugs = new Set(existingTools.map((tool) => tool.slug!));
+  const db = getDb();
+  const snap = await db.collection("tools").get();
+  const usedSlugs = new Set(
+    snap.docs.map((doc) => doc.data().slug).filter(Boolean) as string[]
+  );
 
   return createUniqueSlug(name, usedSlugs);
 }
 
 async function resolveSubcategoryId(categoryKey: string | null): Promise<string | null> {
-  const fallback = await prisma.subcategory.findFirst({
-    where: { category: { name: "GENERAL" } },
-    orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
-    select: { id: true },
-  });
+  const db = getDb();
+
+  const findSubcategoryForCategory = async (catName: string): Promise<string | null> => {
+    const catSnap = await db.collection("categories").where("name", "==", catName).limit(1).get();
+    if (catSnap.empty) return null;
+    const subSnap = await db
+      .collection("subcategories")
+      .where("categoryId", "==", catSnap.docs[0].id)
+      .orderBy("sortOrder", "asc")
+      .limit(1)
+      .get();
+    return subSnap.empty ? null : subSnap.docs[0].id;
+  };
+
+  const fallbackId = await findSubcategoryForCategory("GENERAL");
 
   if (!categoryKey) {
-    return fallback?.id ?? null;
+    return fallbackId;
   }
 
-  const match = await prisma.subcategory.findFirst({
-    where: { category: { name: categoryKey } },
-    orderBy: [{ sortOrder: "asc" }, { createdAt: "asc" }],
-    select: { id: true },
-  });
-
-  return match?.id ?? fallback?.id ?? null;
+  const matchId = await findSubcategoryForCategory(categoryKey);
+  return matchId || fallbackId;
 }
 
 export async function PATCH(request: Request, { params }: Params) {
@@ -65,20 +62,14 @@ export async function PATCH(request: Request, { params }: Params) {
       return NextResponse.json({ error: "Invalid action" }, { status: 400 });
     }
 
-    const submission = await prisma.submission.findUnique({
-      where: { id },
-    });
+    const submission = await getSubmissionById(id);
 
     if (!submission) {
       return NextResponse.json({ error: "Submission not found" }, { status: 404 });
     }
 
     if (action === "reject") {
-      const rejected = await prisma.submission.update({
-        where: { id },
-        data: { status: "rejected" },
-      });
-
+      const rejected = await updateSubmissionStatus(id, "rejected");
       return NextResponse.json(rejected);
     }
 
@@ -99,25 +90,33 @@ export async function PATCH(request: Request, { params }: Params) {
       descriptionEn = null;
     }
 
-    await prisma.$transaction(async (tx) => {
-      await tx.tool.create({
-        data: {
-          name: submission.name,
-          slug: await createToolSlug(submission.name),
-          link: submission.link,
-          description: submission.description,
-          descriptionEn,
-          subcategoryId,
-          faviconUrl: resolveFaviconUrl(submission.link),
-          sortOrder: await getNextSortOrder(subcategoryId),
-        },
-      });
+    const db = getDb();
+    const batch = db.batch();
+    const toolRef = db.collection("tools").doc();
+    const now = new Date().toISOString();
 
-      await tx.submission.update({
-        where: { id },
-        data: { status: "approved" },
-      });
+    const slug = await createToolSlug(submission.name);
+    const sortOrder = await getNextSortOrder(subcategoryId);
+
+    batch.set(toolRef, {
+      name: submission.name,
+      slug,
+      link: submission.link,
+      description: submission.description,
+      descriptionEn,
+      subcategoryId,
+      faviconUrl: resolveFaviconUrl(submission.link),
+      sortOrder,
+      createdAt: now,
+      updatedAt: now,
+      votes: 0,
+      tagIds: [],
     });
+
+    const submissionRef = db.collection("submissions").doc(id);
+    batch.update(submissionRef, { status: "approved" });
+
+    await batch.commit();
 
     return NextResponse.json({ success: true });
   } catch (error) {

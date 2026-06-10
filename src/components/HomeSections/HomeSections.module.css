@@ -29,19 +29,40 @@
 }
 
 .featuredGrid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols, 4), 120px);
+  justify-content: center;
   gap: 1rem;
+  width: 100%;
 }
 
 .latestRail {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
-  overflow-x: auto;
-  padding-bottom: 0.5rem;
+  justify-content: center;
 }
 
 .featuredCard,
 .latestCard {
   flex: 0 0 auto;
+}
+
+@media (max-width: 1024px) {
+  .featuredGrid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 120px)) !important;
+  }
+
+  .latestRail {
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    padding-bottom: 0.5rem !important;
+    justify-content: flex-start !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .featuredGrid {
+    grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)) !important;
+  }
 }

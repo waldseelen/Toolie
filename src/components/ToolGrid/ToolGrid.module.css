@@ -56,7 +56,8 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(110px, 110px));
+  grid-template-columns: repeat(var(--grid-cols, 6), 110px);
+  grid-auto-rows: 1fr;
   justify-content: center;
   gap: 14px;
   width: 100%;
@@ -76,9 +77,15 @@
   margin-bottom: 16px;
 }
 
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(110px, 110px)) !important;
+  }
+}
+
 @media (max-width: 600px) {
   .grid {
-    grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)) !important;
     gap: 10px;
   }
 }

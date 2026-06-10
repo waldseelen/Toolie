@@ -127,8 +127,10 @@ export function ToolGrid({
         style={{ "--accent-color": category.color } as React.CSSProperties}
       >
         <span className={styles.catIcon}>{category.icon}</span>
-        <h2 className={styles.catTitle}>░░ {categoryName} ░░</h2>
-        <span className={styles.catCount}>
+        <h2 className={styles.catTitle}>
+          <span aria-hidden="true">░░</span> {categoryName} <span aria-hidden="true">░░</span>
+        </h2>
+        <span className={styles.catCount} aria-live="polite">
           {query
             ? `${totalVisibleTools}/${totalCatTools} ${t("toolCountUpper")}`
             : `${totalCatTools} ${t("toolCountUpper")}`}
@@ -149,7 +151,11 @@ export function ToolGrid({
               {sub.tools.length} {t("toolCount")}
             </span>
           </h3>
-          <div className={styles.grid} role="list">
+          <div
+            className={styles.grid}
+            role="list"
+            style={{ "--grid-cols": Math.ceil(sub.tools.length / 2) } as React.CSSProperties}
+          >
             {sub.tools.map((tool) => (
               <ToolCard
                 key={tool.id}

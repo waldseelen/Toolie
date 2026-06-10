@@ -1,7 +1,22 @@
 import type { Metadata, Viewport } from "next";
+import { Press_Start_2P, JetBrains_Mono } from "next/font/google";
 import "@/styles/globals.css";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 import { siteUrl } from "@/lib/site";
+
+const pressStart2P = Press_Start_2P({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-pixel",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  weight: ["400", "700"],
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -46,14 +61,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="tr" data-theme="dark" suppressHydrationWarning>
+    <html lang="tr" data-theme="dark" data-crt="off" data-high-contrast="off" suppressHydrationWarning>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -65,13 +74,32 @@ export default function RootLayout({
                   } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
                     document.documentElement.setAttribute('data-theme', 'light');
                   }
+                  
+                  var crt = localStorage.getItem('toolie-crt');
+                  if (crt === 'on') {
+                    document.documentElement.setAttribute('data-crt', 'on');
+                  } else {
+                    document.documentElement.setAttribute('data-crt', 'off');
+                  }
+
+                  var hc = localStorage.getItem('toolie-high-contrast');
+                  if (hc === 'on') {
+                    document.documentElement.setAttribute('data-high-contrast', 'on');
+                  } else {
+                    document.documentElement.setAttribute('data-high-contrast', 'off');
+                  }
+
+                  var lang = localStorage.getItem('toolie-lang');
+                  if (lang === 'tr' || lang === 'en') {
+                    document.documentElement.setAttribute('lang', lang);
+                  }
                 } catch(e) {}
               })();
             `,
           }}
         />
       </head>
-      <body suppressHydrationWarning>
+      <body className={`${pressStart2P.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
         <a href="#main-content" className="skipLink">
           İçeriğe geç / Skip to content
         </a>

@@ -44,7 +44,11 @@ export function HomeSections({
             <h2 className={styles.title}>{t("featuredToolsTitle")}</h2>
             <p className={styles.copy}>{t("featuredToolsCopy")}</p>
           </div>
-          <div className={styles.featuredGrid} role="list">
+          <div
+            className={styles.featuredGrid}
+            role="list"
+            style={{ "--grid-cols": Math.ceil(featuredTools.length / 2) } as React.CSSProperties}
+          >
             {featuredTools.map((tool) => (
               <div key={tool.id} className={styles.featuredCard}>
                 <ToolCard

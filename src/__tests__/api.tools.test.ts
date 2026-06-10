@@ -1,24 +1,28 @@
-import { Prisma } from "@prisma/client";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const { mockPrisma } = vi.hoisted(() => ({
-  mockPrisma: {
-    category: {
-      findMany: vi.fn(),
-    },
-    subcategory: {
-      findUnique: vi.fn(),
-    },
-    tool: {
-      aggregate: vi.fn(),
-      create: vi.fn(),
-      delete: vi.fn(),
-    },
+const { mockDb } = vi.hoisted(() => ({
+  mockDb: {
+    getCategoriesWithSubcategoriesAndTools: vi.fn(),
+    createTool: vi.fn(),
+    deleteTool: vi.fn(),
+    getToolById: vi.fn(),
+    getAllTags: vi.fn(),
+    getNextSortOrder: vi.fn(),
   },
 }));
 
-vi.mock("@/lib/prisma", () => ({
-  prisma: mockPrisma,
+vi.mock("@/lib/db", () => mockDb);
+
+const mockDoc = vi.fn();
+const mockCollection = vi.fn(() => ({
+  doc: mockDoc,
+  get: vi.fn().mockResolvedValue({ docs: [] }),
+}));
+
+vi.mock("@/lib/firebase", () => ({
+  getDb: vi.fn(() => ({
+    collection: mockCollection,
+  })),
 }));
 
 vi.mock("@/lib/translate", () => ({
@@ -30,15 +34,17 @@ import { DELETE } from "@/app/api/tools/[id]/route";
 
 describe("tools api routes", () => {
   beforeEach(() => {
-    mockPrisma.category.findMany.mockReset();
-    mockPrisma.subcategory.findUnique.mockReset();
-    mockPrisma.tool.aggregate.mockReset();
-    mockPrisma.tool.create.mockReset();
-    mockPrisma.tool.delete.mockReset();
+    mockDb.getCategoriesWithSubcategoriesAndTools.mockReset();
+    mockDb.createTool.mockReset();
+    mockDb.deleteTool.mockReset();
+    mockDb.getToolById.mockReset();
+    mockDb.getAllTags.mockReset();
+    mockDb.getNextSortOrder.mockReset();
+    mockDoc.mockReset();
   });
 
   it("returns the expected GET /api/tools shape", async () => {
-    mockPrisma.category.findMany.mockResolvedValue([
+    mockDb.getCategoriesWithSubcategoriesAndTools.mockResolvedValue([
       {
         id: "cat-1",
         name: "GENERAL",
@@ -81,12 +87,7 @@ describe("tools api routes", () => {
   });
 
   it("returns 404 from DELETE /api/tools/[id] for unknown ids", async () => {
-    mockPrisma.tool.delete.mockRejectedValue(
-      new Prisma.PrismaClientKnownRequestError("Missing tool", {
-        code: "P2025",
-        clientVersion: "test",
-      })
-    );
+    mockDb.getToolById.mockResolvedValue(null);
 
     const response = await DELETE(new Request("http://localhost/api/tools/missing"), {
       params: Promise.resolve({ id: "missing" }),

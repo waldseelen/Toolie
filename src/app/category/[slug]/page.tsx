@@ -1,11 +1,11 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { prisma } from "@/lib/prisma";
+import { getCategoryBySlug } from "@/lib/db";
 import { getRequestLocale } from "@/lib/request-locale";
 import { absoluteUrl, buildOgImageUrl } from "@/lib/site";
-import { mapToolsToData } from "@/lib/tool-data";
 import { ListingPage } from "@/components/ListingPage/ListingPage";
 import { getLocalizedName } from "@/lib/taxonomy";
+import type { ToolData } from "@/lib/types";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -14,9 +14,7 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = await getRequestLocale();
   const { slug } = await params;
-  const category = await prisma.category.findUnique({
-    where: { slug },
-  });
+  const category = await getCategoryBySlug(slug);
 
   if (!category) {
     return { title: "Not Found — TOOLIE" };
@@ -56,22 +54,7 @@ export default async function CategoryPage({ params }: Props) {
   const locale = await getRequestLocale();
   const { slug } = await params;
 
-  const category = await prisma.category.findUnique({
-    where: { slug },
-    include: {
-      subcategories: {
-        orderBy: { sortOrder: "asc" },
-        include: {
-          tools: {
-            orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
-            include: {
-              tags: { select: { id: true, name: true, slug: true } },
-            },
-          },
-        },
-      },
-    },
-  });
+  const category = await getCategoryBySlug(slug);
 
   if (!category) {
     notFound();
@@ -88,29 +71,8 @@ export default async function CategoryPage({ params }: Props) {
       ? `${categoryName} tools collected across ${category.subcategories.length} subcategories.`
       : `${category.subcategories.length} alt kategori boyunca toplanan ${categoryName} araçları.`;
 
-  const tools = mapToolsToData(
-    category.subcategories.flatMap((subcategory) =>
-      subcategory.tools.map((tool) => ({
-        ...tool,
-        subcategory: {
-          id: subcategory.id,
-          name: subcategory.name,
-          key: subcategory.key,
-          slug: subcategory.slug,
-          nameTr: subcategory.nameTr,
-          nameEn: subcategory.nameEn,
-          category: {
-            id: category.id,
-            name: category.name,
-            slug: category.slug,
-            nameTr: category.nameTr,
-            nameEn: category.nameEn,
-            icon: category.icon,
-            color: category.color,
-          },
-        },
-      }))
-    )
+  const tools: ToolData[] = category.subcategories.flatMap(
+    (subcategory) => subcategory.tools
   );
 
   return (
@@ -124,3 +86,4 @@ export default async function CategoryPage({ params }: Props) {
     />
   );
 }
+

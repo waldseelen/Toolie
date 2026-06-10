@@ -21,6 +21,8 @@
 
 .field {
   display: grid;
+  grid-template-columns: minmax(120px, auto) 1fr;
+  align-items: start;
   gap: 0.5rem;
 }
 
@@ -31,11 +33,19 @@
   border: 1px solid var(--border-dim);
   background: var(--card-bg);
   color: var(--text);
+  line-height: 1.6;
 }
 
 .textarea {
   min-height: 140px;
   resize: vertical;
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 600px) {
+  .field {
+    grid-template-columns: 1fr;
+  }
 }
 
 .button {
@@ -53,4 +63,41 @@
 
 .error {
   color: var(--red);
+}
+
+.linkRow {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.linkRow .input {
+  flex: 1;
+}
+
+.scrapeBtn {
+  padding: 0.75rem 1.2rem;
+  border: 2px solid var(--dim);
+  background: var(--bg-secondary);
+  color: var(--text-bright);
+  font-family: var(--font-pixel), monospace;
+  font-size: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.scrapeBtn:hover:not(:disabled) {
+  border-color: var(--green);
+  color: var(--green);
+  box-shadow: 2px 2px 0 var(--green);
+}
+
+.scrapeBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.scrapeError {
+  color: var(--red);
+  font-size: 11px;
+  margin-top: 0.25rem;
 }

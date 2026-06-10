@@ -47,6 +47,8 @@ export interface ToolData {
   lastCheckedAt?: string | null;
   lastStatusCode?: number | null;
   isBroken?: boolean;
+  votes?: number;
+  sortOrder?: number;
   createdAt?: string | null;
   updatedAt?: string | null;
   tags?: TagData[];

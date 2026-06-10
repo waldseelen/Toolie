@@ -1,21 +1,14 @@
-import { prisma } from "@/lib/prisma";
-import { mapToolsToData } from "@/lib/tool-data";
+import { getAllTools } from "@/lib/db";
 import { CollectionsPageClient } from "@/components/CollectionsPageClient/CollectionsPageClient";
 
-export default async function CollectionsPage() {
-  const tools = mapToolsToData(
-    await prisma.tool.findMany({
-      include: {
-        tags: { select: { id: true, name: true, slug: true } },
-        subcategory: {
-          include: {
-            category: true,
-          },
-        },
-      },
-      orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
-    })
-  );
-
-  return <CollectionsPageClient tools={tools} />;
+interface CollectionsPageProps {
+  searchParams: Promise<{ share?: string; name?: string }>;
 }
+
+export default async function CollectionsPage({ searchParams }: CollectionsPageProps) {
+  const { share = "", name = "" } = await searchParams;
+  const tools = await getAllTools();
+
+  return <CollectionsPageClient tools={tools} sharedIds={share} sharedName={name} />;
+}
+

@@ -1,16 +1,10 @@
-import { prisma } from "@/lib/prisma";
+import { getAllTags, getSubcategoriesForAdmin } from "@/lib/db";
 import { EditToolForm } from "@/components/Admin/EditToolForm";
 
 export default async function AdminNewToolPage() {
   const [allTags, allSubcategories] = await Promise.all([
-    prisma.tag.findMany({
-      orderBy: { name: "asc" },
-      select: { id: true, name: true, slug: true }
-    }),
-    prisma.subcategory.findMany({
-      orderBy: [{ category: { sortOrder: "asc" } }, { sortOrder: "asc" }],
-      include: { category: true },
-    }),
+    getAllTags(),
+    getSubcategoriesForAdmin(),
   ]);
 
   // Dummy empty tool for the form
@@ -50,10 +44,11 @@ export default async function AdminNewToolPage() {
             slug: subcategory.slug,
             nameTr: subcategory.nameTr,
             nameEn: subcategory.nameEn,
-            categoryName: subcategory.category.name,
+            categoryName: subcategory.category?.name || "GENERAL",
           }))}
         />
       </div>
     </div>
   );
 }
+

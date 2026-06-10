@@ -25,28 +25,45 @@
   overflow-x: auto;
   border: 1px solid var(--border-dim);
   background: var(--card-bg);
+  position: relative;
 }
 
 .table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   min-width: 720px;
 }
 
 .cell {
   padding: 0.9rem;
   text-align: left;
-  border-top: 1px solid var(--border-dim);
+  border-bottom: 1px solid var(--border-dim);
+  border-right: 1px solid var(--border-dim);
   color: var(--text);
   vertical-align: top;
+  background: var(--card-bg);
+}
+
+.cell:last-child {
+  border-right: none;
 }
 
 .headCell {
   color: var(--cyan);
+  position: sticky;
+  left: 0;
+  z-index: 10;
+  background: var(--bg-secondary) !important;
+  font-family: var(--font-pixel), monospace;
+  font-size: 9px;
+  border-right: 2px solid var(--border-dim);
 }
 
 .toolHead {
   color: var(--text-bright);
+  font-family: var(--font-pixel), monospace;
+  font-size: 10px;
 }
 
 .empty {

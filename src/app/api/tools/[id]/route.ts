@@ -1,6 +1,6 @@
-import { Prisma } from "@prisma/client";
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { getDb } from "@/lib/firebase";
+import { getToolById, updateTool, deleteTool, getNextSortOrder } from "@/lib/db";
 import { translateTextToEnglish } from "@/lib/translate";
 import { STATUS_VALUES } from "@/lib/tool-data";
 
@@ -26,15 +26,6 @@ function resolveFaviconUrl(link: string): string | null {
   }
 }
 
-async function getNextSortOrder(subcategoryId: string): Promise<number> {
-  const result = await prisma.tool.aggregate({
-    where: { subcategoryId },
-    _max: { sortOrder: true },
-  });
-
-  return (result._max.sortOrder ?? -1) + 1;
-}
-
 function asBoolean(value: unknown): boolean | undefined {
   return typeof value === "boolean" ? value : undefined;
 }
@@ -56,10 +47,7 @@ export async function PUT(request: Request, { params }: Params) {
   try {
     const { id } = await params;
     const body = await request.json();
-    const existingTool = await prisma.tool.findUnique({
-      where: { id },
-      select: { id: true, subcategoryId: true },
-    });
+    const existingTool = await getToolById(id);
 
     if (!existingTool) {
       return NextResponse.json(
@@ -135,19 +123,17 @@ export async function PUT(request: Request, { params }: Params) {
     let resolvedSubcategoryId: string | undefined;
 
     if (subcategoryId) {
-      const subcategory = await prisma.subcategory.findUnique({
-        where: { id: subcategoryId },
-        select: { id: true },
-      });
+      const db = getDb();
+      const subcategoryDoc = await db.collection("subcategories").doc(subcategoryId).get();
 
-      if (!subcategory) {
+      if (!subcategoryDoc.exists) {
         return NextResponse.json(
           { error: "Geçersiz subcategoryId" },
           { status: 404 }
         );
       }
 
-      resolvedSubcategoryId = subcategory.id;
+      resolvedSubcategoryId = subcategoryDoc.id;
     }
 
     let resolvedDescriptionEn: string | null | undefined;
@@ -164,7 +150,7 @@ export async function PUT(request: Request, { params }: Params) {
 
     const isMovingToAnotherSubcategory =
       resolvedSubcategoryId !== undefined &&
-      resolvedSubcategoryId !== existingTool.subcategoryId;
+      resolvedSubcategoryId !== existingTool.subcategory?.id;
 
     const targetSubcategoryId = isMovingToAnotherSubcategory
       ? resolvedSubcategoryId
@@ -174,54 +160,39 @@ export async function PUT(request: Request, { params }: Params) {
       ? await getNextSortOrder(targetSubcategoryId)
       : undefined;
 
-    const tool = await prisma.tool.update({
-      where: { id },
-      data: {
-        ...(name && { name }),
-        ...(link && {
-          link,
-          faviconUrl: resolveFaviconUrl(link),
-        }),
-        ...(description && { description }),
-        ...(resolvedDescriptionEn !== undefined && {
-          descriptionEn: resolvedDescriptionEn,
-        }),
-        ...(resolvedSubcategoryId && { subcategoryId: resolvedSubcategoryId }),
-        ...(movedSortOrder !== undefined && {
-          sortOrder: movedSortOrder,
-        }),
-        ...(pricingModel !== undefined && { pricingModel }),
-        ...(platforms !== undefined && { platforms }),
-        ...(featured !== undefined && { featured }),
-        ...(featuredLabel !== undefined && { featuredLabel }),
-        ...(hasApi !== undefined && { hasApi }),
-        ...(isOpenSource !== undefined && { isOpenSource }),
-        ...(officialDocsUrl !== undefined && { officialDocsUrl }),
-        ...(githubUrl !== undefined && { githubUrl }),
-        ...(logoUrl !== undefined && { logoUrl }),
-        ...(status !== undefined && { status }),
-        ...(verified !== undefined && { verified }),
-        ...(lastStatusCode !== undefined && { lastStatusCode }),
-        ...(isBroken !== undefined && { isBroken }),
-        ...(tags !== undefined && {
-          tags: {
-            set: tags.map((id: string) => ({ id }))
-          }
-        })
-      },
+    const tool = await updateTool(id, {
+      ...(name && { name }),
+      ...(link && {
+        link,
+        faviconUrl: resolveFaviconUrl(link),
+      }),
+      ...(description && { description }),
+      ...(resolvedDescriptionEn !== undefined && {
+        descriptionEn: resolvedDescriptionEn,
+      }),
+      ...(resolvedSubcategoryId && { subcategoryId: resolvedSubcategoryId }),
+      ...(movedSortOrder !== undefined && {
+        sortOrder: movedSortOrder,
+      }),
+      ...(pricingModel !== undefined && { pricingModel }),
+      ...(platforms !== undefined && { platforms }),
+      ...(featured !== undefined && { featured }),
+      ...(featuredLabel !== undefined && { featuredLabel }),
+      ...(hasApi !== undefined && { hasApi }),
+      ...(isOpenSource !== undefined && { isOpenSource }),
+      ...(officialDocsUrl !== undefined && { officialDocsUrl }),
+      ...(githubUrl !== undefined && { githubUrl }),
+      ...(logoUrl !== undefined && { logoUrl }),
+      ...(status !== undefined && { status }),
+      ...(verified !== undefined && { verified }),
+      ...(lastStatusCode !== undefined && { lastStatusCode }),
+      ...(isBroken !== undefined && { isBroken }),
+      ...(tags !== undefined && { tagIds: tags }),
     });
 
     return NextResponse.json(tool);
   } catch (error) {
     console.error("PUT /api/tools/[id] error:", error);
-
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      return NextResponse.json(
-        { error: "Araç güncellenirken kayıt bulunamadı" },
-        { status: 404 }
-      );
-    }
-
     return NextResponse.json(
       { error: "Araç güncellenirken hata oluştu" },
       { status: 500 }
@@ -233,20 +204,20 @@ export async function PUT(request: Request, { params }: Params) {
 export async function DELETE(_request: Request, { params }: Params) {
   try {
     const { id } = await params;
+    const existingTool = await getToolById(id);
 
-    await prisma.tool.delete({ where: { id } });
-
-    return NextResponse.json({ success: true });
-  } catch (error) {
-    console.error("DELETE /api/tools/[id] error:", error);
-
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    if (!existingTool) {
       return NextResponse.json(
         { error: "Araç bulunamadı" },
         { status: 404 }
       );
     }
 
+    await deleteTool(id);
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("DELETE /api/tools/[id] error:", error);
     return NextResponse.json(
       { error: "Araç silinirken hata oluştu" },
       { status: 500 }

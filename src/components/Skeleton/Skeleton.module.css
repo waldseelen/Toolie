@@ -8,8 +8,8 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 16px 0 8px;
-  margin-bottom: 20px;
+  padding: 16px 0 10px;
+  margin-bottom: 18px;
   border-bottom: 2px solid var(--border-dim);
 }
 
@@ -22,31 +22,36 @@
 
 .skeletonGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 8px;
+  grid-template-columns: repeat(var(--grid-cols, 6), 110px);
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
 }
 
 .skeletonCard {
   background: var(--card-bg);
   border: 2px solid var(--card-border);
-  padding: 12px 10px;
-  min-height: 80px;
+  padding: 12px 8px;
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  max-width: 120px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  gap: 9px;
   animation: pulse-skeleton 1.5s ease-in-out infinite;
 }
 
 .skeletonIcon {
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
   background: var(--border-dim);
 }
 
 .skeletonText {
   width: 80%;
-  height: 8px;
+  height: 10px;
   background: var(--border-dim);
 }
 
@@ -54,12 +59,19 @@
   width: 160px;
   height: 10px;
   background: var(--border-dim);
-  margin: 24px 0 12px;
+  margin: 28px 0 12px;
   animation: pulse-skeleton 1.5s ease-in-out infinite;
+}
+
+@media (max-width: 1024px) {
+  .skeletonGrid {
+    grid-template-columns: repeat(auto-fill, minmax(110px, 110px)) !important;
+  }
 }
 
 @media (max-width: 600px) {
   .skeletonGrid {
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)) !important;
+    gap: 10px;
   }
 }

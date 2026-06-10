@@ -1,19 +1,9 @@
 import Link from "next/link";
-import { prisma } from "@/lib/prisma";
+import { getBrokenTools } from "@/lib/db";
 import styles from "@/styles/admin.module.css";
 
 export default async function AdminBrokenToolsPage() {
-  const tools = await prisma.tool.findMany({
-    where: { isBroken: true },
-    orderBy: [{ lastCheckedAt: "desc" }, { name: "asc" }],
-    include: {
-      subcategory: {
-        include: {
-          category: true,
-        },
-      },
-    },
-  });
+  const tools = await getBrokenTools();
 
   return (
     <section>
@@ -34,14 +24,14 @@ export default async function AdminBrokenToolsPage() {
               <tr key={tool.id}>
                 <td>{tool.name}</td>
                 <td className={styles.dim}>
-                  {tool.subcategory.category.name} / {tool.subcategory.name}
+                  {tool.subcategory?.category?.name || "GENERAL"} / {tool.subcategory?.name || "GENERAL"}
                 </td>
                 <td className={styles.statusBroken}>
                   {tool.lastStatusCode ?? "ERR"}
                 </td>
                 <td className={styles.dim}>
                   {tool.lastCheckedAt
-                    ? tool.lastCheckedAt.toLocaleString()
+                    ? new Date(tool.lastCheckedAt).toLocaleString()
                     : "Never"}
                 </td>
                 <td>
@@ -67,3 +57,4 @@ export default async function AdminBrokenToolsPage() {
     </section>
   );
 }
+

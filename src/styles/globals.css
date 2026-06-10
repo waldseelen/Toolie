@@ -1,10 +1,3 @@
-/* ═══════════════════════════════════════════════════════
-   TOOLIE v1.0 — Global Styles & Design System
-   Retro Pixel-Art Theme with Light/Dark Mode
-   ═══════════════════════════════════════════════════════ */
-
-@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
-
 /* ── CSS Reset ── */
 *,
 *::before,
@@ -38,13 +31,42 @@
   --text: #cdd6f4;
   --text-bright: #f5e0dc;
   --dim: #6c7086;
+  --fg: #cdd6f4;
 
   --scanline-opacity: 0.02;
   --vignette-opacity: 0.3;
   --glow-strength: 0.6;
   --content-max: 1600px;
 
-  --font-pixel: "Press Start 2P", monospace;
+  /* ── Spacing Scale ── */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+
+  /* ── Border Radius ── */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+
+  /* ── Z-Index Hierarchy ── */
+  --z-base: 1;
+  --z-card-hover: 20;
+  --z-card-badge: 25;
+  --z-sticky: 100;
+  --z-header: 200;
+  --z-tray: 300;
+  --z-dropdown: 400;
+  --z-modal: 500;
+  --z-overlay: 9000;
+  --z-scanline: 9998;
+  --z-crt: 9999;
+  --z-skip: 10000;
+
+  /* ── Transitions ── */
+  --transition-fast: 0.1s ease;
+  --transition-base: 0.2s ease;
+  --transition-theme: 0.25s ease;
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -57,25 +79,54 @@
   --card-border: #dcd6c8;
   --card-hover-shadow: rgba(0, 0, 0, 0.1);
 
-  --green: #4e8d6f;
-  --cyan: #5a9cb3;
-  --orange: #b3854e;
-  --pink: #b37380;
-  --yellow: #9c8e4e;
-  --red: #cc5c5c;
-  --lime: #7a8d4e;
+  --green: #2e6047; /* Darker green for contrast (was #4e8d6f) */
+  --cyan: #39768c; /* Darker cyan for contrast (was #5a9cb3) */
+  --orange: #8a5d2b; /* Darker orange (was #b3854e) */
+  --pink: #914d5a; /* Darker pink (was #b37380) */
+  --yellow: #73672e; /* Darker yellow (was #9c8e4e) */
+  --red: #a33c3c; /* Darker red (was #cc5c5c) */
+  --lime: #56672e; /* Darker lime (was #7a8d4e) */
 
-  --border: #4e8d6f;
-  --border-dim: #dcd6c8;
-  --text: #2d2d2d;
-  --text-bright: #121212;
-  --dim: #767676;
+  --border: #2e6047; /* Match darker green */
+  --border-dim: #c5beb1; /* Darker dim border */
+  --text: #1d1d1d; /* Darker text (was #2d2d2d) */
+  --text-bright: #0c0c0c; /* Darker text (was #121212) */
+  --dim: #5c5c5c; /* Darker dim text (was #767676) */
+  --fg: #1d1d1d;
 
   --scanline-opacity: 0.005;
   --vignette-opacity: 0.05;
   --glow-strength: 0;
+}
 
-  --font-pixel: "Press Start 2P", monospace;
+/* ═══════════════════════════════════════════════════════
+   HIGH CONTRAST / MONOKROM THEME
+   ═══════════════════════════════════════════════════════ */
+html[data-high-contrast="on"] {
+  --bg: #000000 !important;
+  --bg-secondary: #050505 !important;
+  --card-bg: #000000 !important;
+  --card-border: #00ff00 !important;
+  --card-hover-shadow: #00ff00 !important;
+
+  --green: #00ff00 !important;
+  --cyan: #00ffff !important;
+  --orange: #ffaa00 !important;
+  --pink: #ff00ff !important;
+  --yellow: #ffff00 !important;
+  --red: #ff0000 !important;
+  --lime: #55ff55 !important;
+
+  --border: #00ff00 !important;
+  --border-dim: #00ff00 !important;
+  --text: #00ff00 !important;
+  --text-bright: #ffffff !important;
+  --dim: #00cc00 !important;
+  --fg: #00ff00 !important;
+
+  --scanline-opacity: 0.03 !important;
+  --vignette-opacity: 0.4 !important;
+  --glow-strength: 1 !important;
 }
 
 /* ── Base ── */
@@ -86,13 +137,18 @@ html {
 body {
   background: var(--bg);
   color: var(--green);
-  font-family: var(--font-pixel);
-  font-size: 10px;
-  line-height: 1.45;
+  font-family: var(--font-mono), monospace;
+  font-size: 15px; /* Increased from 10px */
+  line-height: 1.6; /* Increased from 1.45 */
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
   transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* UI headings, buttons, inputs use pixel font */
+:where(h1, h2, h3, h4, h5, h6, button, input, select, textarea, .pixel-font) {
+  font-family: var(--font-pixel), "Press Start 2P", monospace;
 }
 
 button,
@@ -102,13 +158,15 @@ select {
   font: inherit;
 }
 
-img {
+img, svg, .pixel-art {
   display: block;
   max-width: 100%;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }
 
-/* ── CRT Scanlines ── */
-body::before {
+/* ── CRT Scanlines & Vignette (Conditional on data-crt="on") ── */
+html[data-crt="on"] body::before {
   content: "";
   position: fixed;
   inset: 0;
@@ -120,11 +178,10 @@ body::before {
     rgba(0, 0, 0, var(--scanline-opacity)) 4px
   );
   pointer-events: none;
-  z-index: 9999;
+  z-index: var(--z-crt);
 }
 
-/* ── CRT Vignette ── */
-body::after {
+html[data-crt="on"] body::after {
   content: "";
   position: fixed;
   inset: 0;
@@ -134,7 +191,14 @@ body::after {
     rgba(0, 0, 0, var(--vignette-opacity)) 100%
   );
   pointer-events: none;
-  z-index: 9998;
+  z-index: var(--z-scanline);
+}
+
+/* CRT OFF disables flicker animation selectively */
+html[data-crt="off"] [class*="ascii"],
+html[data-crt="off"] [class*="flicker"],
+html[data-crt="off"] [class*="Header_ascii"] {
+  animation: none !important;
 }
 
 /* ── Scrollbar ── */
@@ -177,7 +241,7 @@ a {
   position: absolute;
   left: 12px;
   top: -44px;
-  z-index: 10000;
+  z-index: var(--z-skip);
   background: var(--bg);
   color: var(--green);
   border: 2px solid var(--cyan);

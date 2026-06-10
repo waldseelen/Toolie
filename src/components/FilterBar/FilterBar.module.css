@@ -2,9 +2,11 @@
   display: flex;
   flex-wrap: wrap;
   gap: 1.5rem;
-  padding: 1rem 0;
+  padding: 1rem 16px;
   border-bottom: 1px dashed var(--border-dim);
-  margin-bottom: 1rem;
+  margin: 0 auto 1rem;
+  max-width: 1600px;
+  justify-content: center;
 }
 
 .filterGroup {

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { prisma } from "@/lib/prisma";
+import { getToolBySlug, getSimilarTools } from "@/lib/db";
 import styles from "./ToolDetail.module.css";
 import { FAVICON_FALLBACK } from "@/lib/constants";
 import { translations } from "@/lib/i18n";
@@ -11,8 +11,6 @@ import {
   getLocalizedCategoryName,
   getLocalizedSubcategoryName,
   getLocalizedToolDescription,
-  mapToolToData,
-  mapToolsToData,
   splitPlatforms,
 } from "@/lib/tool-data";
 
@@ -23,22 +21,12 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = await getRequestLocale();
   const { slug } = await params;
-  const tool = await prisma.tool.findUnique({
-    where: { slug },
-    include: {
-      subcategory: {
-        include: {
-          category: true,
-        },
-      },
-    },
-  });
+  const tool = await getToolBySlug(slug);
   
   if (!tool) {
     return { title: "Not Found — TOOLIE" };
   }
-  const mappedTool = mapToolToData(tool);
-  const description = getLocalizedToolDescription(mappedTool, locale);
+  const description = getLocalizedToolDescription(tool, locale);
   const title = `${tool.name} — TOOLIE`;
 
   return {
@@ -65,20 +53,11 @@ export default async function ToolDetailPage({ params }: Props) {
   const locale = await getRequestLocale();
   const copy = translations[locale];
 
-  const toolRecord = await prisma.tool.findUnique({
-    where: { slug },
-    include: {
-      subcategory: {
-        include: { category: true }
-      },
-      tags: { select: { id: true, name: true, slug: true } }
-    }
-  });
+  const tool = await getToolBySlug(slug);
 
-  if (!toolRecord) {
+  if (!tool) {
     notFound();
   }
-  const tool = mapToolToData(toolRecord);
 
   const localizedDescription = getLocalizedToolDescription(tool, locale);
   const localizedCatName = tool.category
@@ -100,22 +79,12 @@ export default async function ToolDetailPage({ params }: Props) {
       : copy.healthHealthy
     : copy.healthUnknown;
 
-  const similarTools = mapToolsToData(await prisma.tool.findMany({
-    where: {
-      subcategoryId: toolRecord.subcategoryId,
-      id: { not: toolRecord.id }
-    },
-    take: 6,
-    orderBy: { sortOrder: "asc" },
-    include: {
-      tags: { select: { id: true, name: true, slug: true } },
-      subcategory: {
-        include: {
-          category: true,
-        },
-      },
-    },
-  }));
+  const similarTools = await getSimilarTools(
+    tool.subcategory?.id || "",
+    tool.id,
+    6
+  );
+
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -217,12 +186,12 @@ export default async function ToolDetailPage({ params }: Props) {
           
           <div className={styles.actions}>
             <a 
-              href={tool.link}
+              href={tool.isBroken ? `https://web.archive.org/web/2/${encodeURIComponent(tool.link)}` : tool.link}
               target="_blank" 
               rel="noopener noreferrer" 
               className={styles.visitButton}
             >
-              {copy.visitOfficialSite} ↗
+              {tool.isBroken ? "Web Archive ↗" : `${copy.visitOfficialSite} ↗`}
             </a>
             {tool.officialDocsUrl && (
               <a
