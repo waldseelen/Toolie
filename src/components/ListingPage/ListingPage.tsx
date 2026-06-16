@@ -38,7 +38,7 @@ export function ListingPage({
       </section>
 
       {tools.length > 0 ? (
-        <div className={styles.grid}>
+        <div className={`${styles.grid} ${tools.length > 10 ? styles.gridLarge : ''}`}>
           {tools.map((tool) => (
             <Link
               key={tool.id}

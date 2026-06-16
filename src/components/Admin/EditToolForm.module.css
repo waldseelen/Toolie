@@ -89,7 +89,7 @@
 .primaryButton {
   background: var(--cyan);
   border-color: var(--cyan);
-  color: #111;
+  color: var(--bg);
   font-weight: 700;
 }
 

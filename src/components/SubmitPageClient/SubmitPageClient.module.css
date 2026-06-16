@@ -52,7 +52,7 @@
   padding: 0.9rem 1.2rem;
   border: 1px solid var(--green);
   background: var(--green);
-  color: #111;
+  color: var(--bg);
   font-weight: 700;
   cursor: pointer;
 }

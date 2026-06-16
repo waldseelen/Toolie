@@ -141,6 +141,7 @@ export function ToolCard({
         </div>
 
         <span id={tooltipId} className={styles.tooltip} role="tooltip">
+          <strong className={styles.tooltipName}>{tool.name}</strong>
           {/* Category & Subcategory Path */}
           {(tool.category || tool.subcategory) && (
             <div className={styles.tooltipPath}>

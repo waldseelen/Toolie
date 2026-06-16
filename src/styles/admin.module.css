@@ -172,7 +172,7 @@
 .primaryButton {
   border-color: var(--green);
   background: var(--green);
-  color: #111;
+  color: var(--bg);
   font-weight: 700;
 }
 
