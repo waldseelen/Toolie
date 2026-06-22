@@ -1,3 +1,4 @@
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Metadata, Viewport } from "next";
 import { Press_Start_2P, JetBrains_Mono } from "next/font/google";
 import "@/styles/globals.css";
@@ -105,6 +106,7 @@ export default function RootLayout({
         </a>
         {children}
         <ServiceWorkerRegister />
+        <SpeedInsights />
       </body>
     </html>
   );
