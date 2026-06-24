@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState, useEffect } from "react";
-import { useFavorites } from "@/hooks/useFavorites";
 import { useCompare } from "@/hooks/useCompare";
 import { useCollections } from "@/hooks/useCollections";
 import { useLanguage } from "@/hooks/useLanguage";
@@ -17,14 +16,11 @@ interface CollectionsPageClientProps {
 
 export function CollectionsPageClient({ tools, sharedIds = "", sharedName = "" }: CollectionsPageClientProps) {
   const { locale, t } = useLanguage();
-  const { favorites, toggleFavorite } = useFavorites();
   const { ids: comparedIds, toggle: toggleCompare } = useCompare();
   const {
     collections,
-    createCollection,
     renameCollection,
     deleteCollection,
-    toggleTool,
   } = useCollections();
 
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -79,17 +75,9 @@ export function CollectionsPageClient({ tools, sharedIds = "", sharedName = "" }
               <ToolCard
                 key={tool.id}
                 tool={tool}
-                locale={locale}
-                accentColor={tool.category?.color ?? "var(--green)"}
-                isFavorite={favorites.includes(tool.id)}
-                onToggleFavorite={toggleFavorite}
+                accentColor={tool.category?.color ?? "var(--accent-color)"}
                 isCompared={comparedIds.includes(tool.id)}
                 onToggleCompare={toggleCompare}
-                collections={collections}
-                compareIds={comparedIds}
-                onCreateCollection={createCollection}
-                onToggleCollection={toggleTool}
-                t={t}
               />
             ))}
           </div>
@@ -144,17 +132,9 @@ export function CollectionsPageClient({ tools, sharedIds = "", sharedName = "" }
                       <ToolCard
                         key={tool.id}
                         tool={tool}
-                        locale={locale}
-                        accentColor={tool.category?.color ?? "var(--green)"}
-                        isFavorite={favorites.includes(tool.id)}
-                        onToggleFavorite={toggleFavorite}
+                        accentColor={tool.category?.color ?? "var(--accent-color)"}
                         isCompared={comparedIds.includes(tool.id)}
                         onToggleCompare={toggleCompare}
-                        collections={collections}
-                        compareIds={comparedIds}
-                        onCreateCollection={createCollection}
-                        onToggleCollection={toggleTool}
-                        t={t}
                       />
                     ))}
                 </div>

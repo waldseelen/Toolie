@@ -48,9 +48,9 @@ export function CategoryNav({
             style={
               isActive
                 ? ({
-                    "--green": cat.color,
                     borderColor: cat.color,
-                    backgroundColor: cat.color,
+                    color: cat.color,
+                    backgroundColor: `${cat.color}15`,
                   } as React.CSSProperties)
                 : undefined
             }

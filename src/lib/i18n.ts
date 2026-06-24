@@ -7,7 +7,7 @@ export type Locale = "tr" | "en";
 export const translations = {
   tr: {
     /* Header */
-    headerSubtitle: "RETRO ARAÇ KATALOĞU — ARKADAŞLARLA PAYLAŞ",
+    headerSubtitle: "PREMIUM AI & GELİŞTİRİCİ ARAÇLARI KATALOĞU",
     statsTools: "ARAÇ",
     statsCategories: "KATEGORİ",
     statsSubcategories: "ALT KATEGORİ",
@@ -84,7 +84,7 @@ export const translations = {
     langLabel: "TR",
 
     /* Footer */
-    footerText: "RETRO ARAÇ KATALOĞU",
+    footerText: "TOOLIE — MODERN AI & GELİŞTİRİCİ ARAÇLARI KATALOĞU",
 
     /* Error Page */
     errorTitle: "[ HATA ]",
@@ -126,7 +126,7 @@ export const translations = {
 
   en: {
     /* Header */
-    headerSubtitle: "RETRO TOOL CATALOG — SHARE WITH FRIENDS",
+    headerSubtitle: "PREMIUM AI & DEVELOPER TOOLS CATALOG",
     statsTools: "TOOLS",
     statsCategories: "CATEGORIES",
     statsSubcategories: "SUBCATEGORIES",
@@ -203,7 +203,7 @@ export const translations = {
     langLabel: "EN",
 
     /* Footer */
-    footerText: "RETRO TOOL CATALOG",
+    footerText: "TOOLIE — PREMIUM AI & DEVELOPER TOOLS CATALOG",
 
     /* Error Page */
     errorTitle: "[ ERROR ]",

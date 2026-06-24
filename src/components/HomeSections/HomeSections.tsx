@@ -2,36 +2,25 @@
 
 import styles from "./HomeSections.module.css";
 import { ToolCard } from "@/components/ToolCard/ToolCard";
-import type { Locale, TranslationKey } from "@/lib/i18n";
-import type { CollectionData, ToolData } from "@/lib/types";
+import { useAppStore } from "@/store/useAppStore";
+import { t as translate } from "@/lib/i18n";
+import type { ToolData } from "@/lib/types";
 
 interface HomeSectionsProps {
-  locale: Locale;
   featuredTools: ToolData[];
   latestTools: ToolData[];
-  favorites: string[];
   comparedIds: string[];
-  collections: CollectionData[];
-  onCreateCollection: (name: string, initialToolId?: string) => string | null;
-  onToggleCollection: (collectionId: string, toolId: string) => void;
   onToggleCompare: (id: string) => void;
-  onToggleFavorite: (id: string) => void;
-  t: (key: TranslationKey) => string;
 }
 
 export function HomeSections({
-  locale,
   featuredTools,
   latestTools,
-  favorites,
   comparedIds,
-  collections,
-  onCreateCollection,
-  onToggleCollection,
   onToggleCompare,
-  onToggleFavorite,
-  t,
 }: HomeSectionsProps) {
+  const locale = useAppStore((state) => state.locale);
+  const t = (key: Parameters<typeof translate>[1]) => translate(locale, key);
   if (featuredTools.length === 0 && latestTools.length === 0) {
     return null;
   }
@@ -47,22 +36,14 @@ export function HomeSections({
           <div
             className={styles.featuredGrid}
             role="list"
-            style={{ "--grid-cols": Math.ceil(featuredTools.length / 2) } as React.CSSProperties}
           >
             {featuredTools.map((tool) => (
               <div key={tool.id} className={styles.featuredCard}>
                 <ToolCard
                   tool={tool}
-                  locale={locale}
                   accentColor={tool.category?.color ?? "var(--green)"}
-                  isFavorite={favorites.includes(tool.id)}
                   isCompared={comparedIds.includes(tool.id)}
-                  collections={collections}
-                  onCreateCollection={onCreateCollection}
-                  onToggleCollection={onToggleCollection}
-                  onToggleFavorite={onToggleFavorite}
                   onToggleCompare={onToggleCompare}
-                  t={t}
                 />
               </div>
             ))}
@@ -81,16 +62,9 @@ export function HomeSections({
               <div key={tool.id} className={styles.latestCard}>
                 <ToolCard
                   tool={tool}
-                  locale={locale}
                   accentColor={tool.category?.color ?? "var(--cyan)"}
-                  isFavorite={favorites.includes(tool.id)}
                   isCompared={comparedIds.includes(tool.id)}
-                  collections={collections}
-                  onCreateCollection={onCreateCollection}
-                  onToggleCollection={onToggleCollection}
-                  onToggleFavorite={onToggleFavorite}
                   onToggleCompare={onToggleCompare}
-                  t={t}
                 />
               </div>
             ))}

@@ -3,8 +3,10 @@ import {
   getFeaturedTools,
   getLatestTools,
 } from "@/lib/db";
-import type { CategoryData, ToolStats } from "@/lib/types";
+import type { CategoryData, SubcategoryData, ToolStats } from "@/lib/types";
 import { ToolieApp } from "./ToolieApp";
+
+export const revalidate = 3600;
 
 /* ── Server Component: fetch data from DB ── */
 export default async function HomePage() {
@@ -16,15 +18,15 @@ export default async function HomePage() {
 
   /* Compute stats */
   const stats: ToolStats = {
-    totalTools: categories.reduce(
-      (sum, cat) =>
+    totalTools: (categories as CategoryData[]).reduce(
+      (sum: number, cat: CategoryData) =>
         sum +
-        cat.subcategories.reduce((s, sub) => s + sub.tools.length, 0),
+        cat.subcategories.reduce((s: number, sub: SubcategoryData) => s + sub.tools.length, 0),
       0
     ),
     totalCategories: categories.length,
-    totalSubcategories: categories.reduce(
-      (sum, cat) => sum + cat.subcategories.length,
+    totalSubcategories: (categories as CategoryData[]).reduce(
+      (sum: number, cat: CategoryData) => sum + cat.subcategories.length,
       0
     ),
   };

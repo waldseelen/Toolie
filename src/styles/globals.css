@@ -8,34 +8,46 @@
 }
 
 /* ═══════════════════════════════════════════════════════
-   DARK THEME (Soft Mocha)
+   DARK THEME (Premium SaaS Dark — Linear/Vercel inspired)
    ═══════════════════════════════════════════════════════ */
 :root,
 :root[data-theme="dark"] {
-  --bg: #1e1e2e;
-  --bg-secondary: #181825;
-  --card-bg: #313244;
-  --card-border: #45475a;
-  --card-hover-shadow: var(--green);
+  --bg: #080810;
+  --bg-secondary: #0E0E1A;
+  --bg-elevated: #141420;
+  --card-bg: rgba(255, 255, 255, 0.04);
+  --card-bg-hover: rgba(255, 255, 255, 0.07);
+  --card-border: rgba(255, 255, 255, 0.09);
+  --card-border-hover: rgba(139, 92, 246, 0.45);
+  --card-hover-shadow: 0 0 0 1px rgba(139, 92, 246, 0.3), 0 16px 40px -12px rgba(139, 92, 246, 0.25);
 
-  --green: #a6e3a1;
-  --cyan: #89dceb;
-  --orange: #fab387;
-  --pink: #f5c2e7;
-  --yellow: #f9e2af;
-  --red: #f38ba8;
-  --lime: #94e2d5;
+  --accent-color: #8B5CF6;
+  --accent-glow: rgba(139, 92, 246, 0.35);
+  --accent-subtle: rgba(139, 92, 246, 0.12);
+  --accent-gradient: linear-gradient(135deg, #8B5CF6 0%, #6366F1 50%, #EC4899 100%);
 
-  --border: #a6e3a1;
-  --border-dim: #313244;
-  --text: #cdd6f4;
-  --text-bright: #f5e0dc;
-  --dim: #6c7086;
-  --fg: #cdd6f4;
+  --green: #10B981;
+  --green-subtle: rgba(16, 185, 129, 0.12);
+  --cyan: #3B82F6;
+  --cyan-subtle: rgba(59, 130, 246, 0.12);
+  --orange: #F59E0B;
+  --orange-subtle: rgba(245, 158, 11, 0.12);
+  --pink: #EC4899;
+  --yellow: #FBBF24;
+  --red: #EF4444;
+  --lime: #84CC16;
 
-  --scanline-opacity: 0.02;
-  --vignette-opacity: 0.3;
-  --glow-strength: 0.6;
+  --border: rgba(255, 255, 255, 0.10);
+  --border-dim: rgba(255, 255, 255, 0.06);
+  --border-focus: rgba(139, 92, 246, 0.6);
+
+  /* ── Improved Text Contrast ── */
+  --text: #C4C4CC;
+  --text-bright: #F0F0F5;
+  --text-muted: #8A8A9A;
+  --dim: #6E6E7E;
+  --fg: #F0F0F5;
+
   --content-max: 1600px;
 
   /* ── Spacing Scale ── */
@@ -46,8 +58,12 @@
   --spacing-xl: 32px;
 
   /* ── Border Radius ── */
-  --radius-sm: 2px;
-  --radius-md: 4px;
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-full: 9999px;
 
   /* ── Z-Index Hierarchy ── */
   --z-base: 1;
@@ -59,175 +75,153 @@
   --z-dropdown: 400;
   --z-modal: 500;
   --z-overlay: 9000;
-  --z-scanline: 9998;
-  --z-crt: 9999;
   --z-skip: 10000;
 
   /* ── Transitions ── */
-  --transition-fast: 0.1s ease;
-  --transition-base: 0.2s ease;
-  --transition-theme: 0.25s ease;
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  --transition-theme: 0.3s ease;
 }
 
 /* ═══════════════════════════════════════════════════════
-   LIGHT THEME (High Contrast Soft)
+   LIGHT THEME (Modern Clean Light)
    ═══════════════════════════════════════════════════════ */
 :root[data-theme="light"] {
-  --bg: #fcfaf5;
-  --bg-secondary: #f3ece0;
-  --card-bg: #ffffff;
-  --card-border: #dcd6c8;
-  --card-hover-shadow: rgba(0, 0, 0, 0.1);
+  --bg: #F8F8FC;
+  --bg-secondary: #F0F0F8;
+  --bg-elevated: #FFFFFF;
+  --card-bg: #FFFFFF;
+  --card-bg-hover: #F5F5FF;
+  --card-border: #E2E2EE;
+  --card-border-hover: rgba(109, 40, 217, 0.4);
+  --card-hover-shadow: 0 0 0 1px rgba(109, 40, 217, 0.2), 0 16px 40px -12px rgba(109, 40, 217, 0.12);
 
-  --green: #2e6047; /* Darker green for contrast (was #4e8d6f) */
-  --cyan: #39768c; /* Darker cyan for contrast (was #5a9cb3) */
-  --orange: #8a5d2b; /* Darker orange (was #b3854e) */
-  --pink: #914d5a; /* Darker pink (was #b37380) */
-  --yellow: #73672e; /* Darker yellow (was #9c8e4e) */
-  --red: #a33c3c; /* Darker red (was #cc5c5c) */
-  --lime: #56672e; /* Darker lime (was #7a8d4e) */
+  --accent-color: #6D28D9;
+  --accent-glow: rgba(109, 40, 217, 0.2);
+  --accent-subtle: rgba(109, 40, 217, 0.08);
+  --accent-gradient: linear-gradient(135deg, #6D28D9 0%, #5B5BD6 50%, #DB2777 100%);
 
-  --border: #2e6047; /* Match darker green */
-  --border-dim: #c5beb1; /* Darker dim border */
-  --text: #1d1d1d; /* Darker text (was #2d2d2d) */
-  --text-bright: #0c0c0c; /* Darker text (was #121212) */
-  --dim: #5c5c5c; /* Darker dim text (was #767676) */
-  --fg: #1d1d1d;
+  --green: #059669;
+  --green-subtle: rgba(5, 150, 105, 0.10);
+  --cyan: #2563EB;
+  --cyan-subtle: rgba(37, 99, 235, 0.10);
+  --orange: #D97706;
+  --orange-subtle: rgba(217, 119, 6, 0.10);
+  --pink: #DB2777;
+  --yellow: #D97706;
+  --red: #DC2626;
+  --lime: #65A30D;
 
-  --scanline-opacity: 0.005;
-  --vignette-opacity: 0.05;
-  --glow-strength: 0;
+  --border: #E2E2EE;
+  --border-dim: #EBEBF5;
+  --border-focus: rgba(109, 40, 217, 0.5);
+
+  --text: #404050;
+  --text-bright: #12121E;
+  --text-muted: #6060748A;
+  --dim: #80808A;
+  --fg: #12121E;
 }
 
 /* ═══════════════════════════════════════════════════════
-   HIGH CONTRAST / MONOKROM THEME
+   HIGH CONTRAST THEME (A11y)
    ═══════════════════════════════════════════════════════ */
 html[data-high-contrast="on"] {
   --bg: #000000 !important;
-  --bg-secondary: #050505 !important;
+  --bg-secondary: #000000 !important;
   --card-bg: #000000 !important;
-  --card-border: #00ff00 !important;
-  --card-hover-shadow: #00ff00 !important;
+  --card-border: #FFFFFF !important;
+  --card-hover-shadow: #FFFFFF !important;
 
-  --green: #00ff00 !important;
-  --cyan: #00ffff !important;
-  --orange: #ffaa00 !important;
-  --pink: #ff00ff !important;
-  --yellow: #ffff00 !important;
-  --red: #ff0000 !important;
-  --lime: #55ff55 !important;
+  --accent-color: #00FF00 !important;
+  --green: #00FF00 !important;
+  --cyan: #00FFFF !important;
+  --orange: #FFaa00 !important;
+  --pink: #FF00FF !important;
+  --yellow: #FFFF00 !important;
+  --red: #FF0000 !important;
+  --lime: #55FF55 !important;
 
-  --border: #00ff00 !important;
-  --border-dim: #00ff00 !important;
-  --text: #00ff00 !important;
-  --text-bright: #ffffff !important;
-  --dim: #00cc00 !important;
-  --fg: #00ff00 !important;
-
-  --scanline-opacity: 0.03 !important;
-  --vignette-opacity: 0.4 !important;
-  --glow-strength: 1 !important;
+  --border: #FFFFFF !important;
+  --border-dim: #FFFFFF !important;
+  --text: #FFFFFF !important;
+  --text-bright: #FFFFFF !important;
+  --dim: #DDDDDD !important;
+  --fg: #FFFFFF !important;
 }
 
 /* ── Base ── */
 html {
   scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 body {
   background: var(--bg);
-  color: var(--green);
-  font-family: var(--font-mono), monospace;
-  font-size: 15px; /* Increased from 10px */
-  line-height: 1.6; /* Increased from 1.45 */
+  color: var(--text);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
-  transition: background-color 0.25s ease, color 0.25s ease;
+  transition: background-color var(--transition-theme), color var(--transition-theme);
 }
 
-/* UI headings, buttons, inputs use pixel font */
-:where(h1, h2, h3, h4, h5, h6, button, input, select, textarea, .pixel-font) {
-  font-family: var(--font-pixel), "Press Start 2P", monospace;
+/* Headings use the same font but heavier weights */
+:where(h1, h2, h3, h4, h5, h6) {
+  color: var(--text-bright);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.25;
 }
 
+/* Buttons and inputs inherit sans font */
 button,
 input,
 textarea,
 select {
+  font-family: var(--font-sans), system-ui, sans-serif;
   font: inherit;
 }
 
-img, svg, .pixel-art {
+/* Monospace font for specific elements */
+.font-mono, code, pre {
+  font-family: var(--font-mono), monospace;
+}
+
+img, svg {
   display: block;
   max-width: 100%;
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
-}
-
-/* ── CRT Scanlines & Vignette (Conditional on data-crt="on") ── */
-html[data-crt="on"] body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0, 0, 0, var(--scanline-opacity)) 2px,
-    rgba(0, 0, 0, var(--scanline-opacity)) 4px
-  );
-  pointer-events: none;
-  z-index: var(--z-crt);
-}
-
-html[data-crt="on"] body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(
-    ellipse at center,
-    transparent 60%,
-    rgba(0, 0, 0, var(--vignette-opacity)) 100%
-  );
-  pointer-events: none;
-  z-index: var(--z-scanline);
-}
-
-/* CRT OFF disables flicker animation selectively */
-html[data-crt="off"] [class*="ascii"],
-html[data-crt="off"] [class*="flicker"],
-html[data-crt="off"] [class*="Header_ascii"] {
-  animation: none !important;
 }
 
 /* ── Scrollbar ── */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
-
 ::-webkit-scrollbar-track {
-  background: var(--bg);
+  background: transparent;
 }
-
 ::-webkit-scrollbar-thumb {
-  background: var(--dim);
-  border: 2px solid var(--bg);
+  background: var(--border);
+  border-radius: 99px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--green);
+  background: var(--accent-color);
 }
 
 /* ── Selection ── */
 ::selection {
-  background: var(--green);
-  color: var(--bg);
+  background: var(--accent-color);
+  color: #fff;
 }
 
 /* ── Focus visible ── */
 :focus-visible {
-  outline: 2px solid var(--cyan);
+  outline: 2px solid var(--accent-color);
   outline-offset: 2px;
 }
 
@@ -240,12 +234,14 @@ a {
 .skipLink {
   position: absolute;
   left: 12px;
-  top: -44px;
+  top: -60px;
   z-index: var(--z-skip);
-  background: var(--bg);
-  color: var(--green);
-  border: 2px solid var(--cyan);
-  padding: 8px 10px;
+  background: var(--accent-color);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  padding: 8px 16px;
+  font-weight: 500;
+  transition: top 0.2s;
 }
 
 .skipLink:focus {
@@ -264,49 +260,6 @@ a {
   border: 0;
 }
 
-/* ═══════════════════════════════════════════════════════
-   ANIMATIONS
-   ═══════════════════════════════════════════════════════ */
-@keyframes blink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
-}
-
-@keyframes flicker {
-  0%,
-  95%,
-  100% {
-    opacity: 1;
-  }
-  96% {
-    opacity: 0.4;
-  }
-  97% {
-    opacity: 1;
-  }
-  98% {
-    opacity: 0.6;
-  }
-  99% {
-    opacity: 1;
-  }
-}
-
-@keyframes pulse-skeleton {
-  0%,
-  100% {
-    opacity: 0.3;
-  }
-  50% {
-    opacity: 0.6;
-  }
-}
-
 @keyframes slideUp {
   from {
     opacity: 0;
@@ -318,25 +271,35 @@ a {
   }
 }
 
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: -700px 0; }
+  100% { background-position: 700px 0; }
+}
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 12px var(--accent-glow); }
+  50% { box-shadow: 0 0 24px var(--accent-glow), 0 0 48px var(--accent-glow); }
+}
+
 /* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-}
-
-
-/* Scale down the layout for 125% OS scaling to match the 100% scaling view */
-@media (max-width: 1550px) and (min-width: 1200px) {
-    body {
-        zoom: 0.8;
-    }
 }

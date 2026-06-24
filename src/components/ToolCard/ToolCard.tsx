@@ -1,63 +1,55 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styles from "./ToolCard.module.css";
 import { CollectionPicker } from "@/components/CollectionPicker/CollectionPicker";
-import type { CollectionData, ToolData } from "@/lib/types";
-import type { Locale, TranslationKey } from "@/lib/i18n";
+import type { ToolData } from "@/lib/types";
+import { t } from "@/lib/i18n";
 import { FAVICON_FALLBACK } from "@/lib/constants";
+import { useAppStore } from "@/store/useAppStore";
 
 interface ToolCardProps {
   tool: ToolData;
-  locale: Locale;
   accentColor: string;
-  isFavorite: boolean;
   isCompared?: boolean;
-  compareIds?: string[];
-  collections?: CollectionData[];
-  onCreateCollection?: (name: string, initialToolId?: string) => string | null;
-  onToggleCollection?: (collectionId: string, toolId: string) => void;
-  onToggleFavorite: (id: string) => void;
   onToggleCompare?: (id: string) => void;
-  t: (key: TranslationKey) => string;
 }
 
 export function ToolCard({
   tool,
-  locale,
   accentColor,
-  isFavorite,
   isCompared = false,
-  collections = [],
-  onCreateCollection,
-  onToggleCollection,
-  onToggleFavorite,
   onToggleCompare,
-  t,
 }: ToolCardProps) {
   const [imgSrc, setImgSrc] = useState(tool.faviconUrl || FAVICON_FALLBACK);
-
+  
+  // Connect to Zustand store
+  const locale = useAppStore((state) => state.locale);
+  const isFavorite = useAppStore((state) => state.isFavorite(tool.id));
+  const toggleFavorite = useAppStore((state) => state.toggleFavorite);
+  const collections = useAppStore((state) => state.collections);
+  const createCollection = useAppStore((state) => state.createCollection);
+  const toggleCollectionTool = useAppStore((state) => state.toggleCollectionTool);
 
   const getPricingLabel = (pricing?: string | null) => {
     if (!pricing) return "";
     const p = pricing.toLowerCase().trim();
-    if (p === "free") return t("filterFree");
-    if (p === "freemium") return t("filterFreemium");
-    if (p === "paid") return t("filterPaid");
+    if (p === "free") return t(locale, "filterFree");
+    if (p === "freemium") return t(locale, "filterFreemium");
+    if (p === "paid") return t(locale, "filterPaid");
     return pricing;
   };
 
   const getPlatformLabel = (platform: string) => {
     const p = platform.toLowerCase().trim();
-    if (p === "web") return t("filterWeb");
-    if (p === "desktop") return t("filterDesktop");
-    if (p === "mobile") return t("filterMobile");
+    if (p === "web") return t(locale, "filterWeb");
+    if (p === "desktop") return t(locale, "filterDesktop");
+    if (p === "mobile") return t(locale, "filterMobile");
     return platform;
   };
 
   const localizedDescription =
     locale === "en" ? tool.descriptionEn || tool.description : tool.description;
-  const tooltipId = `tool-${tool.id}-tooltip`;
 
   return (
     <article
@@ -65,53 +57,51 @@ export function ToolCard({
       role="listitem"
       style={{ "--accent-color": accentColor } as React.CSSProperties}
     >
-
-
       <button
         type="button"
         className={`${styles.favBtn} ${isFavorite ? styles.favActive : ""}`}
-        onClick={() => onToggleFavorite(tool.id)}
+        onClick={() => toggleFavorite(tool.id)}
         aria-pressed={isFavorite}
         aria-label={
           isFavorite
-            ? `${tool.name} ${t("removeFavorite")}`
-            : `${tool.name} ${t("addFavorite")}`
+            ? `${tool.name} ${t(locale, "removeFavorite")}`
+            : `${tool.name} ${t(locale, "addFavorite")}`
         }
-        title={isFavorite ? t("removeFavoriteTitle") : t("addFavoriteTitle")}
+        title={isFavorite ? t(locale, "removeFavoriteTitle") : t(locale, "addFavoriteTitle")}
       >
-        {isFavorite ? "★" : "☆"}
+        <svg width="16" height="16" viewBox="0 0 24 24" fill={isFavorite ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+        </svg>
       </button>
 
-      {tool.verified && (
-        <span
-          className={styles.verifiedBadge}
-          aria-label={`${tool.name} ${t("badgeVerified")}`}
-          title={t("badgeVerified")}
+      {onToggleCompare && (
+        <button
+          type="button"
+          className={`${styles.compareBtn} ${isCompared ? styles.compareActive : ""}`}
+          onClick={() => onToggleCompare(tool.id)}
+          aria-pressed={isCompared}
+          aria-label={
+            isCompared
+              ? `${tool.name} ${t(locale, "compareToggleRemove")}`
+              : `${tool.name} ${t(locale, "compareToggle")}`
+          }
+          title={isCompared ? t(locale, "compareToggleRemove") : t(locale, "compareToggle")}
         >
-          ✓
-        </span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill={isCompared ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+          </svg>
+        </button>
       )}
 
-      {tool.isBroken && (
-        <span
-          className={styles.offlineBadge}
-          aria-label={`${tool.name} ${t("offlineBadge")}`}
-          title={t("offlineBadge")}
-        >
-          {t("offlineBadge")}
-        </span>
-      )}
 
-      {onCreateCollection && onToggleCollection && (
-        <CollectionPicker
-          className={styles.collectionWrap}
-          collections={collections}
-          onCreateCollection={onCreateCollection}
-          onToggleCollection={onToggleCollection}
-          t={t}
-          toolId={tool.id}
-        />
-      )}
+      <CollectionPicker
+        className={styles.collectionWrap}
+        collections={collections}
+        onCreateCollection={createCollection}
+        onToggleCollection={toggleCollectionTool}
+        t={(key) => t(locale, key)}
+        toolId={tool.id}
+      />
 
       <a
         href={tool.link}
@@ -119,10 +109,6 @@ export function ToolCard({
         target="_blank"
         rel="noopener noreferrer"
         aria-label={`${tool.name} — ${localizedDescription}`}
-        aria-describedby={tooltipId}
-        title={localizedDescription}
-        data-name={tool.name.toLowerCase()}
-        data-desc={localizedDescription.toLowerCase()}
       >
         <div className={styles.inner}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -132,76 +118,53 @@ export function ToolCard({
             className={styles.favicon}
             aria-hidden="true"
             loading="lazy"
-            width="30"
-            height="30"
+            width="40"
+            height="40"
             onError={() => setImgSrc(FAVICON_FALLBACK)}
           />
-          <span className={styles.name}>{tool.name}</span>
-
-        </div>
-
-        <span id={tooltipId} className={styles.tooltip} role="tooltip">
-          <strong className={styles.tooltipName}>{tool.name}</strong>
-          {/* Category & Subcategory Path */}
-          {(tool.category || tool.subcategory) && (
-            <div className={styles.tooltipPath}>
-              {tool.category && (
-                <span className={styles.tooltipCat}>
-                  {tool.category.icon} {locale === "tr" ? tool.category.nameTr || tool.category.name : tool.category.nameEn || tool.category.name}
-                </span>
-              )}
-              {tool.category && tool.subcategory && <span className={styles.pathSeparator}>/</span>}
-              {tool.subcategory && (
-                <span className={styles.tooltipSubcat}>
-                  {locale === "tr" ? tool.subcategory.nameTr || tool.subcategory.name : tool.subcategory.nameEn || tool.subcategory.name}
-                </span>
-              )}
-            </div>
-          )}
-
-          <p className={styles.tooltipDesc}>{localizedDescription}</p>
-
-          {/* Pricing & Platforms Grid */}
-          {(tool.pricingModel || tool.platforms) && (
-            <div className={styles.tooltipMetaGrid}>
-              {tool.pricingModel && (
-                <div className={styles.tooltipMetaItem}>
-                  <span className={styles.metaLabel}>{t("pricingModelLabel")}:</span>
-                  <span className={styles.metaValue}>{getPricingLabel(tool.pricingModel)}</span>
-                </div>
-              )}
-              {tool.platforms && (
-                <div className={styles.tooltipMetaItem}>
-                  <span className={styles.metaLabel}>{t("platformsLabel")}:</span>
-                  <span className={styles.metaValue}>
-                    {tool.platforms.split(",").map(p => getPlatformLabel(p)).join(", ")}
-                  </span>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Badges & Tags */}
-          <div className={styles.tooltipFooter}>
-            {(tool.isOpenSource || tool.hasApi || tool.verified) && (
-              <div className={styles.featureBadges}>
-                {tool.isOpenSource && <span className={styles.featureBadge}>{t("badgeOpenSource")}</span>}
-                {tool.hasApi && <span className={styles.featureBadge}>{t("badgeApi")}</span>}
-                {tool.verified && <span className={styles.featureBadge}>{t("badgeVerified")}</span>}
-              </div>
-            )}
-
-            {tool.tags && tool.tags.length > 0 && (
-              <div className={styles.tagChips}>
-                {tool.tags.slice(0, 3).map((tag) => (
-                  <span key={tag.id} className={styles.tagChip}>
-                    #{tag.slug}
-                  </span>
-                ))}
-              </div>
+          <div className={styles.nameRow}>
+            <span className={styles.name}>
+              {tool.name}
+            </span>
+            {tool.verified && (
+              <span className={styles.verifiedBadge} title={t(locale, "badgeVerified")}>
+                ✓
+              </span>
             )}
           </div>
-        </span>
+        </div>
+
+        <p className={styles.description}>{localizedDescription}</p>
+
+        {tool.tags && tool.tags.length > 0 && (
+          <div className={styles.tagChips}>
+            {tool.tags.slice(0, 3).map((tag) => (
+              <span key={tag.id} className={styles.tagChip}>
+                {tag.slug}
+              </span>
+            ))}
+          </div>
+        )}
+
+        <div className={styles.meta}>
+          {tool.pricingModel && (() => {
+            const p = tool.pricingModel.toLowerCase().trim();
+            const cls = p === 'free' ? styles.pricingFree
+              : p === 'freemium' ? styles.pricingFreemium
+              : styles.pricingPaid;
+            return (
+              <span className={`${styles.metaItem} ${cls}`}>
+                {getPricingLabel(tool.pricingModel)}
+              </span>
+            );
+          })()}
+          {tool.pricingModel && tool.platforms && <span style={{ color: 'var(--border)' }}>·</span>}
+          {tool.platforms && (
+            <span className={styles.metaItem}>
+               {tool.platforms.split(",").slice(0,2).map(p => getPlatformLabel(p)).join(", ")}
+            </span>
+          )}
+        </div>
       </a>
     </article>
   );

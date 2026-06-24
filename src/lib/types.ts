@@ -54,6 +54,7 @@ export interface ToolData {
   tags?: TagData[];
   category?: CategorySummaryData;
   subcategory?: SubcategorySummaryData;
+  subcategoryId?: string;
 }
 
 export interface SubcategoryData {

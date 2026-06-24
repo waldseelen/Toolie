@@ -2,27 +2,36 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg);
-  border: 2px solid var(--dim);
-  color: var(--text-bright);
-  font-family: var(--font-pixel);
-  font-size: 12px;
-  padding: 6px 10px;
+  gap: 6px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 12.5px;
+  font-weight: 500;
+  padding: 7px 13px;
   cursor: pointer;
-  transition: border-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
+  transition: all var(--transition-fast);
   line-height: 1;
-  min-width: 40px;
-  min-height: 34px;
+  min-height: 36px;
   flex-shrink: 0;
+  letter-spacing: 0.01em;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .toggle:hover {
-  border-color: var(--green);
-  color: var(--green);
-  box-shadow: 2px 2px 0 var(--green);
+  border-color: var(--accent-color);
+  background: var(--accent-subtle);
+  color: var(--text-bright);
+  transform: translateY(-1px);
 }
 
 .toggle:focus-visible {
-  outline: 2px solid var(--cyan);
+  outline: 2px solid var(--border-focus);
   outline-offset: 2px;
+}
+
+.toggle:active {
+  transform: translateY(0);
 }

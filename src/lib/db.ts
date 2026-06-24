@@ -1,5 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
-import { getDb } from "./firebase";
+import { getDb, isFirebaseConfigured } from "./firebase";
+import { readFileSync, existsSync } from "fs";
+import { join } from "path";
+import { TAXONOMY_BY_CATEGORY_KEY } from "./taxonomy";
 import type {
   CategoryData,
   SubcategoryData,
@@ -9,6 +12,174 @@ import type {
   CategorySummaryData,
   SubcategorySummaryData,
 } from "./types";
+
+let localDataInitialized = false;
+let localCategories: CategoryData[] = [];
+const localSubcategories: any[] = [];
+const localTools: ToolData[] = [];
+let localTags: TagData[] = [];
+const localSubmissions: SubmissionData[] = [];
+
+function initLocalData() {
+  if (localDataInitialized) return;
+  try {
+    const jsonPath = join(process.cwd(), "TOOLS.json");
+    if (!existsSync(jsonPath)) {
+      localDataInitialized = true;
+      return;
+    }
+    const raw = readFileSync(jsonPath, "utf-8");
+    const parsedCategories = JSON.parse(raw);
+
+    const seedTags = [
+      "ai", "image", "video", "coding", "research", "open-source", 
+      "free", "paid", "freemium", "api", "no-code", "windows", 
+      "productivity", "audio", "writing", "security", "datasets"
+    ];
+    localTags = seedTags.map((tag, idx) => ({
+      id: `tag-${idx}`,
+      name: tag.charAt(0).toUpperCase() + tag.slice(1).replace("-", " "),
+      slug: tag,
+    }));
+
+    let toolCounter = 0;
+    let subcategoryCounter = 0;
+
+    localCategories = parsedCategories.map((catData: any, catIdx: number) => {
+      const taxonomyCategory = TAXONOMY_BY_CATEGORY_KEY[catData.category] || {
+        slug: catData.category.toLowerCase(),
+        nameTr: catData.category,
+        nameEn: catData.category,
+        icon: "◈",
+        color: "#39ff14",
+        subcategories: [],
+      };
+
+      const categoryId = `cat-${catIdx}`;
+
+      const subcategoriesList = catData.subcategories.map((subData: any, subIdx: number) => {
+        const taxonomySubcategory = taxonomyCategory.subcategories?.find(
+          (entry: any) => entry.oldName === subData.subcategory
+        ) || {
+          key: subData.subcategory.toLowerCase().replace(/\s+/g, "-"),
+          slug: subData.subcategory.toLowerCase().replace(/\s+/g, "-"),
+          nameTr: subData.subcategory,
+          nameEn: subData.subcategory,
+        };
+
+        const subcategoryId = `sub-${subcategoryCounter++}`;
+
+        const toolsList = subData.tools.map((toolData: any, toolIdx: number) => {
+          const toolId = `tool-${toolCounter++}`;
+          const matchedTags: TagData[] = [];
+          const descLower = ((toolData.description || "") + " " + toolData.name).toLowerCase();
+          localTags.forEach((t) => {
+            if (descLower.includes(t.slug)) {
+              matchedTags.push(t);
+            }
+          });
+          if (matchedTags.length === 0) {
+            matchedTags.push(localTags[toolIdx % localTags.length]);
+          }
+
+          const slug = toolData.name.toLowerCase().replace(/\s+/g, "-").replace(/[^\w\-]+/g, "");
+          const domain = (() => {
+            try { return new URL(toolData.link).hostname; } catch { return null; }
+          })();
+
+          const tData: ToolData = {
+            id: toolId,
+            name: toolData.name,
+            slug: slug,
+            link: toolData.link,
+            description: toolData.description || `${toolData.name} — ${subData.subcategory}`,
+            descriptionEn: toolData.descriptionEn || null,
+            subcategoryId: subcategoryId,
+            faviconUrl: domain ? `https://www.google.com/s2/favicons?domain=${domain}&sz=32` : null,
+            featured: toolIdx % 5 === 0,
+            featuredLabel: toolIdx % 5 === 0 ? "Popular" : null,
+            pricingModel: toolIdx % 3 === 0 ? "Free" : toolIdx % 3 === 1 ? "Freemium" : "Paid",
+            platforms: "Web, Windows, macOS",
+            hasApi: toolIdx % 4 === 0,
+            isOpenSource: toolIdx % 6 === 0,
+            officialDocsUrl: toolIdx % 4 === 0 ? `${toolData.link}/docs` : null,
+            githubUrl: toolIdx % 6 === 0 ? `https://github.com/example/${slug}` : null,
+            logoUrl: null,
+            status: "active",
+            verified: toolIdx % 2 === 0,
+            lastCheckedAt: new Date().toISOString(),
+            lastStatusCode: 200,
+            isBroken: false,
+            sortOrder: toolIdx,
+            createdAt: new Date(Date.now() - toolIdx * 86400000).toISOString(),
+            updatedAt: new Date().toISOString(),
+            votes: Math.floor(Math.random() * 100),
+            tags: matchedTags,
+          };
+
+          localTools.push(tData);
+          return tData;
+        });
+
+        const subInfo = {
+          id: subcategoryId,
+          name: subData.subcategory,
+          key: taxonomySubcategory.key || null,
+          slug: taxonomySubcategory.slug || null,
+          nameTr: taxonomySubcategory.nameTr || null,
+          nameEn: taxonomySubcategory.nameEn || null,
+          categoryId: categoryId,
+          sortOrder: subIdx,
+          tools: toolsList,
+        };
+        localSubcategories.push(subInfo);
+        return subInfo;
+      });
+
+      return {
+        id: categoryId,
+        name: catData.category,
+        slug: taxonomyCategory.slug || null,
+        nameTr: taxonomyCategory.nameTr || null,
+        nameEn: taxonomyCategory.nameEn || null,
+        icon: taxonomyCategory.icon || "◈",
+        color: taxonomyCategory.color || "#39ff14",
+        sortOrder: catIdx,
+        subcategories: subcategoriesList,
+      };
+    });
+
+    localTools.forEach((tool) => {
+      const sub = localSubcategories.find((s) => s.id === tool.subcategoryId);
+      if (sub) {
+        tool.subcategory = {
+          id: sub.id,
+          name: sub.name,
+          key: sub.key,
+          slug: sub.slug,
+          nameTr: sub.nameTr,
+          nameEn: sub.nameEn,
+        };
+        const cat = localCategories.find((c) => c.id === sub.categoryId);
+        if (cat) {
+          tool.category = {
+            id: cat.id,
+            name: cat.name,
+            slug: cat.slug,
+            nameTr: cat.nameTr,
+            nameEn: cat.nameEn,
+            icon: cat.icon,
+            color: cat.color,
+          };
+        }
+      }
+    });
+
+    localDataInitialized = true;
+  } catch (err) {
+    console.error("Failed to initialize local data fallback:", err);
+  }
+}
 
 // Helper to safely convert Firestore timestamps or dates to ISO strings
 function toIsoString(val: any): string | null {
@@ -35,6 +206,37 @@ export interface dbFilters {
 }
 
 export async function getCategoriesWithSubcategoriesAndTools(filters: dbFilters = {}) {
+  if (!isFirebaseConfigured()) {
+    initLocalData();
+    let result = JSON.parse(JSON.stringify(localCategories));
+    if (filters.cat) {
+      result = result.filter((c: any) => c.name === filters.cat);
+    }
+    for (const cat of result) {
+      for (const sub of cat.subcategories) {
+        let subTools = sub.tools;
+        if (filters.tag) {
+          subTools = subTools.filter((t: any) => t.tags.some((tag: any) => tag.slug === filters.tag));
+        }
+        if (filters.pricing) {
+          subTools = subTools.filter((t: any) => t.pricingModel === filters.pricing);
+        }
+        if (filters.platform) {
+          subTools = subTools.filter((t: any) => t.platforms?.toLowerCase().includes(filters.platform!.toLowerCase()));
+        }
+        if (filters.sort === "newest") {
+          subTools.sort((a: any, b: any) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+        } else if (filters.sort === "az") {
+          subTools.sort((a: any, b: any) => a.name.localeCompare(b.name));
+        } else {
+          subTools.sort((a: any, b: any) => a.sortOrder - b.sortOrder);
+        }
+        sub.tools = subTools;
+      }
+    }
+    return result;
+  }
+
   try {
     const db = getDb();
 
@@ -163,7 +365,7 @@ export async function getCategoriesWithSubcategoriesAndTools(filters: dbFilters 
         }
         return (
           new Date(a.createdAt || 0).getTime() -
-          new Date(b.createdAt || 0).getTime()
+          new Date(a.createdAt || 0).getTime()
         );
       });
     }
@@ -253,6 +455,11 @@ export async function getCategoriesWithSubcategoriesAndTools(filters: dbFilters 
 }
 
 export async function getToolBySlug(slug: string): Promise<ToolData | null> {
+  if (!isFirebaseConfigured()) {
+    initLocalData();
+    return localTools.find((t) => t.slug === slug) || null;
+  }
+
   try {
     const db = getDb();
     const toolsSnap = await db.collection("tools").where("slug", "==", slug).limit(1).get();
@@ -338,6 +545,11 @@ export async function getToolBySlug(slug: string): Promise<ToolData | null> {
 }
 
 export async function getToolById(id: string): Promise<ToolData | null> {
+  if (!isFirebaseConfigured()) {
+    initLocalData();
+    return localTools.find((t) => t.id === id) || null;
+  }
+
   try {
     const db = getDb();
     const doc = await db.collection("tools").doc(id).get();
@@ -426,6 +638,13 @@ export async function getSimilarTools(
   excludeId: string,
   limit: number = 6
 ): Promise<ToolData[]> {
+  if (!isFirebaseConfigured()) {
+    initLocalData();
+    return localTools
+      .filter((t) => t.subcategoryId === subcategoryId && t.id !== excludeId)
+      .slice(0, limit);
+  }
+
   try {
     const db = getDb();
     const toolsSnap = await db
@@ -517,6 +736,11 @@ export async function getSimilarTools(
 }
 
 export async function getFeaturedTools(limit: number = 8): Promise<ToolData[]> {
+  if (!isFirebaseConfigured()) {
+    initLocalData();
+    return localTools.filter((t) => t.featured).slice(0, limit);
+  }
+
   try {
     const db = getDb();
     const toolsSnap = await db
@@ -623,6 +847,14 @@ export async function getFeaturedTools(limit: number = 8): Promise<ToolData[]> {
 }
 
 export async function getLatestTools(limit: number = 8): Promise<ToolData[]> {
+  if (!isFirebaseConfigured()) {
+    initLocalData();
+    const sorted = [...localTools].sort(
+      (a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
+    );
+    return sorted.slice(0, limit);
+  }
+
   try {
     const db = getDb();
     const toolsSnap = await db.collection("tools").get();
@@ -848,6 +1080,11 @@ export async function deleteTool(id: string): Promise<void> {
 }
 
 export async function getAllTags(): Promise<TagData[]> {
+  if (!isFirebaseConfigured()) {
+    initLocalData();
+    return localTags;
+  }
+
   try {
     const db = getDb();
     const snap = await db.collection("tags").orderBy("name", "asc").get();
@@ -863,6 +1100,11 @@ export async function getAllTags(): Promise<TagData[]> {
 }
 
 export async function getTagBySlug(slug: string): Promise<TagData | null> {
+  if (!isFirebaseConfigured()) {
+    initLocalData();
+    return localTags.find((t) => t.slug === slug) || null;
+  }
+
   try {
     const db = getDb();
     const snap = await db.collection("tags").where("slug", "==", slug).limit(1).get();
@@ -882,6 +1124,11 @@ export async function getTagBySlug(slug: string): Promise<TagData | null> {
 }
 
 export async function getToolsByTagSlug(slug: string): Promise<ToolData[]> {
+  if (!isFirebaseConfigured()) {
+    initLocalData();
+    return localTools.filter((t) => t.tags?.some((tag) => tag.slug === slug));
+  }
+
   try {
     const tag = await getTagBySlug(slug);
     if (!tag) {
@@ -987,6 +1234,12 @@ export async function getToolsByTagSlug(slug: string): Promise<ToolData[]> {
 }
 
 export async function getCategoryBySlug(slug: string): Promise<CategoryData | null> {
+  if (!isFirebaseConfigured()) {
+    initLocalData();
+    const cat = localCategories.find((c) => c.slug === slug);
+    return cat ? JSON.parse(JSON.stringify(cat)) : null;
+  }
+
   try {
     const db = getDb();
     const catSnap = await db
@@ -1148,6 +1401,24 @@ export async function getCategoryBySlug(slug: string): Promise<CategoryData | nu
 }
 
 export async function getSubcategoriesForAdmin() {
+  if (!isFirebaseConfigured()) {
+    initLocalData();
+    return localSubcategories.map((sub) => {
+      const cat = localCategories.find((c) => c.id === sub.categoryId);
+      return {
+        id: sub.id,
+        name: sub.name,
+        key: sub.key,
+        slug: sub.slug,
+        nameTr: sub.nameTr,
+        nameEn: sub.nameEn,
+        sortOrder: sub.sortOrder,
+        categoryId: sub.categoryId,
+        category: cat ? { id: cat.id, name: cat.name, sortOrder: cat.sortOrder } : null,
+      };
+    });
+  }
+
   try {
     const db = getDb();
     const subSnap = await db.collection("subcategories").orderBy("sortOrder", "asc").get();
@@ -1191,6 +1462,23 @@ export async function getSubcategoriesForAdmin() {
 }
 
 export async function createSubmission(data: any): Promise<SubmissionData> {
+  if (!isFirebaseConfigured()) {
+    initLocalData();
+    const id = `subm-${Date.now()}`;
+    const now = new Date().toISOString();
+    const submission: SubmissionData = {
+      id,
+      name: data.name,
+      link: data.link,
+      description: data.description,
+      categoryKey: data.categoryKey || null,
+      submittedAt: now,
+      status: "pending",
+    };
+    localSubmissions.push(submission);
+    return submission;
+  }
+
   const db = getDb();
   const id = db.collection("submissions").doc().id;
   const now = new Date().toISOString();
@@ -1210,6 +1498,11 @@ export async function createSubmission(data: any): Promise<SubmissionData> {
 }
 
 export async function getPendingSubmissions(): Promise<SubmissionData[]> {
+  if (!isFirebaseConfigured()) {
+    initLocalData();
+    return localSubmissions.filter((s) => s.status === "pending");
+  }
+
   try {
     const db = getDb();
     const snap = await db
@@ -1244,6 +1537,11 @@ export async function getPendingSubmissions(): Promise<SubmissionData[]> {
 }
 
 export async function getSubmissionById(id: string): Promise<SubmissionData | null> {
+  if (!isFirebaseConfigured()) {
+    initLocalData();
+    return localSubmissions.find((s) => s.id === id) || null;
+  }
+
   try {
     const db = getDb();
     const doc = await db.collection("submissions").doc(id).get();
@@ -1268,6 +1566,16 @@ export async function getSubmissionById(id: string): Promise<SubmissionData | nu
 }
 
 export async function updateSubmissionStatus(id: string, status: string): Promise<any> {
+  if (!isFirebaseConfigured()) {
+    initLocalData();
+    const subm = localSubmissions.find((s) => s.id === id);
+    if (subm) {
+      subm.status = status;
+      return subm;
+    }
+    throw new Error("Submission not found");
+  }
+
   const db = getDb();
   const docRef = db.collection("submissions").doc(id);
   await docRef.update({ status });
@@ -1276,6 +1584,14 @@ export async function updateSubmissionStatus(id: string, status: string): Promis
 }
 
 export async function getSubcategoryFirstByCategoryId(categoryId: string): Promise<any | null> {
+  if (!isFirebaseConfigured()) {
+    initLocalData();
+    const subs = localSubcategories.filter((s) => s.categoryId === categoryId);
+    if (subs.length === 0) return null;
+    subs.sort((a, b) => a.sortOrder - b.sortOrder);
+    return subs[0];
+  }
+
   try {
     const db = getDb();
     const snap = await db
@@ -1296,6 +1612,13 @@ export async function getSubcategoryFirstByCategoryId(categoryId: string): Promi
 }
 
 export async function getSubcategoryFirstByCategoryName(categoryName: string): Promise<any | null> {
+  if (!isFirebaseConfigured()) {
+    initLocalData();
+    const cat = localCategories.find((c) => c.name === categoryName);
+    if (!cat) return null;
+    return getSubcategoryFirstByCategoryId(cat.id);
+  }
+
   try {
     const db = getDb();
     const catSnap = await db
@@ -1315,6 +1638,11 @@ export async function getSubcategoryFirstByCategoryName(categoryName: string): P
 }
 
 export async function getBrokenTools(): Promise<any[]> {
+  if (!isFirebaseConfigured()) {
+    initLocalData();
+    return localTools.filter((t) => t.isBroken);
+  }
+
   try {
     const db = getDb();
     const snap = await db.collection("tools").where("isBroken", "==", true).get();
@@ -1368,6 +1696,11 @@ export async function getBrokenTools(): Promise<any[]> {
 }
 
 export async function getAllTools(): Promise<ToolData[]> {
+  if (!isFirebaseConfigured()) {
+    initLocalData();
+    return localTools;
+  }
+
   try {
     const db = getDb();
     const toolsSnap = await db.collection("tools").get();
@@ -1468,6 +1801,17 @@ export async function getAllTools(): Promise<ToolData[]> {
 }
 
 export async function getAllToolsMinimal(): Promise<any[]> {
+  if (!isFirebaseConfigured()) {
+    initLocalData();
+    return localTools.map((t) => ({
+      id: t.id,
+      name: t.name,
+      link: t.link,
+      description: t.description,
+      descriptionEn: t.descriptionEn,
+    }));
+  }
+
   try {
     const db = getDb();
     const snap = await db.collection("tools").get();
@@ -1475,8 +1819,11 @@ export async function getAllToolsMinimal(): Promise<any[]> {
       id: doc.id,
       name: doc.data().name || "",
       link: doc.data().link || "",
+      description: doc.data().description || "",
+      descriptionEn: doc.data().descriptionEn || "",
     }));
   } catch (e) {
     return [];
   }
 }
+

@@ -3,7 +3,6 @@
 import {
   Suspense,
   startTransition,
-  useDeferredValue,
   useMemo,
   useState,
   useCallback,
@@ -17,10 +16,8 @@ import { ToolGrid } from "@/components/ToolGrid/ToolGrid";
 import { Footer } from "@/components/Footer/Footer";
 import { HomeSections } from "@/components/HomeSections/HomeSections";
 import { CompareTray } from "@/components/CompareTray/CompareTray";
-import { useFavorites } from "@/hooks/useFavorites";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useCompare } from "@/hooks/useCompare";
-import { useCollections } from "@/hooks/useCollections";
 import { useToolSearch } from "@/hooks/useToolSearch";
 import { useURLParams } from "@/hooks/useURLParams";
 import type { CategoryData, ToolData, ToolStats } from "@/lib/types";
@@ -48,15 +45,9 @@ function ToolieAppInner({ categories, featuredTools, latestTools, stats }: Tooli
   } = useURLParams();
 
   const [localSearch, setLocalSearch] = useState(searchQuery);
-  const deferredSearch = useDeferredValue(localSearch);
-  const { favorites, toggleFavorite } = useFavorites();
   const { ids: comparedIds, toggle: toggleCompare, clear: clearCompare } =
+
     useCompare();
-  const {
-    collections,
-    createCollection,
-    toggleTool: toggleCollectionTool,
-  } = useCollections();
   const allTools = useMemo(
     () =>
       categories.flatMap((category) =>
@@ -64,17 +55,14 @@ function ToolieAppInner({ categories, featuredTools, latestTools, stats }: Tooli
       ),
     [categories]
   );
-  const { search } = useToolSearch(allTools);
-  const searchResults = useMemo(
-    () => search(deferredSearch),
-    [deferredSearch, search]
-  );
+  const { setSearchQuery, searchResults } = useToolSearch(allTools);
+
   const searchResultIds = useMemo(
     () =>
-      deferredSearch.trim()
+      localSearch.trim()
         ? new Set(searchResults.map((tool) => tool.id))
         : null,
-    [deferredSearch, searchResults]
+    [localSearch, searchResults]
   );
   const comparedTools = useMemo(
     () =>
@@ -85,6 +73,7 @@ function ToolieAppInner({ categories, featuredTools, latestTools, stats }: Tooli
   );
 
   useEffect(() => {
+    setSearchQuery(localSearch);
     if (localSearch === searchQuery) {
       return;
     }
@@ -92,7 +81,7 @@ function ToolieAppInner({ categories, featuredTools, latestTools, stats }: Tooli
     startTransition(() => {
       setSearch(localSearch);
     });
-  }, [localSearch, searchQuery, setSearch]);
+  }, [localSearch, searchQuery, setSearch, setSearchQuery]);
 
   useEffect(() => {
     setLocalSearch(searchQuery);
@@ -130,17 +119,10 @@ function ToolieAppInner({ categories, featuredTools, latestTools, stats }: Tooli
       <FilterBar t={t} />
       {shouldShowHomeSections && (
         <HomeSections
-          locale={locale}
           featuredTools={featuredTools}
           latestTools={latestTools}
-          favorites={favorites}
           comparedIds={comparedIds}
-          collections={collections}
-          onCreateCollection={createCollection}
-          onToggleCollection={toggleCollectionTool}
           onToggleCompare={toggleCompare}
-          onToggleFavorite={toggleFavorite}
-          t={t}
         />
       )}
       <CategoryNav
@@ -154,21 +136,14 @@ function ToolieAppInner({ categories, featuredTools, latestTools, stats }: Tooli
         {activeCategoryData && (
           <ToolGrid
             category={activeCategoryData}
-            locale={locale}
             searchQuery={localSearch}
             tag={tag}
             pricing={pricing}
             platform={platform}
             sort={sort}
             searchResultIds={searchResultIds}
-            favorites={favorites}
             comparedIds={comparedIds}
-            collections={collections}
-            onCreateCollection={createCollection}
-            onToggleCollection={toggleCollectionTool}
-            onToggleFavorite={toggleFavorite}
             onToggleCompare={toggleCompare}
-            t={t}
           />
         )}
       </main>

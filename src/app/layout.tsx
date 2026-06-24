@@ -1,14 +1,13 @@
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Metadata, Viewport } from "next";
-import { Press_Start_2P, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "@/styles/globals.css";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 import { siteUrl } from "@/lib/site";
 
-const pressStart2P = Press_Start_2P({
-  weight: "400",
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-pixel",
+  variable: "--font-sans",
   display: "swap",
 });
 
@@ -21,22 +20,22 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "TOOLIE v1.0 — Retro Araç Kataloğu",
+  title: "TOOLIE — Modern AI & Geliştirici Araçları Kataloğu",
   description:
-    "378+ araç, 7 kategori, pixel-art tasarım. Kullanıcıların çeşitli araçlara hızlıca ulaşmasını sağlayan dinamik bir katalog sitesi.",
+    "AI asistanları, geliştirici araçları, tasarım ve üretkenlik uygulamaları için premium bento tasarımına sahip modern araç kataloğu.",
   keywords: [
     "araç kataloğu",
     "AI araçları",
     "geliştirici araçları",
     "tasarım araçları",
-    "retro",
-    "pixel art",
+    "bento UI",
+    "premium SaaS",
   ],
   authors: [{ name: "Toolie" }],
   openGraph: {
-    title: "TOOLIE v1.0 — Retro Araç Kataloğu",
+    title: "TOOLIE — Modern AI & Geliştirici Araçları Kataloğu",
     description:
-      "378+ araç, 7 kategori, pixel-art tasarım. Retro tarzda dinamik araç kataloğu.",
+      "Modern bento tasarımlı premium AI ve geliştirici araçları kataloğu.",
     type: "website",
     locale: "tr_TR",
   },
@@ -100,7 +99,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${pressStart2P.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
+      <body className={`${inter.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
         <a href="#main-content" className="skipLink">
           İçeriğe geç / Skip to content
         </a>

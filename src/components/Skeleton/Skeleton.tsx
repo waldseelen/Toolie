@@ -15,8 +15,16 @@ export function SkeletonGrid() {
       <div className={styles.skeletonGrid}>
         {Array.from({ length: 12 }).map((_, i) => (
           <div key={i} className={styles.skeletonCard}>
-            <div className={styles.skeletonIcon} />
+            <div className={styles.skeletonInner}>
+              <div className={styles.skeletonIcon} />
+              <div className={styles.skeletonTitle} />
+            </div>
             <div className={styles.skeletonText} />
+            <div className={styles.skeletonTextShort} />
+            <div className={styles.skeletonTags}>
+              <div className={styles.skeletonTag} />
+              <div className={styles.skeletonTag} />
+            </div>
           </div>
         ))}
       </div>
@@ -26,8 +34,16 @@ export function SkeletonGrid() {
       <div className={styles.skeletonGrid}>
         {Array.from({ length: 8 }).map((_, i) => (
           <div key={i} className={styles.skeletonCard}>
-            <div className={styles.skeletonIcon} />
+            <div className={styles.skeletonInner}>
+              <div className={styles.skeletonIcon} />
+              <div className={styles.skeletonTitle} />
+            </div>
             <div className={styles.skeletonText} />
+            <div className={styles.skeletonTextShort} />
+            <div className={styles.skeletonTags}>
+              <div className={styles.skeletonTag} />
+              <div className={styles.skeletonTag} />
+            </div>
           </div>
         ))}
       </div>

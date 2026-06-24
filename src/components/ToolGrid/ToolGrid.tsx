@@ -2,48 +2,36 @@
 
 import styles from "./ToolGrid.module.css";
 import type { CategoryData } from "@/lib/types";
-import type { CollectionData } from "@/lib/types";
-import type { Locale, TranslationKey } from "@/lib/i18n";
 import { getLocalizedName } from "@/lib/taxonomy";
 import { ToolCard } from "../ToolCard/ToolCard";
+import { useAppStore } from "@/store/useAppStore";
+import { t as translate } from "@/lib/i18n";
 
 interface ToolGridProps {
   category: CategoryData;
-  locale: Locale;
   searchQuery: string;
   searchResultIds?: Set<string> | null;
   tag?: string;
   pricing?: string;
   platform?: string;
   sort?: string;
-  favorites: string[];
   comparedIds: string[];
-  collections: CollectionData[];
-  onCreateCollection: (name: string, initialToolId?: string) => string | null;
-  onToggleCollection: (collectionId: string, toolId: string) => void;
-  onToggleFavorite: (id: string) => void;
   onToggleCompare: (id: string) => void;
-  t: (key: TranslationKey) => string;
 }
 
 export function ToolGrid({
   category,
-  locale,
   searchQuery,
   searchResultIds,
   tag,
   pricing,
   platform,
   sort,
-  favorites,
   comparedIds,
-  collections,
-  onCreateCollection,
-  onToggleCollection,
-  onToggleFavorite,
   onToggleCompare,
-  t,
 }: ToolGridProps) {
+  const locale = useAppStore((state) => state.locale);
+  const t = (key: Parameters<typeof translate>[1]) => translate(locale, key);
   const query = searchQuery.toLowerCase().trim();
   const categoryName = getLocalizedName(
     locale,
@@ -127,9 +115,7 @@ export function ToolGrid({
         style={{ "--accent-color": category.color } as React.CSSProperties}
       >
         <span className={styles.catIcon}>{category.icon}</span>
-        <h2 className={styles.catTitle}>
-          <span aria-hidden="true">░░</span> {categoryName} <span aria-hidden="true">░░</span>
-        </h2>
+        <h2 className={styles.catTitle}>{categoryName}</h2>
         <span className={styles.catCount} aria-live="polite">
           {query
             ? `${totalVisibleTools}/${totalCatTools} ${t("toolCountUpper")}`
@@ -144,9 +130,7 @@ export function ToolGrid({
           aria-label={sub.displayName}
         >
           <h3 className={styles.subHeader}>
-            <span className={styles.subBracket}>[</span>
             {sub.displayName}
-            <span className={styles.subBracket}>]</span>
             <span className={styles.subCount}>
               {sub.tools.length} {t("toolCount")}
             </span>
@@ -154,22 +138,14 @@ export function ToolGrid({
           <div
             className={styles.grid}
             role="list"
-            style={{ "--grid-cols": Math.ceil(sub.tools.length / 2) } as React.CSSProperties}
           >
             {sub.tools.map((tool) => (
               <ToolCard
                 key={tool.id}
                 tool={tool}
-                locale={locale}
                 accentColor={category.color}
-                isFavorite={favorites.includes(tool.id)}
                 isCompared={comparedIds.includes(tool.id)}
-                collections={collections}
-                onCreateCollection={onCreateCollection}
-                onToggleCollection={onToggleCollection}
-                onToggleFavorite={onToggleFavorite}
                 onToggleCompare={onToggleCompare}
-                t={t}
               />
             ))}
           </div>

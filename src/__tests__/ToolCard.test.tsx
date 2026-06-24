@@ -1,11 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { ToolCard } from "@/components/ToolCard/ToolCard";
-import type { TranslationKey } from "@/lib/i18n";
-
-function t(key: TranslationKey) {
-  return key;
-}
 
 describe("ToolCard", () => {
   const tool = {
@@ -23,11 +18,7 @@ describe("ToolCard", () => {
     render(
       <ToolCard
         tool={tool}
-        locale="en"
-        accentColor="var(--green)"
-        isFavorite={false}
-        onToggleFavorite={vi.fn()}
-        t={t}
+        accentColor="#000000"
       />
     );
 
@@ -44,11 +35,7 @@ describe("ToolCard", () => {
     render(
       <ToolCard
         tool={tool}
-        locale="en"
         accentColor="var(--green)"
-        isFavorite={false}
-        onToggleFavorite={onToggleFavorite}
-        t={t}
       />
     );
 

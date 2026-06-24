@@ -50,20 +50,20 @@
 }
 
 .headCell {
-  color: var(--cyan);
+  color: var(--accent-color);
   position: sticky;
   left: 0;
   z-index: 10;
   background: var(--bg-secondary) !important;
-  font-family: var(--font-pixel), monospace;
-  font-size: 9px;
-  border-right: 2px solid var(--border-dim);
+  font-size: 13px;
+  font-weight: 600;
+  border-right: 1px solid var(--border-dim);
 }
 
 .toolHead {
   color: var(--text-bright);
-  font-family: var(--font-pixel), monospace;
-  font-size: 10px;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .empty {

@@ -1,91 +1,142 @@
 .panel {
-  animation: slideUp 0.2s ease-out;
+  animation: fadeInUp 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0 20px 40px;
 }
 
 .catHeader {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 16px 0 10px;
-  margin-bottom: 18px;
-  border-bottom: 2px solid var(--accent-color, var(--green));
-  color: var(--accent-color, var(--green));
+  padding: 28px 0 14px;
+  margin-bottom: 28px;
+  border-bottom: 2px solid transparent;
+  border-image: var(--accent-gradient) 1;
+  position: relative;
+}
+
+/* Gradient left accent bar */
+.catHeader::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 28px;
+  bottom: 14px;
+  width: 3px;
+  background: var(--accent-gradient);
+  border-radius: 99px;
 }
 
 .catIcon {
-  font-size: 20px;
+  font-size: 26px;
+  display: inline-flex;
+  align-items: center;
+  filter: drop-shadow(0 0 6px currentColor);
 }
 
 .catTitle {
-  font-size: clamp(10px, 2vw, 14px);
-  letter-spacing: 3px;
-  color: var(--accent-color, var(--green));
-  text-shadow: 0 0 calc(12px * var(--glow-strength)) var(--accent-color, var(--green));
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text-bright);
 }
 
 .catCount {
-  font-size: 7px;
+  font-size: 12px;
   color: var(--dim);
   margin-left: auto;
-  letter-spacing: 2px;
+  font-weight: 500;
+  background: var(--card-bg);
+  border: 1px solid var(--border-dim);
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  backdrop-filter: blur(8px);
 }
 
 .subcategory {
-  margin-bottom: 28px;
+  margin-bottom: 44px;
 }
 
 .subHeader {
-  font-size: 8px;
-  color: var(--cyan);
-  margin-bottom: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--dim);
+  margin-bottom: 16px;
   display: flex;
   align-items: center;
   gap: 8px;
-  letter-spacing: 2px;
-}
-
-.subBracket {
-  color: var(--dim);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: 0 4px;
 }
 
 .subCount {
-  font-size: 6px;
-  color: var(--dim);
+  font-size: 11px;
+  color: var(--border);
   margin-left: auto;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
+/* ── The main grid — key sizing ── */
 .grid {
   display: grid;
-  grid-template-columns: repeat(var(--grid-cols, 6), 110px);
-  grid-auto-rows: 1fr;
-  justify-content: center;
-  gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
   width: 100%;
 }
 
 .noResults {
   text-align: center;
-  padding: 48px;
+  padding: 80px 24px;
   color: var(--dim);
-  font-size: 9px;
-  letter-spacing: 2px;
+  font-size: 15px;
+  animation: fadeInUp 0.3s ease;
 }
 
 .noResultsIcon {
-  font-size: 32px;
+  font-size: 48px;
   display: block;
   margin-bottom: 16px;
+  opacity: 0.4;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
+  .panel {
+    padding: 0 16px 32px;
+  }
+
   .grid {
-    grid-template-columns: repeat(auto-fill, minmax(110px, 110px)) !important;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+  }
+
+  .catHeader {
+    margin-bottom: 20px;
+  }
+
+  .catTitle {
+    font-size: 18px;
+  }
+
+  .catCount {
+    font-size: 11px;
+  }
+
+  .subHeader {
+    font-size: 12px;
   }
 }
 
 @media (max-width: 600px) {
   .grid {
-    grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)) !important;
+    grid-template-columns: 1fr;
     gap: 10px;
+  }
+
+  .catTitle {
+    font-size: 17px;
   }
 }

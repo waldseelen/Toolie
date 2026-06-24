@@ -25,16 +25,10 @@ export function Header({ stats, locale, toggleLanguage, t }: HeaderProps) {
 
   return (
     <header className={styles.header}>
-      <div className={styles.ascii} aria-hidden="true">
-        ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-      </div>
-
       <div className={styles.headerRow}>
         <h1 className={styles.title}>
-          [ TOOLIE v1.0 ]
-          <span className={styles.cursor} aria-hidden="true">
-            ▋
-          </span>
+          Toolie
+          <span className={styles.logoBadge}>PRO</span>
         </h1>
         <div className={styles.controls}>
           <ThemeToggle t={t} />
@@ -46,11 +40,9 @@ export function Header({ stats, locale, toggleLanguage, t }: HeaderProps) {
             aria-label={t("switchLang")}
             title={t("switchLang")}
           >
-            <span className={styles.langBracket} aria-hidden="true">[</span>
             <span className={locale === "tr" ? styles.langActive : undefined}>TR</span>
-            <span className={styles.langDivider} aria-hidden="true">/</span>
+            <span className={styles.langDivider} aria-hidden="true">|</span>
             <span className={locale === "en" ? styles.langActive : undefined}>EN</span>
-            <span className={styles.langBracket} aria-hidden="true">]</span>
           </button>
         </div>
       </div>
@@ -61,10 +53,6 @@ export function Header({ stats, locale, toggleLanguage, t }: HeaderProps) {
         {t("statsCategories")} · {stats.totalSubcategories} {" "}
         {t("statsSubcategories")}
       </p>
-
-      <div className={styles.asciiBottom} aria-hidden="true">
-        ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-      </div>
     </header>
   );
 }

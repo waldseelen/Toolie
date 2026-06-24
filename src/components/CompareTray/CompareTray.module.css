@@ -1,53 +1,90 @@
 .tray {
   position: fixed;
-  right: 16px;
-  bottom: 16px;
+  right: 20px;
+  bottom: 20px;
   z-index: var(--z-tray);
-  width: min(320px, calc(100vw - 32px));
-  padding: 1rem;
-  border: 2px solid var(--cyan);
-  background: var(--card-bg);
-  box-shadow: 4px 4px 0 var(--cyan);
+  width: min(340px, calc(100vw - 40px));
+  padding: 18px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--card-border-hover);
+  background: var(--bg-elevated, var(--bg-secondary));
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow:
+    0 0 0 1px var(--accent-glow),
+    0 24px 60px -12px rgba(0, 0, 0, 0.6),
+    0 8px 24px -8px var(--accent-glow);
+  animation: slideUp 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .title {
   color: var(--text-bright);
-  margin-bottom: 0.75rem;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--accent-color);
 }
 
 .list {
   display: grid;
-  gap: 0.4rem;
-  margin-bottom: 0.9rem;
+  gap: 6px;
+  margin-bottom: 14px;
 }
 
 .item {
   color: var(--text);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 10px;
+  background: var(--card-bg);
+  border: 1px solid var(--border-dim);
+  border-radius: var(--radius-xs);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .actions {
   display: flex;
-  gap: 0.6rem;
+  gap: 8px;
 }
 
 .button {
   flex: 1;
-  padding: 0.7rem 0.8rem;
-  border: 1px solid var(--border-dim);
-  background: var(--bg);
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--card-bg);
   color: var(--text);
   cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+  font-family: var(--font-sans), system-ui, sans-serif;
 }
 
 .button:hover,
 .button:focus-visible {
-  border-color: var(--green);
-  color: var(--green);
+  border-color: var(--accent-color);
+  color: var(--text-bright);
+  background: var(--accent-subtle);
 }
 
 .primary {
-  border-color: var(--green);
-  background: var(--green);
-  color: var(--bg);
-  font-weight: 700;
+  background: var(--accent-gradient);
+  border-color: transparent;
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 4px 16px var(--accent-glow);
+}
+
+.primary:hover,
+.primary:focus-visible {
+  background: var(--accent-gradient);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 6px 24px var(--accent-glow);
+  transform: translateY(-1px);
 }

@@ -49,12 +49,19 @@
 }
 
 .button {
-  padding: 0.9rem 1.2rem;
-  border: 1px solid var(--green);
-  background: var(--green);
-  color: var(--bg);
-  font-weight: 700;
+  padding: 0.9rem 1.5rem;
+  border: 1px solid var(--accent-color);
+  background: var(--accent-color);
+  color: #fff;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
   cursor: pointer;
+  transition: all var(--transition-fast, 0.2s) ease;
+}
+
+.button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
 }
 
 .success {
@@ -76,19 +83,20 @@
 
 .scrapeBtn {
   padding: 0.75rem 1.2rem;
-  border: 2px solid var(--dim);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-sm);
   background: var(--bg-secondary);
   color: var(--text-bright);
-  font-family: var(--font-pixel), monospace;
-  font-size: 8px;
+  font-size: 13px;
+  font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
+  transition: all var(--transition-fast, 0.2s) ease;
 }
 
 .scrapeBtn:hover:not(:disabled) {
-  border-color: var(--green);
-  color: var(--green);
-  box-shadow: 2px 2px 0 var(--green);
+  border-color: var(--accent-color);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .scrapeBtn:disabled {

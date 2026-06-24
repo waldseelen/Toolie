@@ -1,73 +1,41 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import MiniSearch from "minisearch";
+import { useEffect, useState } from "react";
 import type { ToolData } from "@/lib/types";
 
-interface SearchDocument {
-  id: string;
-  name: string;
-  description: string;
-  descriptionEn: string;
-}
-
 export function useToolSearch(tools: ToolData[]) {
-  const [miniSearch, setMiniSearch] = useState<MiniSearch<SearchDocument> | null>(
-    null
-  );
-  const [toolMap, setToolMap] = useState<Map<string, ToolData>>(new Map());
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState<ToolData[]>(tools);
+  const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
-    const nextToolMap = new Map<string, ToolData>();
-    const search = new MiniSearch<SearchDocument>({
-      fields: ["name", "description", "descriptionEn"],
-      storeFields: ["id"],
-      searchOptions: {
-        boost: { name: 3, description: 1, descriptionEn: 1 },
-        prefix: true,
-        fuzzy: 0.2,
-      },
-    });
+    const trimmed = query.trim();
+    if (!trimmed) {
+      setResults(tools);
+      setIsSearching(false);
+      return;
+    }
 
-    const documents = tools.map((tool) => {
-      nextToolMap.set(tool.id, tool);
-      return {
-        id: tool.id,
-        name: tool.name,
-        description: tool.description,
-        descriptionEn: tool.descriptionEn ?? "",
-      };
-    });
+    setIsSearching(true);
+    const timeoutId = setTimeout(async () => {
+      try {
+        const res = await fetch(`/api/search?q=${encodeURIComponent(trimmed)}`);
+        const ids: string[] = await res.json();
+        setResults(tools.filter(t => ids.includes(t.id)));
+      } catch (err) {
+        console.error("Search failed", err);
+        setResults([]);
+      } finally {
+        setIsSearching(false);
+      }
+    }, 300); // 300ms debounce
 
-    search.addAll(documents);
-    setMiniSearch(search);
-    setToolMap(nextToolMap);
-  }, [tools]);
+    return () => clearTimeout(timeoutId);
+  }, [query, tools]);
 
-  return useMemo(
-    () => ({
-      search(query: string): ToolData[] {
-        const trimmedQuery = query.trim();
-
-        if (!trimmedQuery) {
-          return tools;
-        }
-
-        if (!miniSearch) {
-          return [];
-        }
-
-        const results = miniSearch.search(trimmedQuery, {
-          boost: { name: 3, description: 1, descriptionEn: 1 },
-          prefix: true,
-          fuzzy: 0.2,
-        });
-
-        return results
-          .map((result) => toolMap.get(String(result.id)))
-          .filter((tool): tool is ToolData => Boolean(tool));
-      },
-    }),
-    [miniSearch, toolMap, tools]
-  );
+  return {
+    setSearchQuery: setQuery,
+    searchResults: results,
+    isSearching
+  };
 }

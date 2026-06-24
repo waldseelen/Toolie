@@ -9,12 +9,12 @@ export function Footer({ t }: FooterProps) {
   return (
     <footer className={styles.footer}>
       <div>
-        <span>[</span> TOOLIE v1.0 <span>]</span> — {t("footerText")} — <span>2025</span>
+        <span>TOOLIE v1.0</span> — {t("footerText")} — <span>2026</span>
       </div>
       {process.env.NODE_ENV === "development" && (
         <div style={{ marginTop: "1rem" }}>
-          <a href="/admin/tools" style={{ color: "var(--yellow)", textDecoration: "none", fontSize: "0.875rem", fontFamily: "var(--font-pixel)" }}>
-            [ ADMIN ]
+          <a href="/admin/tools" style={{ color: "var(--accent-color)", textDecoration: "none", fontSize: "0.875rem", fontWeight: 500 }}>
+            Admin Panel
           </a>
         </div>
       )}

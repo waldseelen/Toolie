@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getAllTools, getCategoriesWithSubcategoriesAndTools, getAllTags } from "@/lib/db";
 import { absoluteUrl } from "@/lib/site";
+import type { CategoryData, TagData } from "@/lib/types";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [tools, categories, tags] = await Promise.all([
@@ -20,15 +21,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         url: absoluteUrl(`/tool/${tool.slug}`),
         lastModified: tool.updatedAt ? new Date(tool.updatedAt) : new Date(),
       })),
-    ...categories
-      .filter((category) => category.slug)
-      .map((category) => ({
+    ...(categories as CategoryData[])
+      .filter((category: CategoryData) => category.slug)
+      .map((category: CategoryData) => ({
         url: absoluteUrl(`/category/${category.slug}`),
         lastModified: new Date(),
       })),
-    ...tags
-      .filter((tag) => tag.slug)
-      .map((tag) => ({
+    ...(tags as TagData[])
+      .filter((tag: TagData) => tag.slug)
+      .map((tag: TagData) => ({
         url: absoluteUrl(`/tag/${tag.slug}`),
         lastModified: new Date(),
       })),

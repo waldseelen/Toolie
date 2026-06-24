@@ -54,3 +54,19 @@ export function getDb(): admin.firestore.Firestore {
 
   return dbInstance;
 }
+
+export function isFirebaseConfigured(): boolean {
+  if (process.env.FIRESTORE_EMULATOR_HOST) {
+    return true;
+  }
+  const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
+  const privateKey = process.env.FIREBASE_PRIVATE_KEY;
+  if (clientEmail && privateKey) {
+    return true;
+  }
+  const localKeyPath = join(process.cwd(), "firebase-service-account.json");
+  if (existsSync(localKeyPath)) {
+    return true;
+  }
+  return false;
+}

@@ -18,11 +18,9 @@ export function LanguageToggle({ locale, onToggle, t }: LanguageToggleProps) {
       aria-label={t("switchLang")}
       title={t("switchLang")}
     >
-      <span className={styles.bracket} aria-hidden="true">[</span>
       <span className={locale === "tr" ? styles.active : undefined}>TR</span>
-      <span className={styles.divider} aria-hidden="true">/</span>
+      <span className={styles.divider} aria-hidden="true">|</span>
       <span className={locale === "en" ? styles.active : undefined}>EN</span>
-      <span className={styles.bracket} aria-hidden="true">]</span>
     </button>
   );
 }
