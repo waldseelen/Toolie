@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getDb } from "@/lib/firebase";
+import { isAdminRequest } from "@/lib/admin-auth";
 import { getSubmissionById, updateSubmissionStatus, getNextSortOrder } from "@/lib/db";
 import { translateTextToEnglish } from "@/lib/translate";
 import { createUniqueSlug } from "@/lib/slug";
@@ -54,6 +55,10 @@ async function resolveSubcategoryId(categoryKey: string | null): Promise<string 
 
 export async function PATCH(request: Request, { params }: Params) {
   try {
+    if (!isAdminRequest(request)) {
+      return NextResponse.json({ error: "Yetkisiz" }, { status: 401 });
+    }
+
     const { id } = await params;
     const body = await request.json();
     const action = body.action === "approve" ? "approve" : body.action === "reject" ? "reject" : null;

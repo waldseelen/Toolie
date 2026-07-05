@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getDb } from "@/lib/firebase";
+import { isAdminRequest } from "@/lib/admin-auth";
 import {
   getCategoriesWithSubcategoriesAndTools,
   createTool,
@@ -85,6 +86,10 @@ export async function GET(request: Request) {
 /* ── POST /api/tools ── */
 export async function POST(request: Request) {
   try {
+    if (!isAdminRequest(request)) {
+      return NextResponse.json({ error: "Yetkisiz" }, { status: 401 });
+    }
+
     const body = await request.json();
     const name = asTrimmedString(body.name);
     const link = asTrimmedString(body.link);
