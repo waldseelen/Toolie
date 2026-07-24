@@ -19,10 +19,12 @@ Bu belge, **Toolie** projesi üzerinde çalışacak yapay zeka asistanları içi
 - **Stilleme:** Sadece **CSS Modules** ve **CSS Custom Properties** (Değişkenler) kullanılmalıdır.
 - **Tailwind CSS:** Kullanıcı açıkça talep etmedikçe Tailwind kullanılmamalıdır. Retro estetik kuralları `src/styles/globals.css` içinde tanımlıdır.
 
-### 3. Veri Yönetimi (Prisma & SQLite)
-- Statik değişimler için `TOOLS.json` artık kullanılmamalıdır (sadece ilk seed için).
-- Tüm CRUD işlemleri **Prisma ORM** üzerinden yapılmalı ve `/src/app/api/` altındaki rotalar kullanılmalıdır.
-- Şema değişikliği yapıldığında `npx prisma generate` ve `npx prisma db push` komutları çalıştırılmalıdır.
+### 3. Veri Yönetimi (Firestore & TOOLS.json)
+- **Prisma veya SQLite YOKTUR.** Bu projeye Prisma, `schema.prisma` veya SQLite bağımlılığı eklemeyin.
+- Veri katmanı **Cloud Firestore** olup `firebase-admin` üzerinden erişilir. Firebase yapılandırılmadığında `TOOLS.json` tabanlı **bellek-içi (in-memory) fallback** devreye girer.
+- Tüm veri erişimi `src/lib/db.ts` üzerinden yapılmalıdır. Her fonksiyon önce `isFirebaseConfigured()` (`src/lib/firebase.ts`) kontrolü yapar; yapılandırma yoksa `TOOLS.json`'dan bellek-içi katalog kurar, varsa `getDb()` ile Firestore'u sorgular. Bu çift yol (Firestore + fallback) korunmalıdır.
+- `TOOLS.json` kaynak veridir (seed ve yerel fallback). Firestore'a yüklemek için `npm run db:seed` (`tsx scripts/seed.ts`) komutu çalıştırılır.
+- **Arama:** `/src/app/api/search/route.ts` içinde **MiniSearch** ile indekslenir; eşleşen araç ID'lerini döndürür.
 
 ### 4. Tasarım Sistemi (Soft & Pastel)
 - Uygulama **"Soft & Pastel"** tasarım dilini takip eder.
